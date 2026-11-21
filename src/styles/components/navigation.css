@@ -85,24 +85,15 @@
 }
 
 .nav-brand-mark {
-  display: grid;
   flex: none;
-  place-items: center;
-  width: clamp(31px, 6vw, 42px);
-  aspect-ratio: 1;
-  border: 1px solid var(--navigation-line);
-  border-radius: 7px;
-  background: var(--color-ink-800);
-  color: var(--color-thread-300);
-  transition: background-color 180ms ease;
+  width: clamp(36px, 8.25vw, 49px);
+  height: auto;
+  filter: invert(0.96) hue-rotate(180deg);
+  transition: opacity 180ms ease;
 }
 
 .nav-brand:hover .nav-brand-mark {
-  background: var(--color-ink-700);
-}
-
-.nav-brand-mark svg {
-  width: 53%;
+  opacity: 0.85;
 }
 
 .nav-brand-copy {
@@ -442,11 +433,23 @@
 
 @media (max-width: 380px) {
   .nav-brand-mark {
-    display: none;
+    width: 32px;
+  }
+
+  .nav-brand-caption {
+    max-width: 90px;
   }
 }
 
 @media (max-width: 355px) {
+  #nav-shell {
+    --nav-gutter: 10px;
+  }
+
+  .nav-brand-copy .nav-brand-name {
+    font-size: 0.88rem;
+  }
+
   #navbar .lang-current {
     display: none;
   }
