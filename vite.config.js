@@ -5,10 +5,11 @@ import tailwindcss from '@tailwindcss/vite'
 const routes = { fa: '/', ar: '/ar/' }
 
 function redirectArabicDirectory(server) {
+  const arabicPath = server.config.base + routes.ar.slice(1)
   server.middlewares.use((request, response, next) => {
     const url = new URL(request.url, 'http://localhost')
-    if (url.pathname !== '/ar') return next()
-    response.writeHead(308, { Location: '/ar/' + url.search })
+    if (url.pathname !== arabicPath.slice(0, -1)) return next()
+    response.writeHead(308, { Location: arabicPath + url.search })
     response.end()
   })
 }
@@ -20,15 +21,22 @@ function localizedPages(origin) {
   }
 
   const alternates = { ...routes, 'x-default': routes.fa }
+  let base
   return {
     name: 'localized-pages',
+    configResolved(config) {
+      base = config.base
+    },
     configureServer: redirectArabicDirectory,
     configurePreviewServer: redirectArabicDirectory,
-    transformIndexHtml(_html, { path }) {
+    transformIndexHtml(html, { path }) {
       const route = path.replace(/index\.html$/, '')
-      if (!site || !Object.values(routes).includes(route)) return
-      const url = (route) => new URL(route, site).href
-      return [
+      if (!Object.values(routes).includes(route)) return
+      // Vite prefixes asset URLs, but leaves navigation and gallery links alone.
+      html = html.replace(/<a href="\/(?!\/)/g, () => `<a href="${base}`)
+      if (!site) return html
+      const url = (route) => new URL(base + route.slice(1), site).href
+      const tags = [
         { tag: 'link', attrs: { rel: 'canonical', href: url(route) }, injectTo: 'head' },
         ...Object.entries(alternates).map(([hreflang, route]) => ({
           tag: 'link',
@@ -36,14 +44,16 @@ function localizedPages(origin) {
           injectTo: 'head',
         })),
       ]
+      return { html, tags }
     },
   }
 }
 
 export default defineConfig(({ command, mode }) => {
-  const { SITE_ORIGIN } = loadEnv(mode, process.cwd(), 'SITE_')
+  const { SITE_BASE, SITE_ORIGIN } = loadEnv(mode, process.cwd(), 'SITE_')
   return {
     appType: 'mpa',
+    base: SITE_BASE,
     plugins: [tailwindcss(), localizedPages(command === 'build' ? SITE_ORIGIN : undefined)],
     server: { port: 5173, host: true },
     build: {
