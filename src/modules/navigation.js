@@ -1,32 +1,117 @@
 import { containTab } from './dialog-focus.js'
+
+function initLanguagePickers() {
+  const pickers = [...document.querySelectorAll('.lang-picker')]
+
+  for (const picker of pickers) {
+    const trigger = picker.querySelector('summary')
+    const current = picker.querySelector('[aria-current="page"]')
+
+    picker.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !picker.open) return
+      event.preventDefault()
+      event.stopPropagation()
+      picker.open = false
+      trigger.focus({ preventScroll: true })
+    })
+    picker.addEventListener('focusout', (event) => {
+      if (!picker.contains(event.relatedTarget)) picker.open = false
+    })
+    current.addEventListener('click', (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return
+      event.preventDefault()
+      picker.open = false
+      trigger.focus({ preventScroll: true })
+    })
+  }
+
+  document.addEventListener('click', (event) => {
+    for (const picker of pickers) {
+      if (!picker.contains(event.target)) picker.open = false
+    }
+  })
+}
+
 export function initNav({ gsap, reduced }) {
   const navbar = document.getElementById('navbar')
-  const onScroll = () => navbar.classList.toggle('is-scrolled', window.scrollY > 40)
+  initLanguagePickers()
+  if (!reduced) {
+    const languageIcon = navbar.querySelector('.nav-language-icon')
+    const entrance = gsap
+      .timeline({ paused: true })
+      .fromTo(
+        navbar,
+        { y: -12, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.58, ease: 'power3.out', clearProps: 'transform,opacity' }
+      )
+      .fromTo(
+        navbar.querySelectorAll('.nav-brand, .nav-links, .nav-tools'),
+        { y: 5, opacity: 0.48 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.42,
+          stagger: 0.06,
+          ease: 'power2.out',
+          clearProps: 'transform,opacity',
+        },
+        0.1
+      )
+      .fromTo(
+        languageIcon,
+        { rotation: -18, scale: 0.88 },
+        { rotation: 0, scale: 1, duration: 0.56, ease: 'back.out(1.4)', clearProps: 'transform' },
+        0.23
+      )
+    if (window.__kkReady) entrance.play()
+    else document.addEventListener('kk:ready', () => entrance.play(), { once: true })
+  }
+
+  const desktop = matchMedia('(min-width: 75rem)')
+  const desktopLinks = [...navbar.querySelectorAll('.nav-link')]
+  const mobileLinks = [...document.querySelectorAll('#mobile-menu .mobile-link')]
+  const sectionLinks = [...desktopLinks, ...mobileLinks]
+  const sections = desktopLinks.map((link) => {
+    const hash = link.getAttribute('href')
+    return { hash, target: document.querySelector(hash === '#home' ? '#hero' : hash) }
+  })
+  let activeHash = '#home'
+  let pending = false
+
+  function syncNav() {
+    pending = false
+    navbar.classList.toggle('is-scrolled', scrollY > 40)
+    const readingLine = innerHeight * 0.4
+    const maxScroll = document.documentElement.scrollHeight - innerHeight
+    let current = sections[0]
+    for (const section of sections) {
+      if (section.target.getBoundingClientRect().top > readingLine) break
+      current = section
+    }
+    if (maxScroll > 0 && scrollY >= maxScroll - 2) current = sections.at(-1)
+    if (current.hash === activeHash) return
+    activeHash = current.hash
+    sectionLinks.forEach((link) => {
+      if (link.getAttribute('href') === activeHash) link.setAttribute('aria-current', 'location')
+      else link.removeAttribute('aria-current')
+    })
+  }
+
+  function queueSync() {
+    if (pending) return
+    pending = true
+    requestAnimationFrame(syncNav)
+  }
+
   if (window.scrollY > 40) {
-    // restored scroll: paint the scrolled pill immediately, no transition flash
+    // Paint the scrolled header immediately when a previous position is restored.
     navbar.classList.add('instant', 'is-scrolled')
     requestAnimationFrame(() => requestAnimationFrame(() => navbar.classList.remove('instant')))
   }
-  onScroll()
-  window.addEventListener('scroll', onScroll, { passive: true })
-
-  const links = [...document.querySelectorAll('.nav-link')]
-  const map = { '#home': '#hero' }
-  const spy = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return
-        const id = entry.target.id === 'hero' ? '#home' : `#${entry.target.id}`
-        links.forEach((l) => l.classList.toggle('is-active', l.getAttribute('href') === id))
-      })
-    },
-    { rootMargin: '-40% 0px -55% 0px' }
-  )
-  links.forEach((l) => {
-    const href = l.getAttribute('href')
-    const el = document.querySelector(map[href] || href)
-    if (el) spy.observe(el)
-  })
+  syncNav()
+  window.addEventListener('scroll', queueSync, { passive: true })
+  window.addEventListener('resize', queueSync)
+  window.addEventListener('load', queueSync, { once: true })
 
   // mobile menu
   const menu = document.getElementById('mobile-menu')
@@ -51,12 +136,12 @@ export function initNav({ gsap, reduced }) {
         { y: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }
       )
       gsap.fromTo(
-        '.mobile-link',
+        mobileLinks,
         { x: 24, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.4, stagger: 0.05, delay: 0.1, ease: 'power2.out' }
       )
     }
-    closeBtn.focus()
+    closeBtn.focus({ preventScroll: true })
   }
   function closeMenu() {
     if (!menuOpen) return
@@ -74,12 +159,18 @@ export function initNav({ gsap, reduced }) {
         onComplete: () => menu.classList.add('hidden'),
       })
     }
-    openBtn.focus()
+    const focusTarget = desktop.matches
+      ? navbar.querySelector('.nav-link[aria-current="location"]')
+      : openBtn
+    focusTarget?.focus({ preventScroll: true })
   }
 
   openBtn.addEventListener('click', openMenu)
   closeBtn.addEventListener('click', closeMenu)
   backdrop.addEventListener('click', closeMenu)
+  desktop.addEventListener('change', () => {
+    if (desktop.matches) closeMenu()
+  })
   menu.querySelectorAll('.nav-anchor').forEach((a) => a.addEventListener('click', closeMenu))
   menu.querySelectorAll('.open-modal').forEach((b) => b.addEventListener('click', closeMenu))
   document.addEventListener('keydown', (event) => {

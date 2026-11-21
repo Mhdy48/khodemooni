@@ -1,25 +1,26 @@
 import { locale } from './i18n.js'
 
 export function initUi({ gsap, reduced }) {
-  // scroll progress = golden stitch seam under the floating header
-  const fill = document.getElementById('nav-thread-fill')
-  const needle = document.getElementById('nav-needle')
+  const progressBar = document.getElementById('nav-progress')
   const toTop = document.getElementById('to-top')
   let ticking = false
-  function onScroll() {
+  function queueScrollUpdate() {
     if (ticking) return
     ticking = true
     requestAnimationFrame(() => {
-      const max = document.documentElement.scrollHeight - innerHeight
-      const p = max > 0 ? Math.min(1, window.scrollY / max) : 0
-      fill.style.width = `${p * 100}%`
-      needle.style.right = `${p * 100}%`
-      toTop.classList.toggle('is-visible', window.scrollY > 700)
+      const root = document.documentElement
+      const distance = root.scrollHeight - root.clientHeight
+      const position = Math.max(0, window.scrollY)
+      const progress = distance > 0 ? Math.min(1, position / distance) : 0
+      progressBar.style.setProperty('--scroll-progress', progress)
+      toTop.classList.toggle('is-visible', position > 700)
       ticking = false
     })
   }
-  window.addEventListener('scroll', onScroll, { passive: true })
-  onScroll()
+  window.addEventListener('scroll', queueScrollUpdate, { passive: true })
+  window.addEventListener('resize', queueScrollUpdate)
+  new ResizeObserver(queueScrollUpdate).observe(document.body)
+  queueScrollUpdate()
   toTop.addEventListener('click', () =>
     window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
   )

@@ -2,7 +2,7 @@ export function containTab(event, dialog) {
   if (event.key !== 'Tab') return
   const controls = [
     ...dialog.querySelectorAll(
-      'a[href], button:enabled, input:enabled, select:enabled, textarea:enabled'
+      'a[href], button:enabled, input:enabled, select:enabled, textarea:enabled, summary'
     ),
   ].filter((element) => element.getClientRects().length > 0)
   const boundary = event.shiftKey ? controls[0] : controls.at(-1)

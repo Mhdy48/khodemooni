@@ -65,6 +65,7 @@ test('Localized pages recover from restricted storage and interrupted dialogs', 
     })
     await page.goto(origin + '/ar/')
     assert(await page.$eval('#loader', (loader) => getComputedStyle(loader).display === 'none'))
+    await page.click('#navbar .lang-trigger')
     await Promise.all([page.waitForNavigation(), page.click('#navbar [hreflang="fa"]')])
     assert.equal(await page.$eval('html', (html) => html.lang), 'fa')
     await page.close()

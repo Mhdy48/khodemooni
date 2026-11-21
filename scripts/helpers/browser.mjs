@@ -5,6 +5,7 @@ export const URL = process.env.TEST_URL || 'http://localhost:5173/'
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 export async function switchLanguage(page, language) {
+  await page.click('#navbar .lang-trigger')
   await Promise.all([
     page.waitForNavigation({ waitUntil: 'load' }),
     page.click(`#navbar .lang-btn[data-lang="${language}"]`),

@@ -5,7 +5,6 @@
 html {
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
-  scrollbar-color: var(--color-stone-500) var(--color-bone-100);
 }
 
 body {
@@ -23,19 +22,56 @@ body {
   outline: 2px solid var(--color-thread-400);
   outline-offset: 4px;
 }
-::-webkit-scrollbar {
-  width: 9px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-bone-100);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-stone-500);
-  border-radius: 8px;
-  border: 2px solid var(--color-bone-100);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ink-700);
+@media (pointer: fine) and (forced-colors: none) {
+  html {
+    scrollbar-color: var(--color-thread-400) var(--color-ink-950);
+  }
+
+  @supports selector(html::-webkit-scrollbar) {
+    html {
+      scrollbar-color: auto;
+    }
+
+    html::-webkit-scrollbar {
+      width: 13px;
+    }
+
+    html::-webkit-scrollbar-track {
+      background: linear-gradient(
+        90deg,
+        var(--color-ink-800),
+        var(--color-ink-950) 16% 84%,
+        var(--color-ink-900)
+      );
+    }
+
+    html::-webkit-scrollbar-thumb {
+      min-height: 44px;
+      border: 2px solid transparent;
+      border-radius: 999px;
+      background: linear-gradient(
+          90deg,
+          var(--color-thread-600),
+          var(--color-thread-400) 45%,
+          var(--color-thread-500)
+        )
+        padding-box;
+    }
+
+    html::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(
+          90deg,
+          var(--color-thread-500),
+          var(--color-thread-300) 45%,
+          var(--color-thread-400)
+        )
+        padding-box;
+    }
+
+    html::-webkit-scrollbar-thumb:active {
+      background: var(--color-thread-300) padding-box;
+    }
+  }
 }
 
 .modal-scroll {
