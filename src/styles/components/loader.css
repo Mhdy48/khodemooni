@@ -1,164 +1,192 @@
-#loader {
-  @apply fixed inset-0 z-[100] grid place-items-center overflow-hidden text-bone-50;
+html:has(#loader[open]) {
+  overflow: hidden;
+  overflow-anchor: none;
+  overscroll-behavior: none;
+  background: var(--color-ink-950);
 }
-.ld-panels {
-  @apply absolute inset-0 flex;
-}
-.ld-panel {
-  @apply flex-1 border-l border-bone-50/4 bg-ink-950;
-}
-.ld-panel:nth-child(even) {
-  background: color-mix(in srgb, var(--color-ink-950) 80%, var(--color-ink-900));
-}
-.ld-aura {
-  position: absolute;
-  width: min(72vw, 720px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--color-thread-400) 10%, transparent),
-    transparent 66%
-  );
-  animation: ld-breathe 3s ease-in-out infinite alternate;
-}
-.ld-inner {
-  @apply relative z-2 flex flex-col items-center;
-  animation: ld-arrive 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-}
-.ld-emblem {
-  @apply relative grid w-[210px] aspect-square place-items-center;
-}
-.ld-ring {
-  @apply absolute inset-0 size-full;
-  transform: rotate(-90deg);
-  overflow: visible;
-}
-.ld-ring circle {
-  fill: none;
-}
-.ld-ring-track {
-  stroke: var(--color-ink-700);
-  stroke-width: 0.7;
-}
-.ld-ring-stitch {
-  stroke: var(--color-thread-300);
-  stroke-opacity: 0.5;
-  stroke-width: 1.2;
-  stroke-linecap: round;
-  stroke-dasharray: 0.25 2.25;
-  transform-origin: center;
-  animation: ld-orbit 18s linear infinite;
-}
-.ld-ring-progress {
-  stroke: var(--color-thread-400);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-}
-.ld-monogram {
-  @apply grid place-items-center text-[78px] leading-none font-bold;
-}
-.ld-monogram span {
-  @apply text-thread-300;
-}
-.ld-orbit-dot {
-  position: absolute;
-  inset: 4px;
-  animation: ld-orbit 5s linear infinite;
-}
-.ld-orbit-dot::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: -2px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--color-thread-300);
-}
-.ld-wordmark {
-  @apply mt-5 flex gap-[7px] text-base font-bold tracking-normal;
-}
-.ld-wordmark span:last-child {
-  @apply text-thread-300;
-}
-.ld-tagline {
-  margin: 12px 0 0;
-  color: color-mix(in srgb, var(--color-bone-200) 75%, transparent);
-  font-size: 11px;
-  letter-spacing: 0;
-}
-.ld-meta {
-  @apply absolute z-2 inset-x-8 top-7 flex justify-between text-[10px] tracking-normal text-bone-200/70;
-}
-.ld-bottom {
-  @apply absolute z-2 inset-x-8 bottom-[29px] grid grid-cols-[1fr_auto] items-end gap-3;
-}
-.ld-status {
-  @apply text-[10px] text-bone-200/75;
-}
-.ld-percent {
-  @apply text-[26px] leading-none font-medium tabular-nums text-thread-300;
-}
-.ld-percent sup {
-  @apply mr-[3px] align-top text-[11px] text-bone-200;
-}
-.ld-progress {
-  @apply col-span-full h-px overflow-hidden bg-ink-700;
-}
-.ld-progress i {
-  display: block;
+
+#loader[open]:not([hidden]) {
+  --loader-ease: cubic-bezier(0.22, 0.72, 0.24, 1);
+
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
   width: 100%;
   height: 100%;
-  background: var(--color-thread-400);
-  transform: scaleX(0);
-  transform-origin: right;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: clamp(16px, 5vw, 64px);
+  overflow: hidden;
+  border: 0;
+  outline: none;
+  background: radial-gradient(ellipse at 50% 38%, var(--color-ink-800), var(--color-ink-950) 72%);
+  color: var(--color-bone-50);
 }
-@keyframes ld-orbit {
+
+#loader::backdrop {
+  background: transparent;
+}
+
+.loader-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  width: min(100%, 69rem);
+  height: min(74dvh, 37rem);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-thread-400) 34%, var(--color-ink-900));
+  background: var(--color-ink-950);
+  box-shadow: 0 26px 64px -20px #100c08ed;
+  animation: loader-frame-in 650ms var(--loader-ease) both;
+}
+
+.loader-frame::after {
+  position: absolute;
+  z-index: 1;
+  inset: clamp(8px, 1.25vw, 17px);
+  border: 1px solid #ebd0a132;
+  pointer-events: none;
+  content: '';
+}
+
+.loader-photo {
+  position: absolute;
+  z-index: -1;
+  inset: -14px;
+  background:
+    radial-gradient(ellipse at 50% 50%, #1c1510d9 0 17%, #1c1510a8 34%, transparent 76%),
+    linear-gradient(145deg, #1c151026 30%, #1c15109e),
+    url('/images/lining-detail.webp') 50% 54% / cover no-repeat;
+  filter: blur(clamp(5px, 0.75vw, 10px));
+  animation: loader-photo-in 920ms var(--loader-ease) both;
+}
+
+.loader-content {
+  display: grid;
+  justify-items: center;
+  gap: clamp(13px, 2.6vh, 24px);
+  width: 100%;
+  padding: 16px;
+  text-align: center;
+  transition:
+    opacity 240ms ease-in,
+    transform 310ms var(--loader-ease);
+}
+
+#loader.is-leaving .loader-content {
+  transform: scale(0.96);
+  opacity: 0;
+}
+
+.loader-spinner {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(66px, 13.5vh, 116px);
+  aspect-ratio: 1;
+  border: 1px dashed #ebd0a178;
+  border-radius: 50%;
+  animation: loader-mark-in 660ms var(--loader-ease) both;
+}
+
+.loader-spinner::before {
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 25deg,
+    transparent 19%,
+    #c9964629 40%,
+    var(--color-thread-400) 75%,
+    var(--color-bone-50) 88%,
+    transparent 89%
+  );
+  mask-image: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  animation: loader-orbit 1.25s linear infinite;
+  content: '';
+}
+
+.loader-spinner::after {
+  width: 72%;
+  aspect-ratio: 1;
+  border: 1px solid #ebd0a180;
+  border-radius: 50%;
+  background: var(--color-ink-800) url('/images/suit-portrait-320.webp') center 10% / cover
+    no-repeat;
+  box-shadow: 0 4px 12px #1c1510a8;
+  content: '';
+}
+
+.loader-brand {
+  padding-block: 0.03em 0.12em;
+  font-size: clamp(1.125rem, 0.86rem + 1.2vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  text-shadow: 0 3px 22px #1c1510;
+  text-wrap: balance;
+  animation: loader-brand-in 690ms 150ms var(--loader-ease) both;
+}
+
+@keyframes loader-frame-in {
+  from {
+    clip-path: inset(13% 4%);
+    opacity: 0.2;
+  }
   to {
-    transform: rotate(360deg);
+    clip-path: inset(-54px);
+    opacity: 1;
   }
 }
-@keyframes ld-breathe {
-  to {
-    opacity: 0.55;
+
+@keyframes loader-photo-in {
+  from {
     transform: scale(1.12);
   }
+  to {
+    transform: scale(1);
+  }
 }
-@keyframes ld-arrive {
+
+@keyframes loader-mark-in {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.96);
+    transform: scale(0.8);
   }
   to {
     opacity: 1;
-    transform: none;
+    transform: scale(1);
   }
 }
-@media (max-width: 640px) {
-  .ld-emblem {
-    width: 178px;
-  }
-  .ld-wordmark {
-    font-size: 14px;
-    letter-spacing: 0;
-  }
-  .ld-meta {
-    top: 22px;
-    right: 22px;
-    left: 22px;
-  }
-  .ld-bottom {
-    right: 22px;
-    bottom: 23px;
-    left: 22px;
+
+@keyframes loader-orbit {
+  to {
+    transform: rotate(1turn);
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  #loader *,
-  #loader *::after {
-    animation: none !important;
+
+@keyframes loader-brand-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+  .loader-frame {
+    height: min(78dvh, 40rem);
+  }
+
+  .loader-photo {
+    background-position:
+      center,
+      center,
+      55% center;
   }
 }

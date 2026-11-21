@@ -1,75 +1,50 @@
-import { twoDigits } from './i18n.js'
-
-export function initLoader({ gsap, reduced }) {
+export function initLoader({ reduced }) {
   const loader = document.getElementById('loader')
-  const fire = () => {
+  const finish = () => {
+    loader?.remove()
     if (window.__kkReady) return
     window.__kkReady = true
     document.dispatchEvent(new Event('kk:ready'))
   }
 
   if (!loader || reduced) {
-    loader?.remove()
-    fire()
+    finish()
     return
   }
 
   loader.hidden = false
-  const percent = loader.querySelector('#loader-percent')
-  const ring = loader.querySelector('#loader-ring')
-  const bar = loader.querySelector('#loader-bar')
-  const state = { value: 0 }
-  const render = () => {
-    percent.textContent = twoDigits.format(state.value)
-    ring.style.strokeDashoffset = 100 - state.value
-    bar.style.transform = `scaleX(${state.value / 100})`
-  }
-  const counting = gsap.to(state, {
-    value: 92,
-    duration: 2.6,
-    ease: 'power2.out',
-    onUpdate: render,
-  })
+  loader.showModal()
+  const [brandEntrance] = loader.querySelector('.loader-brand').getAnimations()
+  let dismissing = false
 
-  let lifted = false
-  const lift = () => {
-    if (lifted) return
-    lifted = true
+  const dismiss = () => {
+    if (dismissing) return
+    dismissing = true
     clearTimeout(fallback)
-    window.removeEventListener('load', lift)
-    counting.kill()
-    gsap
-      .timeline({
-        onComplete: () => {
-          loader.remove()
-          fire()
-        },
+    window.removeEventListener('load', dismiss)
+
+    const exit = () => {
+      loader.classList.add('is-leaving')
+      const fade = loader.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 310,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        fill: 'forwards',
       })
-      .to(state, { value: 100, duration: 0.32, ease: 'power2.out', onUpdate: render })
-      .to(
-        loader.querySelectorAll('.ld-inner, .ld-meta, .ld-bottom, .ld-aura'),
-        {
-          opacity: 0,
-          y: -18,
-          duration: 0.38,
-          stagger: 0.035,
-          ease: 'power2.in',
-        },
-        '+=0.12'
-      )
-      .to(
-        loader.querySelectorAll('.ld-panel'),
-        {
-          yPercent: -100,
-          duration: 0.9,
-          stagger: { each: 0.055, from: 'center' },
-          ease: 'power4.inOut',
-        },
-        '-=0.1'
-      )
+      const close = () => {
+        loader.close()
+        finish()
+      }
+      fade.finished.then(close, close)
+    }
+    // Let the brand finish appearing before revealing the page.
+    Promise.resolve(brandEntrance?.finished).then(exit, exit)
   }
 
-  const fallback = setTimeout(lift, 3200)
-  if (document.readyState === 'complete') lift()
-  else window.addEventListener('load', lift, { once: true })
+  loader.addEventListener('cancel', (event) => {
+    event.preventDefault()
+    dismiss()
+  })
+  const fallback = setTimeout(dismiss, 2400)
+  if (document.readyState === 'complete') dismiss()
+  else window.addEventListener('load', dismiss, { once: true })
 }
