@@ -1,4 +1,4 @@
-import { containTab } from './focus.js'
+import { containTab } from './dialog-focus.js'
 import { messages } from './i18n.js'
 
 const normalizeDigits = (s) =>

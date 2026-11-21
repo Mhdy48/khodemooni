@@ -1,4 +1,4 @@
-import { containTab } from './focus.js'
+import { containTab } from './dialog-focus.js'
 import { twoDigits } from './i18n.js'
 
 export function initGallery({ gsap, reduced }) {

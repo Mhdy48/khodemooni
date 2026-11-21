@@ -1,7 +1,7 @@
 @import './fonts.css';
 @import 'tailwindcss' source(none);
 
-@import './tokens.css';
+@import './theme.css';
 @import './base.css';
 @import './components/loader.css' layer(components);
 @import './components/navigation.css' layer(components);
@@ -17,7 +17,7 @@
 @import './components/textures.css';
 @import './sections/hero.css';
 @import './sections/about.css';
-@import './components/motion.css';
+@import './animations.css';
 @import './accessibility.css';
 
 @source "../../index.html";

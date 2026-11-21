@@ -1,4 +1,4 @@
-import { containTab } from './focus.js'
+import { containTab } from './dialog-focus.js'
 export function initNav({ gsap, reduced }) {
   const navbar = document.getElementById('navbar')
   const onScroll = () => navbar.classList.toggle('is-scrolled', window.scrollY > 40)

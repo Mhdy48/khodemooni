@@ -20,6 +20,10 @@ vibe_images/
 *.log
 npm-debug.log*
 
+# locally installed agent skills
+/.agents/skills/
+/skills-lock.json
+
 # editor / OS
 .vscode/*
 !.vscode/extensions.json
