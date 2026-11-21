@@ -1,0 +1,44 @@
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="خیاط خودمونی — طراحی و تولید اختصاصی کت و شلوار با استانداردهای روز؛ هنر خیاطی سنتی و توان تولید صنعتی." />
+  <title>خیاط خودمونی | دوخت اختصاصی با کیفیتی ماندگار</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preload" href="/fonts/vazirmatn-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <style>
+    /* critical: a complete first paint before the stylesheet or bundle arrives */
+    html { background: var(--color-ink-950); }
+    body { margin: 0; background: var(--color-bone-100); }
+    #loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; color: var(--color-bone-50); background: transparent; }
+    #loader .ld-panels { position: absolute; inset: 0; display: flex; }
+    #loader .ld-panel { flex: 1; background: var(--color-ink-950); border-left: 1px solid color-mix(in srgb, var(--color-bone-50) 4%, transparent); }
+    #loader .ld-panel:nth-child(even) { background: color-mix(in srgb, var(--color-ink-950) 80%, var(--color-ink-900)); }
+    #loader .ld-aura { position: absolute; width: min(72vw,720px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle,color-mix(in srgb, var(--color-thread-400) 10%, transparent),transparent 66%); animation: ld-breathe 3s ease-in-out infinite alternate; }
+    #loader .ld-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; animation: ld-arrive .9s cubic-bezier(.16,1,.3,1) backwards; }
+    #loader .ld-emblem { position: relative; display: grid; width: 210px; aspect-ratio: 1; place-items: center; }
+    #loader .ld-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+    #loader .ld-ring circle { fill: none; }
+    #loader .ld-ring-track { stroke: var(--color-ink-700); stroke-width: .7; }
+    #loader .ld-ring-stitch { stroke: var(--color-thread-300); stroke-opacity: .5; stroke-width: 1.2; stroke-linecap: round; stroke-dasharray: .25 2.25; transform-origin: center; animation: ld-orbit 18s linear infinite; }
+    #loader .ld-ring-progress { stroke: var(--color-thread-400); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+    #loader .ld-monogram { display: grid; place-items: center; font-family: 'Vazirmatn',sans-serif; font-size: 78px; font-weight: 700; line-height: 1; }
+    #loader .ld-monogram span { color: var(--color-thread-300); }
+    #loader .ld-orbit-dot { position: absolute; inset: 4px; animation: ld-orbit 5s linear infinite; }
+    #loader .ld-orbit-dot::after { content: ''; position: absolute; top: 50%; right: -2px; width: 5px; height: 5px; border-radius: 50%; background: var(--color-thread-300); }
+    #loader .ld-wordmark { display: flex; gap: 7px; margin-top: 20px; font-family: 'Vazirmatn',sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0; }
+    #loader .ld-wordmark span:last-child { color: var(--color-thread-300); }
+    #loader .ld-fa { margin: 12px 0 0; color: color-mix(in srgb, var(--color-bone-200) 75%, transparent); font-family: 'Vazirmatn',sans-serif; font-size: 11px; letter-spacing: 0; }
+    #loader .ld-meta { position: absolute; z-index: 2; top: 28px; right: 32px; left: 32px; display: flex; justify-content: space-between; color: color-mix(in srgb, var(--color-bone-200) 70%, transparent); font-family: 'Vazirmatn',sans-serif; font-size: 10px; letter-spacing: 0; }
+    #loader .ld-bottom { position: absolute; z-index: 2; right: 32px; bottom: 29px; left: 32px; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 12px; }
+    #loader .ld-status { color: color-mix(in srgb, var(--color-bone-200) 75%, transparent); font-family: 'Vazirmatn',sans-serif; font-size: 10px; }
+    #loader .ld-percent { color: var(--color-thread-300); font-family: 'Vazirmatn',sans-serif; font-size: 26px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1; }
+    #loader .ld-percent sup { margin-right: 3px; color: var(--color-bone-200); font-size: 11px; vertical-align: top; }
+    #loader .ld-progress { grid-column: 1 / -1; height: 1px; overflow: hidden; background: var(--color-ink-700); }
+    #loader .ld-progress i { display: block; width: 100%; height: 100%; background: var(--color-thread-400); transform: scaleX(0); transform-origin: right; }
+    @keyframes ld-orbit { to { transform: rotate(360deg); } }
+    @keyframes ld-breathe { to { opacity: .55; transform: scale(1.12); } }
+    @keyframes ld-arrive { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: none; } }
+    @media (max-width: 640px) { #loader .ld-emblem { width: 178px; } #loader .ld-wordmark { font-size: 14px; letter-spacing: 0; } #loader .ld-meta { top: 22px; right: 22px; left: 22px; } #loader .ld-bottom { right: 22px; bottom: 23px; left: 22px; } }
+    @media (prefers-reduced-motion: reduce) { #loader *, #loader *::after { animation: none !important; } }
+  </style>
+  <noscript><style>#loader { display: none; }</style></noscript>

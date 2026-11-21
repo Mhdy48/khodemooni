@@ -1,0 +1,59 @@
+  <!-- ============ CONSULT MODAL ============ -->
+  <div id="modal" class="fixed inset-0 z-[85] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal-backdrop" class="absolute inset-0 bg-ink-950/75 backdrop-blur-sm"></div>
+    <div id="modal-panel" class="relative w-full max-w-lg rounded-3xl bg-bone-50 shadow-2xl ring-1 ring-thread-500/30 overflow-hidden">
+      <div class="h-1.5 bg-gradient-to-l from-thread-600 via-thread-400 to-flare-500"></div>
+      <div class="p-7 sm:p-9 max-h-[82vh] overflow-y-auto modal-scroll">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 id="modal-title" class="text-2xl font-black text-ink-900" data-i18n="md_title">درخواست مشاوره رایگان</h3>
+            <p class="mt-2 text-sm text-stone-600 leading-7" data-i18n="md_sub">فرم را پر کنید؛ کارشناسان ما تا ۲۴ ساعت آینده با شما تماس می‌گیرند.</p>
+          </div>
+          <button id="modal-close" type="button" class="grid size-10 shrink-0 place-items-center rounded-full text-ink-900 ring-1 ring-ink-900/15 hover:bg-ink-900/5 transition" aria-label="بستن">
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+
+        <form id="consult-form" class="mt-7 space-y-5" novalidate>
+          <div>
+            <label for="f-name" class="field-label" data-i18n="md_name">نام و نام خانوادگی</label>
+            <input id="f-name" name="name" type="text" class="field" autocomplete="name" data-i18n-ph="md_name_ph" placeholder="مثلا: مهدی رضایی" />
+            <p class="field-error" data-error-for="f-name"></p>
+          </div>
+          <div>
+            <label for="f-phone" class="field-label" data-i18n="md_phone">شماره تماس</label>
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" class="field tabular-nums" autocomplete="tel" dir="ltr" placeholder="0912 345 6789" />
+            <p class="field-error" data-error-for="f-phone"></p>
+          </div>
+          <div>
+            <label for="f-service" class="field-label" data-i18n="md_service">نوع خدمت</label>
+            <select id="f-service" name="service" class="field">
+              <option value="design" data-i18n="md_opt1">طراحی و الگوسازی اختصاصی</option>
+              <option value="fabric" data-i18n="md_opt2">انتخاب و تامین پارچه</option>
+              <option value="bulk" data-i18n="md_opt3">تولید سازمانی و تیراژ بالا</option>
+              <option value="personal" data-i18n="md_opt4">سفارش شخصی / تک‌دوزی</option>
+            </select>
+          </div>
+          <div>
+            <label for="f-msg" class="field-label"><span data-i18n="md_msg">توضیحات</span> <span class="text-stone-600/60 font-normal" data-i18n="md_optional">(اختیاری)</span></label>
+            <textarea id="f-msg" name="message" rows="3" class="field resize-none" data-i18n-ph="md_msg_ph" placeholder="تیراژ، مدل یا زمان مورد نظرتان را بنویسید…"></textarea>
+          </div>
+          <button id="form-submit" type="submit" class="btn-primary w-full justify-center py-4 text-base">
+            <span class="submit-label" data-i18n="md_submit">ثبت درخواست</span>
+            <svg class="submit-spin hidden size-5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg>
+          </button>
+          <p class="text-center text-xs text-stone-600/70" data-i18n="md_privacy">اطلاعات شما فقط برای تماس مشاوره استفاده می‌شود.</p>
+        </form>
+
+        <div id="form-success" class="hidden py-8 text-center">
+          <span class="mx-auto grid size-20 place-items-center rounded-full bg-success-500/15 text-success-600 ring-2 ring-success-500/40">
+            <svg viewBox="0 0 24 24" class="size-10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path id="success-check" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </span>
+          <h4 class="mt-6 text-xl font-black text-ink-900" data-i18n="md_ok_t">درخواست شما ثبت شد!</h4>
+          <p class="mt-3 text-sm leading-7 text-stone-600" data-i18n="md_ok_p">تا ۲۴ ساعت آینده با شما تماس می‌گیریم. برای هماهنگی فوری می‌توانید با شماره ۰۲۱-۱۲۳۴۵۶۷۸ تماس بگیرید.</p>
+          <button id="success-close" type="button" class="btn-outline mt-7 mx-auto" data-i18n="md_ok_btn">بستن</button>
+        </div>
+      </div>
+    </div>
+  </div>
+

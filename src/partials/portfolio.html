@@ -1,0 +1,26 @@
+    <!-- ============ PORTFOLIO ============ -->
+    <section id="portfolio" class="py-24 lg:py-32 scroll-mt-24 overflow-hidden">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+          <div class="max-w-md">
+            <p class="eyebrow" data-reveal><span class="eyebrow-line"></span><span data-i18n="pf_eyebrow">نمونه‌کارها</span></p>
+            <h2 class="section-title mt-4" data-reveal data-i18n="pf_title">نگاهی به<br/>تولیدات ما</h2>
+            <p class="mt-5 text-stone-600 leading-8" data-reveal data-i18n="pf_sub">مجموعه‌ای از پروژه‌های اجرا شده برای برندها و سازمان‌های مختلف.</p>
+          </div>
+          <div class="flex items-center gap-3" data-reveal>
+            <span id="gallery-counter" class="text-sm font-bold text-stone-600 tabular-nums me-2">۰۱ / ۰۲</span>
+            <button id="gallery-prev" type="button" class="gallery-btn" aria-label="اسلاید قبلی">
+              <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6l6 6-6 6"/></svg>
+            </button>
+            <button id="gallery-next" type="button" class="gallery-btn gallery-btn-solid" aria-label="اسلاید بعدی">
+              <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="gallery-stage" class="relative" data-reveal>
+          <div id="gallery-grid" class="grid grid-cols-2 lg:grid-cols-12 lg:grid-rows-2 gap-4 lg:h-[560px]"><!-- built by JS --></div>
+        </div>
+      </div>
+    </section>
+

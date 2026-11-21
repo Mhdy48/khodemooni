@@ -1,0 +1,32 @@
+@theme {
+  --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+  --font-latin: "Space Grotesk", "Vazirmatn", ui-sans-serif, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+
+  --color-ink-950: #1c1510;
+  --color-ink-900: #2b2118;
+  --color-ink-800: #403226;
+  --color-ink-700: #594637;
+
+  --color-stone-600: #76614d;
+  --color-stone-500: #8b7660;
+
+  --color-thread-300: #ebd0a1;
+  --color-thread-400: #dfb56d;
+  --color-thread-500: #c99646;
+  --color-thread-600: #8f6125;
+
+  --color-flare-400: #dfa56d;
+  --color-flare-500: #bc773e;
+  --color-flare-600: #985b2c;
+
+  --color-bone-50: #faf7f1;
+  --color-bone-100: #f5f0e7;
+  --color-bone-200: #e9e0d1;
+  --color-bone-300: #d9ccb6;
+
+  --color-success-500: #397256;
+  --color-success-600: #2c5943;
+  --color-danger-500: #b33842;
+  --color-danger-600: #922d36;
+}
