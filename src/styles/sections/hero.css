@@ -2,7 +2,7 @@
 .hero-fabric {
   position: absolute;
   inset: 0;
-  background: url('/images/lapel-detail.jpg') center / cover no-repeat;
+  background: url('/images/lapel-detail-480.webp') center / cover no-repeat;
   opacity: 0.5;
   filter: brightness(0.75) saturate(0.85);
 }
