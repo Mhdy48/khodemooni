@@ -11,8 +11,12 @@
   @apply inline-flex items-center gap-2 rounded-full border border-bone-50/40 px-5 py-2.5 font-bold text-bone-100 transition-all duration-300 hover:bg-bone-50/10 hover:border-bone-50/70 active:scale-95;
 }
 
-.eyebrow { @apply flex items-center gap-3 text-xs font-bold text-thread-600; }
-.eyebrow-line { @apply h-px w-10 bg-thread-500; }
+.eyebrow {
+  @apply flex items-center gap-3 text-xs font-bold text-thread-600;
+}
+.eyebrow-line {
+  @apply h-px w-10 bg-thread-500;
+}
 .section-title {
   @apply font-black text-ink-900;
   font-size: clamp(1.8rem, 3vw, 2.55rem);

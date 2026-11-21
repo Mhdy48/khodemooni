@@ -1,0 +1,164 @@
+#loader {
+  @apply fixed inset-0 z-[100] grid place-items-center overflow-hidden text-bone-50;
+}
+.ld-panels {
+  @apply absolute inset-0 flex;
+}
+.ld-panel {
+  @apply flex-1 border-l border-bone-50/4 bg-ink-950;
+}
+.ld-panel:nth-child(even) {
+  background: color-mix(in srgb, var(--color-ink-950) 80%, var(--color-ink-900));
+}
+.ld-aura {
+  position: absolute;
+  width: min(72vw, 720px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-thread-400) 10%, transparent),
+    transparent 66%
+  );
+  animation: ld-breathe 3s ease-in-out infinite alternate;
+}
+.ld-inner {
+  @apply relative z-2 flex flex-col items-center;
+  animation: ld-arrive 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.ld-emblem {
+  @apply relative grid w-[210px] aspect-square place-items-center;
+}
+.ld-ring {
+  @apply absolute inset-0 size-full;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+.ld-ring circle {
+  fill: none;
+}
+.ld-ring-track {
+  stroke: var(--color-ink-700);
+  stroke-width: 0.7;
+}
+.ld-ring-stitch {
+  stroke: var(--color-thread-300);
+  stroke-opacity: 0.5;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.25 2.25;
+  transform-origin: center;
+  animation: ld-orbit 18s linear infinite;
+}
+.ld-ring-progress {
+  stroke: var(--color-thread-400);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+.ld-monogram {
+  @apply grid place-items-center text-[78px] leading-none font-bold;
+}
+.ld-monogram span {
+  @apply text-thread-300;
+}
+.ld-orbit-dot {
+  position: absolute;
+  inset: 4px;
+  animation: ld-orbit 5s linear infinite;
+}
+.ld-orbit-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-thread-300);
+}
+.ld-wordmark {
+  @apply mt-5 flex gap-[7px] text-base font-bold tracking-normal;
+}
+.ld-wordmark span:last-child {
+  @apply text-thread-300;
+}
+.ld-tagline {
+  margin: 12px 0 0;
+  color: color-mix(in srgb, var(--color-bone-200) 75%, transparent);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+.ld-meta {
+  @apply absolute z-2 inset-x-8 top-7 flex justify-between text-[10px] tracking-normal text-bone-200/70;
+}
+.ld-bottom {
+  @apply absolute z-2 inset-x-8 bottom-[29px] grid grid-cols-[1fr_auto] items-end gap-3;
+}
+.ld-status {
+  @apply text-[10px] text-bone-200/75;
+}
+.ld-percent {
+  @apply text-[26px] leading-none font-medium tabular-nums text-thread-300;
+}
+.ld-percent sup {
+  @apply mr-[3px] align-top text-[11px] text-bone-200;
+}
+.ld-progress {
+  @apply col-span-full h-px overflow-hidden bg-ink-700;
+}
+.ld-progress i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--color-thread-400);
+  transform: scaleX(0);
+  transform-origin: right;
+}
+@keyframes ld-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ld-breathe {
+  to {
+    opacity: 0.55;
+    transform: scale(1.12);
+  }
+}
+@keyframes ld-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 640px) {
+  .ld-emblem {
+    width: 178px;
+  }
+  .ld-wordmark {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+  .ld-meta {
+    top: 22px;
+    right: 22px;
+    left: 22px;
+  }
+  .ld-bottom {
+    right: 22px;
+    bottom: 23px;
+    left: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #loader *,
+  #loader *::after {
+    animation: none !important;
+  }
+}

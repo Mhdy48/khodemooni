@@ -1,11 +1,21 @@
 .service-card {
   @apply relative block h-80 w-full overflow-hidden rounded-[1.6rem] text-right ring-1 ring-ink-900/10 transition-[box-shadow,translate] duration-500 hover:-translate-y-1 hover:shadow-lg;
 }
-.service-img { @apply absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out; }
-.service-card:hover .service-img { transform: scale(1.06); }
-.service-scrim { @apply absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/35 to-ink-950/10; }
-.service-body { @apply absolute inset-x-0 bottom-0 flex flex-col p-6 pb-5; }
+.service-img {
+  @apply absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out;
+}
+.service-card:hover .service-img {
+  transform: scale(1.06);
+}
+.service-scrim {
+  @apply absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/35 to-ink-950/10;
+}
+.service-body {
+  @apply absolute inset-x-0 bottom-0 flex flex-col p-6 pb-5;
+}
 .service-arrow {
   @apply mt-4 grid size-10 place-items-center rounded-full border border-bone-50/40 text-bone-50 transition-all duration-300;
 }
-.service-card:hover .service-arrow { @apply bg-thread-500 text-ink-950 border-thread-500 -translate-x-1; }
+.service-card:hover .service-arrow {
+  @apply bg-thread-500 text-ink-950 border-thread-500 -translate-x-1;
+}

@@ -20,7 +20,9 @@ export function initUi({ gsap, reduced }) {
   }
   window.addEventListener('scroll', onScroll, { passive: true })
   onScroll()
-  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }))
+  toTop.addEventListener('click', () =>
+    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
+  )
 
   // marquee: clone chunk so the loop is seamless on wide screens
   const marquee = document.getElementById('marquee')
@@ -31,7 +33,8 @@ export function initUi({ gsap, reduced }) {
     marquee.appendChild(clone)
   }
   const year = new Intl.DateTimeFormat(locale, { calendar: 'persian', year: 'numeric' })
-    .formatToParts().find((part) => part.type === 'year')
+    .formatToParts()
+    .find((part) => part.type === 'year')
   document.getElementById('year').textContent = year.value
 
   // magnetic buttons (desktop only)
@@ -44,7 +47,10 @@ export function initUi({ gsap, reduced }) {
         xTo((e.clientX - r.left - r.width / 2) * 0.25)
         yTo((e.clientY - r.top - r.height / 2) * 0.35)
       })
-      btn.addEventListener('mouseleave', () => { xTo(0); yTo(0) })
+      btn.addEventListener('mouseleave', () => {
+        xTo(0)
+        yTo(0)
+      })
     })
   }
 }

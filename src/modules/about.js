@@ -13,7 +13,10 @@ export function initAbout({ gsap, reduced, enter }) {
     toggle.setAttribute('aria-expanded', String(expanded))
   }
 
-  toggle.addEventListener('click', () => { expanded = !expanded; sync() })
+  toggle.addEventListener('click', () => {
+    expanded = !expanded
+    sync()
+  })
 
   if (reduced) return
   const card = document.querySelector('.about-card')
@@ -24,11 +27,23 @@ export function initAbout({ gsap, reduced, enter }) {
   const eyebrow = document.querySelector('.about-eyebrow')
 
   const ambient = () => {
-    gsap.to(img, { scale: 1.13, duration: 11, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 2 })
-    gsap.fromTo(img, { yPercent: -3.5 }, {
-      yPercent: 3.5, ease: 'none',
-      scrollTrigger: { trigger: media, start: 'top bottom', end: 'bottom top', scrub: true },
+    gsap.to(img, {
+      scale: 1.13,
+      duration: 11,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut',
+      delay: 2,
     })
+    gsap.fromTo(
+      img,
+      { yPercent: -3.5 },
+      {
+        yPercent: 3.5,
+        ease: 'none',
+        scrollTrigger: { trigger: media, start: 'top bottom', end: 'bottom top', scrub: true },
+      }
+    )
   }
 
   gsap.set(card, { y: 46, opacity: 0, scale: 0.985 })

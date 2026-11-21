@@ -4,7 +4,15 @@
 .faq-icon {
   @apply grid size-8 shrink-0 place-items-center rounded-full border border-ink-900/25 text-ink-900 transition-all duration-300;
 }
-.faq-item.is-open .faq-icon { @apply rotate-45 border-thread-500 bg-thread-500 text-ink-950; }
-.faq-item.is-open .faq-q { @apply text-thread-600; }
-.faq-a { @apply h-0 overflow-hidden; }
-.faq-a p { @apply pb-5 pe-12 text-sm leading-7 text-stone-600; }
+.faq-item.is-open .faq-icon {
+  @apply rotate-45 border-thread-500 bg-thread-500 text-ink-950;
+}
+.faq-item.is-open .faq-q {
+  @apply text-thread-600;
+}
+.faq-a {
+  @apply h-0 overflow-hidden;
+}
+.faq-a p {
+  @apply pb-5 pe-12 text-sm leading-7 text-stone-600;
+}

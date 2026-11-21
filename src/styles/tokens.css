@@ -1,7 +1,5 @@
 @theme {
-  --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
-  --font-latin: "Space Grotesk", "Vazirmatn", ui-sans-serif, sans-serif;
-  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: 'Vazirmatn', ui-sans-serif, system-ui, sans-serif;
 
   --color-ink-950: #1c1510;
   --color-ink-900: #2b2118;

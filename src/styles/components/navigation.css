@@ -1,11 +1,17 @@
-#nav-shell { @apply mx-auto max-w-[88rem] px-3 sm:px-5 lg:px-7 transition-all duration-500 ease-out; }
+#nav-shell {
+  @apply mx-auto max-w-[88rem] px-3 sm:px-5 lg:px-7 transition-all duration-500 ease-out;
+}
 #nav-bar {
   @apply relative flex h-[76px] items-center justify-between gap-3 rounded-2xl px-3 sm:px-5 transition-all duration-500 ease-out;
 }
-#navbar.is-scrolled #nav-shell { @apply pt-3; }
+#navbar.is-scrolled #nav-shell {
+  @apply pt-3;
+}
 #navbar.instant #nav-shell,
 #navbar.instant #nav-bar,
-#navbar.instant #nav-thread { transition: none !important; }
+#navbar.instant #nav-thread {
+  transition: none !important;
+}
 #navbar.is-scrolled #nav-bar {
   @apply h-[60px] rounded-full bg-ink-950/95 px-4 sm:px-6 shadow-[0_8px_24px_-12px_rgba(24,28,29,.25)] ring-1 ring-bone-50/10;
   backdrop-filter: blur(16px);
@@ -15,30 +21,46 @@
   @apply relative px-3 py-2 text-[13px] font-bold text-bone-200/85 transition-colors duration-300 hover:text-bone-50;
 }
 .nav-link::after {
-  content: "";
+  content: '';
   @apply absolute bottom-0.5 right-3 left-3 h-px scale-x-0 origin-right bg-thread-400 transition-transform duration-300;
 }
-.nav-link.is-active { @apply text-thread-400; }
-.nav-link.is-active::after { @apply scale-x-100; }
+.nav-link.is-active {
+  @apply text-thread-400;
+}
+.nav-link.is-active::after {
+  @apply scale-x-100;
+}
 
-#nav-thread { @apply relative mx-7 mt-[7px] h-px opacity-0 transition-opacity duration-500; }
-#navbar.is-scrolled #nav-thread { @apply opacity-100; }
+#nav-thread {
+  @apply relative mx-7 mt-[7px] h-px opacity-0 transition-opacity duration-500;
+}
+#navbar.is-scrolled #nav-thread {
+  @apply opacity-100;
+}
 #nav-thread-fill {
   @apply absolute inset-y-0 right-0 w-0;
-  background-image: repeating-linear-gradient(to left, var(--color-thread-500) 0 6px, transparent 6px 11px);
+  background-image: repeating-linear-gradient(
+    to left,
+    var(--color-thread-500) 0 6px,
+    transparent 6px 11px
+  );
 }
 #nav-needle {
   @apply absolute top-1/2 size-[13px] -translate-y-1/2 translate-x-1/2 text-thread-500;
   right: 0%;
 }
 
-.lang-btn { @apply text-bone-200/85; }
-.lang-btn.is-active { @apply bg-thread-500 text-ink-950; }
+.lang-btn {
+  @apply text-bone-200/85;
+}
+.lang-btn.is-active {
+  @apply bg-thread-500 text-ink-950;
+}
 
 .mobile-link {
   @apply flex items-center justify-between border-b border-bone-50/10 py-3.5 text-lg font-bold text-bone-100 transition-colors hover:text-thread-300;
 }
 .mobile-link::before {
-  content: "";
+  content: '';
   @apply size-1.5 rounded-full bg-thread-400 order-2;
 }

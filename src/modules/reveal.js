@@ -2,15 +2,19 @@ export function initReveal({ gsap, reduced, enter }) {
   if (reduced) return
 
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
-    const animation = gsap.fromTo(el, { y: 38, opacity: 0 }, {
-      paused: true,
-      y: 0,
-      opacity: 1,
-      duration: 0.9,
-      delay: parseFloat(el.dataset.delay || 0),
-      ease: 'power3.out',
-      clearProps: 'transform,opacity',
-    })
+    const animation = gsap.fromTo(
+      el,
+      { y: 38, opacity: 0 },
+      {
+        paused: true,
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        delay: parseFloat(el.dataset.delay || 0),
+        ease: 'power3.out',
+        clearProps: 'transform,opacity',
+      }
+    )
     enter(animation, { trigger: el })
   })
 

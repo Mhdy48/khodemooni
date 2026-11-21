@@ -3,13 +3,30 @@ import { existsSync, readFileSync } from 'node:fs'
 import test from 'node:test'
 
 const versions = [
-  { lang: 'fa', path: '/', file: '../index.html', heading: 'امضای تو،', counter: '۰۱ / ۰۲', close: 'بستن' },
-  { lang: 'ar', path: '/ar/', file: '../ar/index.html', heading: 'توقيعك،', counter: '٠١ / ٠٢', close: 'إغلاق' },
+  {
+    lang: 'fa',
+    path: '/',
+    file: '../index.html',
+    heading: 'امضای تو،',
+    counter: '۰۱ / ۰۲',
+    close: 'بستن',
+  },
+  {
+    lang: 'ar',
+    path: '/ar/',
+    file: '../ar/index.html',
+    heading: 'توقيعك،',
+    counter: '٠١ / ٠٢',
+    close: 'إغلاق',
+  },
 ]
 const read = (file) => readFileSync(new URL(file, import.meta.url), 'utf8')
 const pages = versions.map(({ file }) => read(file))
 
-for (const [{ lang, path, heading, counter, close }, html] of versions.map((version, index) => [version, pages[index]])) {
+for (const [{ lang, path, heading, counter, close }, html] of versions.map((version, index) => [
+  version,
+  pages[index],
+])) {
   test(path + ' is a complete right-to-left page with local copy and navigation', () => {
     assert(html.includes('<html lang="' + lang + '" dir="rtl">'))
     assert.match(html, /<meta name="description" content="[^"]+"/)
@@ -19,9 +36,11 @@ for (const [{ lang, path, heading, counter, close }, html] of versions.map((vers
     assert(html.includes('data-collapse-label="' + close + '"'))
     assert(!html.includes('<!-- include:'))
     assert(html.includes('fetchpriority="high"'))
-    assert(html.includes('<noscript>'))
+    assert.match(html, /id="loader" hidden/)
 
-    const anchors = [...html.matchAll(/<a href="([^"]+)" lang="(fa|ar)" hreflang="\2" data-lang="\2"([^>]*)>/g)]
+    const anchors = [
+      ...html.matchAll(/<a href="([^"]+)" lang="(fa|ar)" hreflang="\2" data-lang="\2"([^>]*)>/g),
+    ]
     assert.equal(anchors.length, 4)
     for (const { lang: code, path: href } of versions) {
       const links = anchors.filter(([, , linkLang]) => linkLang === code)
@@ -38,7 +57,20 @@ test('Both pages expose the same unique section IDs and gallery assets', () => {
   const ids = pages.map((html) => [...html.matchAll(/\sid="([^"]+)"/g)].map(([, id]) => id))
   assert.deepEqual(ids[0], ids[1])
   assert.equal(new Set(ids[0]).size, ids[0].length)
-  for (const id of ['nav-bar', 'hero', 'features', 'about', 'services', 'process', 'portfolio', 'faq', 'cta', 'contact', 'modal', 'lightbox']) {
+  for (const id of [
+    'nav-bar',
+    'hero',
+    'features',
+    'about',
+    'services',
+    'process',
+    'portfolio',
+    'faq',
+    'cta',
+    'contact',
+    'modal',
+    'lightbox',
+  ]) {
     assert(ids[0].includes(id), 'Missing section: ' + id)
   }
 

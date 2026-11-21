@@ -1,15 +1,25 @@
 .gallery-btn {
   @apply grid size-11 place-items-center rounded-full border border-ink-900/35 text-ink-900 transition-all duration-300 hover:bg-ink-900 hover:text-bone-50 active:scale-90 disabled:opacity-40 disabled:pointer-events-none;
 }
-.gallery-btn-solid { @apply border-thread-500 bg-thread-500 text-ink-950 hover:bg-thread-400 hover:border-thread-400 hover:text-ink-950; }
-.gallery-btn-light { @apply border-bone-50/40 text-bone-50 hover:bg-bone-50/10 hover:text-thread-300; }
+.gallery-btn-solid {
+  @apply border-thread-500 bg-thread-500 text-ink-950 hover:bg-thread-400 hover:border-thread-400 hover:text-ink-950;
+}
+.gallery-btn-light {
+  @apply border-bone-50/40 text-bone-50 hover:bg-bone-50/10 hover:text-thread-300;
+}
 .gallery-tile {
   @apply relative block w-full overflow-hidden rounded-2xl ring-1 ring-ink-900/10 cursor-zoom-in transition-shadow duration-300 hover:shadow-lg;
 }
-.gallery-tile img { @apply h-full w-full object-cover transition-transform duration-700 ease-out; }
-.gallery-tile:hover img { transform: scale(1.06); }
+.gallery-tile img {
+  @apply h-full w-full object-cover transition-transform duration-700 ease-out;
+}
+.gallery-tile:hover img {
+  transform: scale(1.06);
+}
 .gallery-tile .tile-cap {
   @apply absolute inset-x-0 bottom-0 flex items-center gap-2 bg-gradient-to-t from-ink-950/90 to-transparent px-4 pb-3 pt-10 text-right text-xs font-bold text-bone-100 opacity-0 transition-opacity duration-300;
 }
 .gallery-tile:hover .tile-cap,
-.gallery-tile:focus-visible .tile-cap { @apply opacity-100; }
+.gallery-tile:focus-visible .tile-cap {
+  @apply opacity-100;
+}

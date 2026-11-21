@@ -1,10 +1,16 @@
 /* ---- about: the atelier job ticket ---- */
-.about-section { padding-block: clamp(72px, 9vw, 120px); }
+.about-section {
+  padding-block: clamp(72px, 9vw, 120px);
+}
 .about-section::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(52% 62% at 50% 42%, color-mix(in srgb, var(--color-thread-500) 9%, transparent), transparent 72%);
+  background: radial-gradient(
+    52% 62% at 50% 42%,
+    color-mix(in srgb, var(--color-thread-500) 9%, transparent),
+    transparent 72%
+  );
   pointer-events: none;
 }
 .about-card {
@@ -14,10 +20,12 @@
   border-radius: 22px;
   background: var(--color-bone-50);
   border: 1px solid color-mix(in srgb, var(--color-ink-900) 10%, transparent);
-  box-shadow: 0 34px 70px -34px rgb(28 21 16 / 0.28), 0 6px 18px -10px rgb(28 21 16 / 0.12);
+  box-shadow:
+    0 34px 70px -34px rgb(28 21 16 / 0.28),
+    0 6px 18px -10px rgb(28 21 16 / 0.12);
 }
 .about-card::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 9px;
   z-index: 3;
@@ -26,13 +34,27 @@
   pointer-events: none;
 }
 @media (min-width: 1024px) {
-  .about-card { grid-template-columns: 1.05fr 0.85fr; }
+  .about-card {
+    grid-template-columns: 1.05fr 0.85fr;
+  }
 }
-.about-copy { position: relative; z-index: 1; padding: clamp(26px, 4vw, 46px); }
+.about-copy {
+  position: relative;
+  z-index: 1;
+  padding: clamp(26px, 4vw, 46px);
+}
 @media (min-width: 1024px) {
-  .about-copy { padding-inline-end: clamp(28px, 3.4vw, 48px); }
+  .about-copy {
+    padding-inline-end: clamp(28px, 3.4vw, 48px);
+  }
 }
-.about-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; }
+.about-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
 .about-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -48,7 +70,7 @@
   letter-spacing: 0;
 }
 .about-eyebrow::before {
-  content: "";
+  content: '';
   flex: 0 0 5px;
   height: 5px;
   border-radius: 50%;
@@ -66,7 +88,9 @@
   transform: rotate(-2.5deg);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.about-stamp:hover { transform: rotate(0deg) scale(1.04); }
+.about-stamp:hover {
+  transform: rotate(0deg) scale(1.04);
+}
 
 .about-title {
   font-weight: 350;
@@ -75,10 +99,27 @@
   letter-spacing: 0;
   color: var(--color-ink-900);
 }
-.about-em { font-weight: 500; color: var(--color-thread-600); }
+.about-em {
+  font-weight: 500;
+  color: var(--color-thread-600);
+}
 
-.about-lead { max-width: 50ch; font-size: 17px; font-weight: 400; line-height: 2.05; color: var(--color-stone-600); text-wrap: pretty; }
-.about-body { max-width: 54ch; font-size: 15.5px; font-weight: 400; line-height: 2.05; color: var(--color-stone-600); text-wrap: pretty; }
+.about-lead {
+  max-width: 50ch;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 2.05;
+  color: var(--color-stone-600);
+  text-wrap: pretty;
+}
+.about-body {
+  max-width: 54ch;
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 2.05;
+  color: var(--color-stone-600);
+  text-wrap: pretty;
+}
 .about-quote {
   border-inline-start: 2px solid var(--color-thread-500);
   padding-inline-start: 1.25rem;
@@ -100,7 +141,7 @@
   transition: color 0.3s;
 }
 .about-toggle-link::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   right: 0;
@@ -111,12 +152,23 @@
   transform-origin: right;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.about-toggle-link:hover { color: var(--color-thread-600); }
+.about-toggle-link:hover {
+  color: var(--color-thread-600);
+}
 .about-toggle-link:hover::after,
-.about-toggle-link[aria-expanded="true"]::after { transform: scaleX(1); }
-.about-toggle-link svg { color: var(--color-thread-600); }
+.about-toggle-link[aria-expanded='true']::after {
+  transform: scaleX(1);
+}
+.about-toggle-link svg {
+  color: var(--color-thread-600);
+}
 
-.about-media { position: relative; min-height: 300px; overflow: hidden; background: var(--color-bone-200); }
+.about-media {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
+  background: var(--color-bone-200);
+}
 @media (min-width: 1024px) {
   .about-media {
     min-height: 480px;

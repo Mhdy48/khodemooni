@@ -1,10 +1,32 @@
-.line-mask { display: block; overflow: hidden; padding-block: 0.14em; margin-block: -0.14em; }
-.line-inner { display: block; will-change: transform; }
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.14em;
+  margin-block: -0.14em;
+}
+.line-inner {
+  display: block;
+  will-change: transform;
+}
 
-#marquee { animation: marquee 30s linear infinite; }
-#marquee:hover { animation-play-state: paused; }
-@keyframes marquee { to { transform: translateX(25%); } }
+#marquee {
+  animation: marquee 30s linear infinite;
+}
+#marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(25%);
+  }
+}
 
-.img-zoom { transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
-figure:hover > .img-zoom { transform: scale(1.05); }
-#to-top.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.img-zoom {
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+figure:hover > .img-zoom {
+  transform: scale(1.05);
+}
+#to-top.is-visible {
+  @apply pointer-events-auto translate-y-0 opacity-100;
+}

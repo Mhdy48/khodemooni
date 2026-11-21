@@ -1,43 +1,8 @@
 /* Self-hosted faces: stable URLs across dev & build so <link rel=preload> always matches. */
 @font-face {
-  font-family: "Vazirmatn";
-  src: url("/fonts/vazirmatn-var.woff2") format("woff2-variations");
+  font-family: 'Vazirmatn';
+  src: url('/fonts/vazirmatn-var.woff2') format('woff2-variations');
   font-weight: 100 900;
   font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Space Grotesk";
-  src: url("/fonts/space-grotesk-400.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Space Grotesk";
-  src: url("/fonts/space-grotesk-500.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Space Grotesk";
-  src: url("/fonts/space-grotesk-700.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Playfair Display";
-  src: url("/fonts/playfair-500i.woff2") format("woff2");
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Playfair Display";
-  src: url("/fonts/playfair-600i.woff2") format("woff2");
-  font-weight: 600;
-  font-style: italic;
   font-display: swap;
 }

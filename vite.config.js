@@ -2,10 +2,7 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 
-const pages = {
-  fa: '/index.html',
-  ar: '/ar/index.html',
-}
+const routes = { fa: '/', ar: '/ar/' }
 
 function redirectArabicDirectory(server) {
   server.middlewares.use((request, response, next) => {
@@ -22,18 +19,18 @@ function localizedPages(origin) {
     throw new Error('SITE_ORIGIN must be an HTTP(S) origin without a path.')
   }
 
-  const routes = { fa: '/', ar: '/ar/', 'x-default': '/' }
+  const alternates = { ...routes, 'x-default': routes.fa }
   return {
     name: 'localized-pages',
     configureServer: redirectArabicDirectory,
     configurePreviewServer: redirectArabicDirectory,
     transformIndexHtml(_html, { path }) {
-      const language = Object.keys(pages).find((key) => pages[key] === path)
-      if (!site || !language) return
+      const route = path.replace(/index\.html$/, '')
+      if (!site || !Object.values(routes).includes(route)) return
       const url = (route) => new URL(route, site).href
       return [
-        { tag: 'link', attrs: { rel: 'canonical', href: url(routes[language]) }, injectTo: 'head' },
-        ...Object.entries(routes).map(([hreflang, route]) => ({
+        { tag: 'link', attrs: { rel: 'canonical', href: url(route) }, injectTo: 'head' },
+        ...Object.entries(alternates).map(([hreflang, route]) => ({
           tag: 'link',
           attrs: { rel: 'alternate', hreflang, href: url(route) },
           injectTo: 'head',
@@ -51,9 +48,12 @@ export default defineConfig(({ command, mode }) => {
     server: { port: 5173, host: true },
     build: {
       rollupOptions: {
-        input: Object.fromEntries(Object.entries(pages).map(([language, path]) => [
-          language, fileURLToPath(new URL('.' + path, import.meta.url)),
-        ])),
+        input: Object.fromEntries(
+          Object.entries(routes).map(([language, route]) => [
+            language,
+            fileURLToPath(new URL('.' + route + 'index.html', import.meta.url)),
+          ])
+        ),
       },
     },
   }

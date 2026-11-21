@@ -23,13 +23,45 @@ try {
     })
     snapshots[width] = await page.evaluate(() => {
       const properties = [
-        'display', 'position', 'width', 'height', 'box-sizing', 'overflow-x', 'overflow-y',
-        'font-family', 'font-size', 'font-weight', 'line-height', 'letter-spacing', 'text-align',
-        'color', 'background-color', 'background-image', 'border-radius', 'border-top',
-        'border-right', 'border-bottom', 'border-left', 'box-shadow', 'padding', 'margin',
-        'gap', 'grid-template-columns', 'grid-template-rows', 'align-items', 'justify-content',
-        'opacity', 'transform', 'clip-path', 'object-fit', 'object-position', 'z-index',
-        'stroke', 'stroke-width', 'stroke-dasharray', 'stroke-dashoffset',
+        'display',
+        'position',
+        'width',
+        'height',
+        'box-sizing',
+        'overflow-x',
+        'overflow-y',
+        'font-family',
+        'font-size',
+        'font-weight',
+        'line-height',
+        'letter-spacing',
+        'text-align',
+        'color',
+        'background-color',
+        'background-image',
+        'border-radius',
+        'border-top',
+        'border-right',
+        'border-bottom',
+        'border-left',
+        'box-shadow',
+        'padding',
+        'margin',
+        'gap',
+        'grid-template-columns',
+        'grid-template-rows',
+        'align-items',
+        'justify-content',
+        'opacity',
+        'transform',
+        'clip-path',
+        'object-fit',
+        'object-position',
+        'z-index',
+        'stroke',
+        'stroke-width',
+        'stroke-dasharray',
+        'stroke-dashoffset',
       ]
       return [...document.querySelectorAll('body *')].map((el) => {
         const style = getComputedStyle(el)
@@ -42,7 +74,10 @@ try {
         }
       })
     })
-    await page.screenshot({ path: `shots/modularization-${capture ? 'before' : 'after'}-${width}.png`, fullPage: true })
+    await page.screenshot({
+      path: `shots/modularization-${capture ? 'before' : 'after'}-${width}.png`,
+      fullPage: true,
+    })
     await page.close()
   }
   assert.deepEqual(errors, [], 'No browser errors')
@@ -54,13 +89,26 @@ try {
     for (const width of Object.keys(baseline)) {
       assert.equal(snapshots[width].length, baseline[width].length, `Element count at ${width}px`)
       snapshots[width].forEach((element, index) => {
-        assert.deepEqual(element, baseline[width][index], `Element ${index} (${element.tag}#${element.id}) at ${width}px`)
+        assert.deepEqual(
+          element,
+          baseline[width][index],
+          `Element ${index} (${element.tag}#${element.id}) at ${width}px`
+        )
       })
     }
     console.log('DOM AND COMPUTED STYLES UNCHANGED at 390, 768 and 1440px')
   } else {
     for (const [width, elements] of Object.entries(snapshots)) {
-      for (const id of ['hero', 'features-bar', 'about', 'services', 'process', 'portfolio', 'faq', 'contact']) {
+      for (const id of [
+        'hero',
+        'features-bar',
+        'about',
+        'services',
+        'process',
+        'portfolio',
+        'faq',
+        'contact',
+      ]) {
         const element = elements.find((el) => el.id === id)
         assert(element, `Missing ${id} at ${width}px`)
         assert.equal(element.styles.opacity, '1', `${id} visible at ${width}px`)

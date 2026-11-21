@@ -1,13 +1,20 @@
 import { URL, sleep, createBrowserCheck, switchLanguage } from './helpers/browser.mjs'
 
 const fails = []
-const ok = (cond, msg) => { if (!cond) fails.push(msg) }
+const ok = (cond, msg) => {
+  if (!cond) fails.push(msg)
+}
 
 const { browser, errors, newPage } = await createBrowserCheck()
 
-const settled = () => !document.querySelector('#loader')
-  && [...document.querySelectorAll('.hero-in')].every((el) => Number(getComputedStyle(el).opacity) > 0.99)
-  && [...document.querySelectorAll('.piece')].every((el) => Number(getComputedStyle(el).opacity) > 0.99)
+const settled = () =>
+  !document.querySelector('#loader') &&
+  [...document.querySelectorAll('.hero-in')].every(
+    (el) => Number(getComputedStyle(el).opacity) > 0.99
+  ) &&
+  [...document.querySelectorAll('.piece')].every(
+    (el) => Number(getComputedStyle(el).opacity) > 0.99
+  )
 
 /* desktop hero */
 const page = await newPage(1440, 900)
@@ -18,15 +25,29 @@ await page.screenshot({ path: 'shots/h1-desktop.png' })
 
 const state = await page.evaluate(() => {
   const txt = (s) => document.querySelector(s)?.textContent.trim()
-  const sizes = [...document.querySelectorAll('#hero p, #hero button, #hero a, #hero .piece-text')]
-    .map((el) => ({ t: el.textContent.trim().slice(0, 24), fs: parseFloat(getComputedStyle(el).fontSize) }))
-  const targets = [...document.querySelectorAll('#hero button, #hero a')].map((el) => Math.round(el.getBoundingClientRect().height))
-  const dash = [...document.querySelectorAll('.cut-dash')].map((el) => Number(getComputedStyle(el).opacity))
-  const solid = [...document.querySelectorAll('.cut-solid')].map((el) => Number(getComputedStyle(el).opacity))
+  const sizes = [
+    ...document.querySelectorAll('#hero p, #hero button, #hero a, #hero .piece-text'),
+  ].map((el) => ({
+    t: el.textContent.trim().slice(0, 24),
+    fs: parseFloat(getComputedStyle(el).fontSize),
+  }))
+  const targets = [...document.querySelectorAll('#hero button, #hero a')].map((el) =>
+    Math.round(el.getBoundingClientRect().height)
+  )
+  const dash = [...document.querySelectorAll('.cut-dash')].map((el) =>
+    Number(getComputedStyle(el).opacity)
+  )
+  const solid = [...document.querySelectorAll('.cut-solid')].map((el) =>
+    Number(getComputedStyle(el).opacity)
+  )
   return {
-    t1: txt('[data-copy="hero_t1"]'), t2: txt('[data-copy="hero_t2"]'),
+    t1: txt('[data-copy="hero_t1"]'),
+    t2: txt('[data-copy="hero_t2"]'),
     accentCut: document.querySelector('.piece-accent')?.classList.contains('is-cut'),
-    sizes, targets, dash, solid,
+    sizes,
+    targets,
+    dash,
+    solid,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     swatchClip: getComputedStyle(document.querySelector('.hero-swatch')).clipPath,
   }
@@ -35,10 +56,22 @@ console.log('desktop state:', JSON.stringify(state, null, 1))
 ok(state.t1 === 'امضای تو،', 'fa t1')
 ok(state.t2.replace(/\s+/g, ' ') === 'در هر دوخت.', 'fa t2')
 ok(state.accentCut, 'accent underline cut')
-ok(state.dash.every((o) => o > 0.99), 'dashed cut lines visible')
-ok(state.solid.every((o) => o < 0.05), 'solid trace faded out')
-ok(state.sizes.every((s) => s.fs >= 16), 'hero text >= 16px')
-ok(state.targets.every((h) => h >= 48), 'hero targets >= 48px')
+ok(
+  state.dash.every((o) => o > 0.99),
+  'dashed cut lines visible'
+)
+ok(
+  state.solid.every((o) => o < 0.05),
+  'solid trace faded out'
+)
+ok(
+  state.sizes.every((s) => s.fs >= 16),
+  'hero text >= 16px'
+)
+ok(
+  state.targets.every((h) => h >= 48),
+  'hero targets >= 48px'
+)
 ok(state.overflow <= 0, 'no horizontal overflow 1440')
 ok(state.swatchClip === 'none', 'swatch clip cleared')
 
@@ -50,7 +83,9 @@ const pieceBox = await page.evaluate(() => {
 await page.mouse.move(pieceBox.x, pieceBox.y)
 await sleep(700)
 const liftY = await page.evaluate(() => {
-  const m = new DOMMatrix(getComputedStyle(document.querySelector('.piece-b .piece-lift')).transform)
+  const m = new DOMMatrix(
+    getComputedStyle(document.querySelector('.piece-b .piece-lift')).transform
+  )
   return m.m42
 })
 ok(liftY < -3, `piece hover lift (y=${liftY})`)
@@ -82,7 +117,9 @@ for (const w of [360, 390, 768, 1024, 1280, 1920]) {
   await p.goto(URL, { waitUntil: 'networkidle0', timeout: 30000 })
   await p.waitForFunction(settled, { timeout: 20000 })
   await sleep(1400)
-  const o = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
+  const o = await p.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+  )
   ok(o <= 0, `overflow at ${w}: ${o}px`)
   if (w === 390) await p.screenshot({ path: 'shots/h4-mobile.png' })
   if (w === 768) await p.screenshot({ path: 'shots/h5-tablet.png' })
@@ -96,13 +133,18 @@ await rm.goto(URL, { waitUntil: 'networkidle0', timeout: 30000 })
 await rm.waitForFunction(() => !document.querySelector('#loader'), { timeout: 20000 })
 const rmState = await rm.evaluate(() => ({
   loader: !!document.querySelector('#loader'),
-  pieces: [...document.querySelectorAll('.piece')].map((el) => Number(getComputedStyle(el).opacity)),
+  pieces: [...document.querySelectorAll('.piece')].map((el) =>
+    Number(getComputedStyle(el).opacity)
+  ),
   accentCut: document.querySelector('.piece-accent')?.classList.contains('is-cut'),
   swatchClip: getComputedStyle(document.querySelector('.hero-swatch')).clipPath,
 }))
 console.log('reduced:', JSON.stringify(rmState))
 ok(!rmState.loader, 'reduced: no loader')
-ok(rmState.pieces.every((o) => o > 0.99), 'reduced: pieces visible')
+ok(
+  rmState.pieces.every((o) => o > 0.99),
+  'reduced: pieces visible'
+)
 ok(rmState.accentCut, 'reduced: underline present')
 ok(rmState.swatchClip === 'none', 'reduced: swatch unclipped')
 await rm.screenshot({ path: 'shots/h7-reduced.png' })
@@ -120,12 +162,17 @@ await rl.waitForFunction(() => !document.querySelector('#loader'), { timeout: 20
 await sleep(400)
 const rlState = await rl.evaluate(() => ({
   y: window.scrollY,
-  pieces: [...document.querySelectorAll('.piece')].map((el) => Number(getComputedStyle(el).opacity)),
+  pieces: [...document.querySelectorAll('.piece')].map((el) =>
+    Number(getComputedStyle(el).opacity)
+  ),
   accentCut: document.querySelector('.piece-accent')?.classList.contains('is-cut'),
 }))
 console.log('reload:', JSON.stringify(rlState))
 ok(rlState.y > 2000, 'reload kept scroll')
-ok(rlState.pieces.every((o) => o > 0.99), 'reload: no hidden re-run')
+ok(
+  rlState.pieces.every((o) => o > 0.99),
+  'reload: no hidden re-run'
+)
 ok(rlState.accentCut, 'reload: underline present')
 await rl.close()
 

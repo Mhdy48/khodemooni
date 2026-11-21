@@ -1,5 +1,9 @@
-.footer-head { @apply text-sm font-extrabold text-thread-400; }
-.footer-link { @apply text-bone-200/80 transition-colors hover:text-thread-300; }
+.footer-head {
+  @apply text-sm font-extrabold text-thread-400;
+}
+.footer-link {
+  @apply text-bone-200/80 transition-colors hover:text-thread-300;
+}
 .social-btn {
   @apply grid size-10 place-items-center rounded-full text-bone-200/80 ring-1 ring-bone-50/20 transition-all duration-300 hover:text-bone-50 hover:ring-bone-50/60 hover:-translate-y-0.5;
 }
