@@ -1,4 +1,4 @@
-import { URL, sleep, createBrowserCheck } from './helpers/browser.mjs'
+import { URL, sleep, createBrowserCheck, switchLanguage } from './helpers/browser.mjs'
 
 const fails = []
 const ok = (cond, msg) => { if (!cond) fails.push(msg) }
@@ -113,7 +113,7 @@ const open = await page.evaluate(() => ({
   aria: document.getElementById('about-toggle').getAttribute('aria-expanded'),
   rows: getComputedStyle(document.getElementById('about-more')).gridTemplateRows,
   quoteH: document.querySelector('.about-quote').getBoundingClientRect().height,
-  label: document.querySelector('#about-toggle [data-i18n]').textContent,
+  label: document.querySelector('#about-toggle [data-copy]').textContent,
   icon: getComputedStyle(document.getElementById('about-toggle-icon')).transform,
 }))
 console.log('open:', JSON.stringify(open))
@@ -125,21 +125,22 @@ await sleep(800)
 const closed = await page.evaluate(() => ({
   aria: document.getElementById('about-toggle').getAttribute('aria-expanded'),
   wrapperH: document.querySelector('#about-more > div').getBoundingClientRect().height,
-  label: document.querySelector('#about-toggle [data-i18n]').textContent,
+  label: document.querySelector('#about-toggle [data-copy]').textContent,
 }))
 ok(closed.aria === 'false' && closed.wrapperH === 0, 'collapse works')
 ok(closed.label === 'بیشتر درباره ما', 'fa expand label restored')
 
 /* arabic */
-await page.click('.lang-btn[data-lang="ar"]')
-await sleep(900)
+await switchLanguage(page, 'ar')
+await gotoAbout(page)
+await page.waitForFunction(() => document.querySelector('.counter').textContent === '١٢')
 const ar = await page.evaluate(() => ({
-  t1: document.querySelector('[data-i18n="about_t1"]').textContent.trim(),
-  t2: document.querySelector('[data-i18n="about_t2"]').textContent.trim(),
-  quote: document.querySelector('[data-i18n="about_quote"]').textContent.trim(),
+  t1: document.querySelector('[data-copy="about_t1"]').textContent.trim(),
+  t2: document.querySelector('[data-copy="about_t2"]').textContent.trim(),
+  quote: document.querySelector('[data-copy="about_quote"]').textContent.trim(),
   counters: [...document.querySelectorAll('.about-stats .counter')].map((el) => el.textContent),
   labels: [...document.querySelectorAll('.stat-label')].map((el) => el.textContent.trim()),
-  eyebrow: document.querySelector('.about-eyebrow [data-i18n]').textContent.trim(),
+  eyebrow: document.querySelector('.about-eyebrow [data-copy]').textContent.trim(),
   overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
 }))
 console.log('ar:', JSON.stringify(ar))
@@ -147,12 +148,11 @@ ok(ar.t1 === 'كل سنتيمتر،', 'ar t1')
 ok(ar.t2 === 'قرارٌ مدروس.', 'ar t2')
 ok(ar.quote === 'الثوب الجيد لا يُرى، بل يُحَس.', 'ar quote')
 ok(ar.overflow <= 0, 'no overflow ar')
-ok(ar.counters.join(',') === '۱۲,۲۴۰,۱۸۰,۹۸', 'language switching preserves final counters')
+ok(ar.counters.join(',') === '١٢,٢٤٠,١٨٠,٩٨', 'Arabic counters use Arabic digits')
 ok(ar.labels.every((label, index) => label !== ['سال تجربه', 'پروژه سازمانی', 'برند همکار', 'رضایت مشتری'][index]), 'all statistic labels switch to Arabic')
 ok(ar.eyebrow === 'عن خيّاط خودموني', 'eyebrow switches to Arabic')
 await shot(page, 'shots/a3-arabic.png')
-await page.click('.lang-btn[data-lang="fa"]')
-await sleep(600)
+await switchLanguage(page, 'fa')
 await page.close()
 
 /* mobile + tablet */

@@ -1,21 +1,19 @@
-import { t } from './i18n.js'
-
 export function initAbout({ gsap, reduced, enter }) {
   const toggle = document.getElementById('about-toggle')
   const more = document.getElementById('about-more')
   const icon = document.getElementById('about-toggle-icon')
-  const label = toggle.querySelector('[data-i18n]')
+  const label = toggle.querySelector('[data-copy="about_more"]')
+  const showMore = label.textContent
   let expanded = false
 
   function sync() {
-    label.textContent = expanded ? t('about_less') : t('about_more')
+    label.textContent = expanded ? toggle.dataset.collapseLabel : showMore
     more.style.gridTemplateRows = expanded ? '1fr' : '0fr'
     icon.style.transform = expanded ? 'rotate(45deg)' : ''
     toggle.setAttribute('aria-expanded', String(expanded))
   }
 
   toggle.addEventListener('click', () => { expanded = !expanded; sync() })
-  document.addEventListener('langchange', sync)
 
   if (reduced) return
   const card = document.querySelector('.about-card')

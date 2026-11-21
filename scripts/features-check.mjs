@@ -1,4 +1,4 @@
-import { URL, sleep, createBrowserCheck } from './helpers/browser.mjs'
+import { URL, sleep, createBrowserCheck, switchLanguage } from './helpers/browser.mjs'
 
 const fails = []
 const ok = (cond, msg) => { if (!cond) fails.push(msg) }
@@ -90,19 +90,18 @@ const kb = await page.evaluate(() => {
 ok(kb.note === 1 && kb.outline === 'solid', 'keyboard focus reveals note + visible ring')
 await page.evaluate(() => document.activeElement.blur())
 
-/* arabic swap */
-await page.click('.lang-btn[data-lang="ar"]')
-await sleep(500)
+/* arabic page */
+await switchLanguage(page, 'ar')
+await gotoFeatures(page)
 const ar = await page.evaluate(() => ({
-  f1: document.querySelector('[data-i18n="f1"]').textContent,
-  fn1: document.querySelector('[data-i18n="fn1"]').textContent,
+  f1: document.querySelector('[data-copy="f1"]').textContent,
+  fn1: document.querySelector('[data-copy="fn1"]').textContent,
   overflow: document.documentElement.scrollWidth - window.innerWidth,
 }))
 ok(ar.f1 === 'إنتاج بالجملة وللمؤسسات' && ar.fn1 === 'من طلبٍ إلى خط إنتاج', 'arabic rail texts')
 ok(ar.overflow <= 0, 'arabic no overflow')
 await shot(page, 'shots/f4-arabic.png')
-await page.click('.lang-btn[data-lang="fa"]')
-await sleep(400)
+await switchLanguage(page, 'fa')
 
 /* mid-page reload: instant settle, no replay */
 await page.evaluate(() => window.scrollTo(0, document.getElementById('features').getBoundingClientRect().top + window.scrollY + 150))

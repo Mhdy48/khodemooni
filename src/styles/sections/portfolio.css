@@ -11,4 +11,5 @@
 .gallery-tile .tile-cap {
   @apply absolute inset-x-0 bottom-0 flex items-center gap-2 bg-gradient-to-t from-ink-950/90 to-transparent px-4 pb-3 pt-10 text-right text-xs font-bold text-bone-100 opacity-0 transition-opacity duration-300;
 }
-.gallery-tile:hover .tile-cap { @apply opacity-100; }
+.gallery-tile:hover .tile-cap,
+.gallery-tile:focus-visible .tile-cap { @apply opacity-100; }

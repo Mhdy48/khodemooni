@@ -1,3 +1,5 @@
+import { locale } from './i18n.js'
+
 export function initUi({ gsap, reduced }) {
   // scroll progress = golden stitch seam under the floating header
   const fill = document.getElementById('nav-thread-fill')
@@ -25,21 +27,12 @@ export function initUi({ gsap, reduced }) {
   const chunk = marquee.querySelector('.marquee-chunk')
   for (let i = 0; i < 3; i++) {
     const clone = chunk.cloneNode(true)
-    clone.querySelectorAll('[data-i18n]').forEach((el) => el.removeAttribute('data-i18n'))
+    clone.setAttribute('aria-hidden', 'true')
     marquee.appendChild(clone)
   }
-  // keep clones in sync on language change
-  document.addEventListener('langchange', () => {
-    const originals = [...chunk.querySelectorAll('[data-i18n]')]
-    marquee.querySelectorAll('.marquee-chunk:not(:first-child)').forEach((c) => {
-      const spans = [...c.querySelectorAll('span:not(.mq-dot)')]
-      spans.forEach((s, i) => { if (originals[i]) s.innerHTML = originals[i].innerHTML })
-    })
-  })
-
-  // persian year
-  document.getElementById('year').textContent = new Date()
-    .toLocaleDateString('fa-IR-u-ca-persian', { year: 'numeric' })
+  const year = new Intl.DateTimeFormat(locale, { calendar: 'persian', year: 'numeric' })
+    .formatToParts().find((part) => part.type === 'year')
+  document.getElementById('year').textContent = year.value
 
   // magnetic buttons (desktop only)
   if (!reduced && matchMedia('(pointer: fine)').matches) {

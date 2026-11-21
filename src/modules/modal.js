@@ -1,4 +1,4 @@
-import { t } from './i18n.js'
+import { messages } from './i18n.js'
 
 const normalizeDigits = (s) =>
   s.replace(/[۰-۹]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
@@ -84,8 +84,8 @@ export function initModal({ gsap, reduced }) {
     const name = nameInput.value.trim()
     const phone = normalizeDigits(phoneInput.value).replace(/[\s-]/g, '')
     let ok = true
-    if (name.length < 3) { setError(nameInput, t('err_name')); ok = false }
-    if (!/^09\d{9}$/.test(phone) && !/^0[1-8]\d{9}$/.test(phone)) { setError(phoneInput, t('err_phone')); ok = false }
+    if (name.length < 3) { setError(nameInput, messages.err_name); ok = false }
+    if (!/^09\d{9}$/.test(phone) && !/^0[1-8]\d{9}$/.test(phone)) { setError(phoneInput, messages.err_phone); ok = false }
     if (!ok) return
 
     submitBtn.disabled = true

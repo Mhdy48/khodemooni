@@ -1,8 +1,4 @@
-import { getLang } from './i18n.js'
-import { slides } from '../data/gallery.js'
-
-const flat = slides.flat()
-const faNum = (n) => String(n).padStart(2, '0').replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d])
+import { twoDigits } from './i18n.js'
 
 export function initGallery({ gsap, reduced }) {
   const grid = document.getElementById('gallery-grid')
@@ -10,34 +6,17 @@ export function initGallery({ gsap, reduced }) {
   const counter = document.getElementById('gallery-counter')
   const prevBtn = document.getElementById('gallery-prev')
   const nextBtn = document.getElementById('gallery-next')
+  const more = document.getElementById('gallery-more')
+  const slides = [[...grid.children], [...more.content.children]]
+  const tiles = slides.flat()
 
   let index = 0
   let animating = false
   let autoTimer = null
 
-  const cap = (item) => (getLang() === 'ar' ? item.ar : item.fa)
-
-  function tile(item, globalIndex) {
-    const btn = document.createElement('button')
-    btn.type = 'button'
-    btn.className = `gallery-tile ${item.cls}`
-    btn.setAttribute('aria-label', cap(item))
-    btn.innerHTML = `
-      <img src="/images/${item.src}.jpg" alt="${cap(item)}" loading="lazy" />
-      <span class="tile-cap">
-        <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
-        ${cap(item)}
-      </span>`
-    btn.addEventListener('click', () => openLightbox(globalIndex))
-    return btn
-  }
-
   function render(slideIdx) {
-    grid.innerHTML = ''
-    slides[slideIdx].forEach((item, i) => {
-      grid.appendChild(tile(item, slideIdx * 4 + i))
-    })
-    counter.textContent = `${faNum(slideIdx + 1)} / ${faNum(slides.length)}`
+    grid.replaceChildren(...slides[slideIdx])
+    counter.textContent = `${twoDigits.format(slideIdx + 1)} / ${twoDigits.format(slides.length)}`
   }
 
   function go(next, dir = 1) {
@@ -65,6 +44,8 @@ export function initGallery({ gsap, reduced }) {
 
   nextBtn.addEventListener('click', () => { next(); restartAuto() })
   prevBtn.addEventListener('click', () => { prev(); restartAuto() })
+  nextBtn.disabled = false
+  prevBtn.disabled = false
   stage.addEventListener('mouseenter', () => clearInterval(autoTimer))
   stage.addEventListener('mouseleave', restartAuto)
 
@@ -77,8 +58,6 @@ export function initGallery({ gsap, reduced }) {
     if (Math.abs(dx) > 55) { dx < 0 ? next() : prev(); restartAuto() }
   }, { passive: true })
 
-  document.addEventListener('langchange', () => render(index))
-
   /* ---------- lightbox ---------- */
   const lightbox = document.getElementById('lightbox')
   const lbImg = document.getElementById('lightbox-img')
@@ -88,11 +67,12 @@ export function initGallery({ gsap, reduced }) {
   let lightboxOpen = false
 
   function renderLightbox() {
-    const item = flat[lbIndex]
-    lbImg.src = `/images/${item.src}.jpg`
-    lbImg.alt = cap(item)
-    lbCap.textContent = cap(item)
-    lbCount.textContent = `${faNum(lbIndex + 1)} / ${faNum(flat.length)}`
+    const tile = tiles[lbIndex]
+    const caption = tile.getAttribute('aria-label')
+    lbImg.src = tile.href
+    lbImg.alt = caption
+    lbCap.textContent = caption
+    lbCount.textContent = `${twoDigits.format(lbIndex + 1)} / ${twoDigits.format(tiles.length)}`
   }
 
   function openLightbox(globalIndex) {
@@ -119,7 +99,7 @@ export function initGallery({ gsap, reduced }) {
   }
 
   function lbStep(dir) {
-    lbIndex = (lbIndex + dir + flat.length) % flat.length
+    lbIndex = (lbIndex + dir + tiles.length) % tiles.length
     if (reduced) { renderLightbox(); return }
     gsap.to(lbImg, {
       opacity: 0, x: -18 * dir, duration: 0.16, ease: 'power1.in',
@@ -140,8 +120,12 @@ export function initGallery({ gsap, reduced }) {
     if (e.key === 'ArrowLeft') lbStep(1)
     if (e.key === 'ArrowRight') lbStep(-1)
   })
-  document.addEventListener('langchange', () => { if (lightboxOpen) renderLightbox() })
-
-  render(0)
+  tiles.forEach((tile, tileIndex) => {
+    tile.addEventListener('click', (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return
+      event.preventDefault()
+      openLightbox(tileIndex)
+    })
+  })
   restartAuto()
 }

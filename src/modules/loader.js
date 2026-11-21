@@ -1,3 +1,5 @@
+import { twoDigits } from './i18n.js'
+
 export function initLoader({ gsap, reduced }) {
   const loader = document.getElementById('loader')
   const fire = () => {
@@ -15,9 +17,8 @@ export function initLoader({ gsap, reduced }) {
   const ring = loader.querySelector('#loader-ring')
   const bar = loader.querySelector('#loader-bar')
   const state = { value: 0 }
-  const faDigits = (n) => String(n).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d])
   const render = () => {
-    percent.textContent = faDigits(Math.round(state.value)).padStart(2, '۰')
+    percent.textContent = twoDigits.format(state.value)
     ring.style.strokeDashoffset = 100 - state.value
     bar.style.transform = `scaleX(${state.value / 100})`
   }

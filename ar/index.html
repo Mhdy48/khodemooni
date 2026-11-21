@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="خيّاط خودموني في طهران. نصمّم ونخيط البدلات حسب الطلب، وننتج الأزياء الرسمية بكميات تناسب العلامات التجارية والمؤسسات." />
+  <title>خيّاط خودموني | خياطة حسب الطلب وإنتاج البدلات</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preload" href="/fonts/vazirmatn-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <style>
+    /* critical: a complete first paint before the stylesheet or bundle arrives */
+    html { background: var(--color-ink-950); }
+    body { margin: 0; background: var(--color-bone-100); }
+    #loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; color: var(--color-bone-50); background: transparent; }
+    #loader .ld-panels { position: absolute; inset: 0; display: flex; }
+    #loader .ld-panel { flex: 1; background: var(--color-ink-950); border-left: 1px solid color-mix(in srgb, var(--color-bone-50) 4%, transparent); }
+    #loader .ld-panel:nth-child(even) { background: color-mix(in srgb, var(--color-ink-950) 80%, var(--color-ink-900)); }
+    #loader .ld-aura { position: absolute; width: min(72vw,720px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle,color-mix(in srgb, var(--color-thread-400) 10%, transparent),transparent 66%); animation: ld-breathe 3s ease-in-out infinite alternate; }
+    #loader .ld-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; animation: ld-arrive .9s cubic-bezier(.16,1,.3,1) backwards; }
+    #loader .ld-emblem { position: relative; display: grid; width: 210px; aspect-ratio: 1; place-items: center; }
+    #loader .ld-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+    #loader .ld-ring circle { fill: none; }
+    #loader .ld-ring-track { stroke: var(--color-ink-700); stroke-width: .7; }
+    #loader .ld-ring-stitch { stroke: var(--color-thread-300); stroke-opacity: .5; stroke-width: 1.2; stroke-linecap: round; stroke-dasharray: .25 2.25; transform-origin: center; animation: ld-orbit 18s linear infinite; }
+    #loader .ld-ring-progress { stroke: var(--color-thread-400); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+    #loader .ld-monogram { display: grid; place-items: center; font-family: 'Vazirmatn',sans-serif; font-size: 78px; font-weight: 700; line-height: 1; }
+    #loader .ld-monogram span { color: var(--color-thread-300); }
+    #loader .ld-orbit-dot { position: absolute; inset: 4px; animation: ld-orbit 5s linear infinite; }
+    #loader .ld-orbit-dot::after { content: ''; position: absolute; top: 50%; right: -2px; width: 5px; height: 5px; border-radius: 50%; background: var(--color-thread-300); }
+    #loader .ld-wordmark { display: flex; gap: 7px; margin-top: 20px; font-family: 'Vazirmatn',sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0; }
+    #loader .ld-wordmark span:last-child { color: var(--color-thread-300); }
+    #loader .ld-fa { margin: 12px 0 0; color: color-mix(in srgb, var(--color-bone-200) 75%, transparent); font-family: 'Vazirmatn',sans-serif; font-size: 11px; letter-spacing: 0; }
+    #loader .ld-meta { position: absolute; z-index: 2; top: 28px; right: 32px; left: 32px; display: flex; justify-content: space-between; color: color-mix(in srgb, var(--color-bone-200) 70%, transparent); font-family: 'Vazirmatn',sans-serif; font-size: 10px; letter-spacing: 0; }
+    #loader .ld-bottom { position: absolute; z-index: 2; right: 32px; bottom: 29px; left: 32px; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 12px; }
+    #loader .ld-status { color: color-mix(in srgb, var(--color-bone-200) 75%, transparent); font-family: 'Vazirmatn',sans-serif; font-size: 10px; }
+    #loader .ld-percent { color: var(--color-thread-300); font-family: 'Vazirmatn',sans-serif; font-size: 26px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1; }
+    #loader .ld-percent sup { margin-right: 3px; color: var(--color-bone-200); font-size: 11px; vertical-align: top; }
+    #loader .ld-progress { grid-column: 1 / -1; height: 1px; overflow: hidden; background: var(--color-ink-700); }
+    #loader .ld-progress i { display: block; width: 100%; height: 100%; background: var(--color-thread-400); transform: scaleX(0); transform-origin: right; }
+    @keyframes ld-orbit { to { transform: rotate(360deg); } }
+    @keyframes ld-breathe { to { opacity: .55; transform: scale(1.12); } }
+    @keyframes ld-arrive { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: none; } }
+    @media (max-width: 640px) { #loader .ld-emblem { width: 178px; } #loader .ld-wordmark { font-size: 14px; letter-spacing: 0; } #loader .ld-meta { top: 22px; right: 22px; left: 22px; } #loader .ld-bottom { right: 22px; bottom: 23px; left: 22px; } }
+    @media (prefers-reduced-motion: reduce) { #loader *, #loader *::after { animation: none !important; } }
+  </style>
+  <noscript><style>#loader { display: none; }</style></noscript>
+</head>
+<body class="bg-bone-100 font-sans text-ink-900 antialiased overflow-x-hidden">
+
+  <!-- atelier curtain -->
+  <div id="loader" role="status" aria-label="جارٍ تجهيز الموقع">
+    <div class="ld-panels" aria-hidden="true">
+      <i class="ld-panel"></i><i class="ld-panel"></i><i class="ld-panel"></i><i class="ld-panel"></i><i class="ld-panel"></i>
+    </div>
+    <div class="ld-aura" aria-hidden="true"></div>
+    <div class="ld-meta" aria-hidden="true"><span>المشغل / تأسس عام ١٣٩٢</span><span>طهران، إيران</span></div>
+    <div class="ld-inner">
+      <div class="ld-emblem" aria-hidden="true">
+        <svg class="ld-ring" viewBox="0 0 210 210">
+          <circle class="ld-ring-track" cx="105" cy="105" r="96" />
+          <circle class="ld-ring-stitch" cx="105" cy="105" r="88" pathLength="100" />
+          <circle id="loader-ring" class="ld-ring-progress" cx="105" cy="105" r="96" pathLength="100" />
+        </svg>
+        <div class="ld-orbit-dot"></div>
+        <div class="ld-monogram"><span>خ</span></div>
+      </div>
+      <div class="ld-wordmark"><span>خيّاط</span><span>خودموني</span></div>
+      <p class="ld-fa">التفاصيل تصنع الفرق في الخياطة</p>
+    </div>
+    <div class="ld-bottom">
+      <span class="ld-status">جارٍ تجهيز الموقع</span>
+      <span class="ld-percent"><span id="loader-percent">٠٠</span><sup>٪</sup></span>
+      <div class="ld-progress" aria-hidden="true"><i id="loader-bar"></i></div>
+    </div>
+  </div>
+  <!-- film grain -->
+  <div class="grain fixed inset-0 z-[70] pointer-events-none" aria-hidden="true"></div>
+
+  <!-- ============ NAV ============ -->
+  <header id="navbar" class="fixed inset-x-0 top-0 z-[60]">
+    <div id="nav-shell">
+      <div id="nav-bar">
+        <a href="#home" class="nav-anchor flex items-center gap-2.5 shrink-0" aria-label="خيّاط خودموني">
+          <span class="grid size-10 place-items-center rounded-full bg-thread-500/15 text-thread-400 ring-1 ring-thread-500/40">
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 20c7-1.5 10-5 11.5-10.5L19 3"/><path d="M17.6 5.4l1.2 1.2"/><circle cx="18.4" cy="4.2" r="1.4"/><path d="M4 20c3.5.5 6-.5 7-2.5"/></svg>
+          </span>
+          <span class="leading-tight">
+            <span class="block text-lg font-extrabold text-bone-50">خيّاط خودموني</span>
+            <span class="block text-[10px] font-medium text-thread-400/90">أتيلييه خياطة خاصة</span>
+          </span>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-1" aria-label="التنقّل الرئيسي">
+          <a href="#home" class="nav-link nav-anchor is-active">الرئيسية</a>
+          <a href="#about" class="nav-link nav-anchor">من نحن</a>
+          <a href="#services" class="nav-link nav-anchor">خدماتنا</a>
+          <a href="#process" class="nav-link nav-anchor">مراحل الإنتاج</a>
+          <a href="#portfolio" class="nav-link nav-anchor">أعمالنا</a>
+          <a href="#faq" class="nav-link nav-anchor">الأسئلة الشائعة</a>
+          <a href="#contact" class="nav-link nav-anchor">اتصل بنا</a>
+        </nav>
+
+        <div class="flex items-center gap-2.5">
+          <div class="lang-switch flex items-center rounded-full border border-bone-50/25 p-0.5 text-xs font-bold" role="group" aria-label="اللغة">
+            <a href="/" lang="fa" hreflang="fa" data-lang="fa" class="lang-btn rounded-full px-3 py-1.5 transition-colors">فارسی</a>
+            <a href="/ar/" lang="ar" hreflang="ar" data-lang="ar" aria-current="page" class="lang-btn is-active rounded-full px-3 py-1.5 transition-colors hidden sm:inline-block">العربية</a>
+          </div>
+          <button type="button" class="open-modal btn-primary hidden lg:inline-flex !px-5 !py-2.5 text-xs">طلب استشارة</button>
+          <button id="menu-open" type="button" class="lg:hidden grid size-10 place-items-center rounded-full text-bone-50 ring-1 ring-bone-50/25 hover:bg-bone-50/10 transition" aria-label="فتح القائمة">
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h10M4 17h16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="nav-thread" aria-hidden="true">
+        <div id="nav-thread-fill"></div>
+        <svg id="nav-needle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20c7-1.5 10-5 11.5-10.5L19 3"/><circle cx="18.4" cy="4.2" r="1.6"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- mobile menu -->
+  <div id="mobile-menu" class="fixed inset-0 z-[75] hidden" role="dialog" aria-modal="true" aria-label="قائمة التنقّل">
+    <div id="mobile-menu-backdrop" class="absolute inset-0 bg-ink-950/80 backdrop-blur-sm"></div>
+    <div id="mobile-menu-panel" class="absolute inset-x-3 top-3 rounded-3xl bg-ink-900 ring-1 ring-thread-500/25 p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-6">
+        <span class="text-lg font-extrabold text-bone-50">خيّاط خودموني</span>
+        <button id="menu-close" type="button" class="grid size-10 place-items-center rounded-full text-bone-50 ring-1 ring-bone-50/25 hover:bg-bone-50/10 transition" aria-label="إغلاق القائمة">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <nav class="flex flex-col" aria-label="التنقّل على الهاتف">
+        <a href="#home" class="mobile-link nav-anchor">الرئيسية</a>
+        <a href="#about" class="mobile-link nav-anchor">من نحن</a>
+        <a href="#services" class="mobile-link nav-anchor">خدماتنا</a>
+        <a href="#process" class="mobile-link nav-anchor">مراحل الإنتاج</a>
+        <a href="#portfolio" class="mobile-link nav-anchor">أعمالنا</a>
+        <a href="#faq" class="mobile-link nav-anchor">الأسئلة الشائعة</a>
+        <a href="#contact" class="mobile-link nav-anchor">اتصل بنا</a>
+      </nav>
+      <div class="mt-6 flex items-center justify-between gap-3">
+        <div class="lang-switch flex items-center rounded-full border border-bone-50/25 p-0.5 text-xs font-bold" role="group" aria-label="اللغة">
+          <a href="/" lang="fa" hreflang="fa" data-lang="fa" class="lang-btn rounded-full px-3 py-1.5 transition-colors">فارسی</a>
+          <a href="/ar/" lang="ar" hreflang="ar" data-lang="ar" aria-current="page" class="lang-btn is-active rounded-full px-3 py-1.5 transition-colors">العربية</a>
+        </div>
+        <button type="button" class="open-modal btn-primary text-sm">طلب استشارة</button>
+      </div>
+    </div>
+  </div>
+  <main id="home">
+    <!-- ============ HERO ============ -->
+    <section id="hero" class="hero-table relative min-h-[100svh] overflow-hidden bg-ink-950 flex items-center">
+      <div class="hero-fabric" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-scrim" aria-hidden="true"></div>
+
+      <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full pt-32 pb-28">
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <h1 class="hero-pieces">
+              <span class="piece piece-a" data-rot="-2.2">
+                <span class="piece-lift">
+                  <svg class="piece-cut" aria-hidden="true">
+                    <rect class="cut-solid" x="1.1%" y="2.4%" width="97.8%" height="95.2%" rx="6" pathLength="1" fill="none"/>
+                    <rect class="cut-dash" x="1.1%" y="2.4%" width="97.8%" height="95.2%" rx="6" fill="none" stroke-dasharray="7 6"/>
+                  </svg>
+                  <span class="piece-text" data-copy="hero_t1">توقيعك،</span>
+                </span>
+              </span>
+              <span class="piece piece-b" data-rot="1.7">
+                <span class="piece-lift">
+                  <svg class="piece-cut" aria-hidden="true">
+                    <rect class="cut-solid" x="1.1%" y="2.4%" width="97.8%" height="95.2%" rx="6" pathLength="1" fill="none"/>
+                    <rect class="cut-dash" x="1.1%" y="2.4%" width="97.8%" height="95.2%" rx="6" fill="none" stroke-dasharray="7 6"/>
+                  </svg>
+                  <svg class="piece-grain" viewBox="0 0 24 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 8v104M12 8l-5 7M12 8l5 7M12 112l-5-7M12 112l5-7M4 60h16"/>
+                  </svg>
+                  <span class="piece-text" data-copy="hero_t2">في كل <span class="piece-accent">غرزة.</span></span>
+                </span>
+              </span>
+            </h1>
+            <p class="hero-in hero-sub mt-8 text-bone-200/90">باترون يُرسم لك وحدك؛ وخياطة لن تجدها في أي مكان آخر.</p>
+            <div class="hero-in hero-actions mt-9 flex flex-wrap items-center gap-4">
+              <button type="button" class="open-modal btn-primary magnetic">
+                <span>اطلب خياطتك الخاصة</span>
+                <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
+              </button>
+              <a href="#portfolio" class="btn-ghost">شاهد أعمالنا</a>
+            </div>
+          </div>
+
+          <figure class="hero-swatch">
+            <img src="/images/suit-portrait.jpg" alt="بدلة بنية مفصّلة حسب الطلب من قماش ذي نسيج بارز" id="hero-img" width="1024" height="1536" fetchpriority="high" />
+            <figcaption class="sr-only">نموذج من أعمال الخياطة حسب الطلب</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="hero-tape" aria-hidden="true"></div>
+    </section>
+    <!-- ============ FEATURES BAR ============ -->
+    <section id="features" class="relative z-20 -mt-16 scroll-mt-28">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div id="features-bar" class="feat-rail">
+          <div class="feat-scroll">
+            <div class="feat-track">
+              <svg class="feat-thread" aria-hidden="true">
+                <line class="feat-thread-solid" x1="0" y1="2" x2="100%" y2="2" pathLength="1"/>
+                <line class="feat-thread-dash" x1="0" y1="2" x2="100%" y2="2"/>
+              </svg>
+              <span class="feat-shuttle" aria-hidden="true"></span>
+              <ol class="feat-stations">
+                <li class="feat-station" tabindex="0">
+                  <span class="feat-node">
+                    <svg class="feat-icon fi-factory" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" pathLength="1" d="M3 21V9l6 4V9l6 4V4h6v17H3z"/><path class="fi-win w1" d="M17 8h1"/><path class="fi-win w2" d="M17 12h1"/><path class="fi-win w3" d="M7 17h2"/><path class="fi-win w4" d="M12 17h2"/></svg>
+                  </span>
+                  <span class="feat-label"><span class="line-mask"><span class="line-inner" data-copy="f1">إنتاج بالجملة وللمؤسسات</span></span></span>
+                  <span class="feat-note" data-copy="fn1">من طلبٍ إلى خط إنتاج</span>
+                </li>
+                <li class="feat-station" tabindex="0">
+                  <span class="feat-node">
+                    <svg class="feat-icon fi-shirt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" pathLength="1" d="M9 3l3 2 3-2 4 4-2.5 3V21h-9V10L5 7l4-4z"/><path class="draw" pathLength="1" d="M12 5v6"/></svg>
+                  </span>
+                  <span class="feat-label"><span class="line-mask"><span class="line-inner">تصميم حصري</span></span></span>
+                  <span class="feat-note">باترونٌ بقوامك أنت</span>
+                </li>
+                <li class="feat-station" tabindex="0">
+                  <span class="feat-node">
+                    <svg class="feat-icon fi-scissors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle class="draw" pathLength="1" cx="6" cy="6" r="2.6"/><circle class="draw" pathLength="1" cx="6" cy="18" r="2.6"/><path class="draw fi-blade-a" pathLength="1" d="M8.2 7.6L20 19"/><path class="draw fi-blade-b" pathLength="1" d="M8.2 16.4L20 5"/></svg>
+                  </span>
+                  <span class="feat-label"><span class="line-mask"><span class="line-inner">معدات إنتاج حديثة</span></span></span>
+                  <span class="feat-note">قصّ وخياطة بآلات حديثة</span>
+                </li>
+                <li class="feat-station" tabindex="0">
+                  <span class="feat-node">
+                    <svg class="feat-icon fi-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw fi-l1" pathLength="1" d="M12 3l9 5-9 5-9-5 9-5z"/><path class="draw fi-l2" pathLength="1" d="M3 13l9 5 9-5"/><path class="draw fi-l3" pathLength="1" d="M3 17l9 5 9-5"/></svg>
+                  </span>
+                  <span class="feat-label"><span class="line-mask"><span class="line-inner">تشكيلة أقمشة متنوعة</span></span></span>
+                  <span class="feat-note">أنسجة وألوان تُختار باليد</span>
+                </li>
+                <li class="feat-station" tabindex="0">
+                  <span class="feat-node">
+                    <svg class="feat-icon fi-seal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" pathLength="1" d="M12 3l2.2 2.2 3.1-.4.4 3.1L20 10l-1.4 2.8 1.4 2.8-2.3 2.1-.4 3.1-3.1-.4L12 22l-2.2-1.6-3.1.4-.4-3.1L4 15.6l1.4-2.8L4 10l2.3-2.1.4-3.1 3.1.4L12 3z"/><path class="draw" pathLength="1" d="M9 12l2 2 4-4.5"/></svg>
+                  </span>
+                  <span class="feat-label"><span class="line-mask"><span class="line-inner">الجودة في التفاصيل</span></span></span>
+                  <span class="feat-note">سبع محطات لضبط الجودة</span>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="about-section relative scroll-mt-24 overflow-hidden">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="about-card">
+          <div class="about-copy">
+            <div class="about-head">
+              <p class="about-eyebrow">
+                <span data-copy="about_eyebrow">عن خيّاط خودموني</span>
+              </p>
+              <span class="about-stamp">ملف الأتيلييه • ١٣٩٢</span>
+            </div>
+            <h2 class="about-title mt-5">
+              <span class="line-mask"><span class="line-inner" data-copy="about_t1">كل سنتيمتر،</span></span>
+              <span class="line-mask"><span class="line-inner" data-copy="about_t2"><span class="about-em">قرارٌ</span> مدروس.</span></span>
+            </h2>
+            <p class="about-lead mt-5">من طلبٍ شخصي واحد إلى خط إنتاج علامة كاملة؛ نرسم الباترون من الصفر، ونختار القماش باليد، ونقيس كل سنتيمترٍ بهوسٍ دقيق.</p>
+            <div id="about-more" class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out">
+              <div class="overflow-hidden">
+                <p class="about-body pt-4">ورشتنا مجهزة بماكينات خياطة صناعية ومكابس بخارية؛ وكل طلب يمر بسبع محطات لمراقبة الجودة قبل التسليم. نوفر الأقمشة من أعرق المنسوجات المحلية والمستوردة، ونحفظ باترون كل عميل باسمه؛ ليكون الطلب التالي مطابقًا تمامًا.</p>
+                <blockquote class="about-quote mt-5" data-copy="about_quote">الثوب الجيد لا يُرى، بل يُحَس.</blockquote>
+              </div>
+            </div>
+            <button id="about-toggle" data-collapse-label="إغلاق" type="button" class="about-toggle-link mt-6" aria-expanded="false" aria-controls="about-more">
+              <span data-copy="about_more">المزيد عنا</span>
+              <svg id="about-toggle-icon" viewBox="0 0 24 24" class="size-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+
+          <div class="about-media">
+            <img src="/images/about-mannequin.jpg" alt="مانيكان خياطة يرتدي سترة مقلمة مع شريط قياس" id="about-img" class="about-photo" loading="lazy" width="1024" height="1536" />
+            <span class="about-tag">باترون يدوي، خياطة صناعية</span>
+          </div>
+
+          <dl class="about-stats">
+            <div class="stat">
+              <dt class="stat-label">عامًا من الخبرة</dt>
+              <dd class="stat-num">
+                <span class="stat-reading" aria-hidden="true"><span class="stat-value" data-width="٣٣"><span class="counter" data-count="12">١٢</span></span><span class="stat-unit">+</span></span>
+                <span class="sr-only">١٢+</span>
+              </dd>
+            </div>
+            <div class="stat">
+              <dt class="stat-label">مشروعًا مؤسسيًا</dt>
+              <dd class="stat-num">
+                <span class="stat-reading" aria-hidden="true"><span class="stat-value" data-width="٣٣٣"><span class="counter" data-count="240">٢٤٠</span></span><span class="stat-unit">+</span></span>
+                <span class="sr-only">٢٤٠+</span>
+              </dd>
+            </div>
+            <div class="stat">
+              <dt class="stat-label">علامة تجارية شريكة</dt>
+              <dd class="stat-num">
+                <span class="stat-reading" aria-hidden="true"><span class="stat-value" data-width="٣٣٣"><span class="counter" data-count="180">١٨٠</span></span><span class="stat-unit">+</span></span>
+                <span class="sr-only">١٨٠+</span>
+              </dd>
+            </div>
+            <div class="stat">
+              <dt class="stat-label">رضا العملاء</dt>
+              <dd class="stat-num">
+                <span class="stat-reading" aria-hidden="true"><span class="stat-value" data-width="٣٣"><span class="counter" data-count="98">٩٨</span></span><span class="stat-unit">٪</span></span>
+                <span class="sr-only">٩٨٪</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+    <!-- ============ MARQUEE ============ -->
+    <div class="relative bg-ink-950 py-5 overflow-hidden border-y border-thread-500/25" aria-hidden="true">
+      <div id="marquee" class="flex w-max items-center gap-10 whitespace-nowrap will-change-transform">
+        <!-- duplicated by JS -->
+        <div class="marquee-chunk flex items-center gap-10 text-bone-200/85 text-sm font-bold">
+          <span>بدلات المناسبات</span><span class="mq-dot"></span>
+          <span>الزي المؤسسي</span><span class="mq-dot"></span>
+          <span>الصدريات والمعاطف</span><span class="mq-dot"></span>
+          <span>باترون حصري</span><span class="mq-dot"></span>
+          <span>خياطة صناعية بكميات كبيرة</span><span class="mq-dot"></span>
+          <span>أقمشة تركية وإيطالية</span><span class="mq-dot"></span>
+        </div>
+      </div>
+    </div>
+    <!-- ============ SERVICES ============ -->
+    <section id="services" class="py-24 lg:py-32 scroll-mt-24">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-12 gap-8 items-end mb-14">
+          <div class="lg:col-span-7">
+            <p class="eyebrow" data-reveal><span class="eyebrow-line"></span><span>خدماتنا</span></p>
+            <h2 class="section-title mt-4" data-reveal>حلول احترافية<br/>للعلامات التجارية والمؤسسات</h2>
+          </div>
+          <p class="lg:col-span-5 text-stone-600 leading-8 lg:text-left" data-reveal>من التصميم وصناعة الباترون إلى الإنتاج الضخم؛ بأعلى معايير الجودة والتسليم في الوقت المحدد، نقف إلى جانب علامتك التجارية.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <button type="button" class="service-card open-modal" data-service="design" data-reveal data-delay="0">
+            <img src="/images/chalk.jpg" alt="طبشور خياطة على قماش مربّع النقشة" class="service-img" loading="lazy" />
+            <span class="service-scrim"></span>
+            <span class="absolute top-4 right-4 rounded-full bg-bone-50/10 backdrop-blur px-3 py-1 text-[10px] font-bold text-thread-300 ring-1 ring-thread-500/40">٠١ • تصميم</span>
+            <span class="service-body">
+              <span class="block text-xl font-extrabold text-bone-50">تصميم وباترون حصري</span>
+              <span class="mt-2 block text-sm text-bone-200/80 leading-6">موديل حصري لعلامتك، من الفكرة إلى الباترون الصناعي الدقيق.</span>
+              <span class="service-arrow"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg></span>
+            </span>
+          </button>
+          <button type="button" class="service-card open-modal" data-service="fabric" data-reveal data-delay="0.12">
+            <img src="/images/fabric-rolls.jpg" alt="لفائف أقمشة للبدلات" class="service-img" loading="lazy" />
+            <span class="service-scrim"></span>
+            <span class="absolute top-4 right-4 rounded-full bg-bone-50/10 backdrop-blur px-3 py-1 text-[10px] font-bold text-thread-300 ring-1 ring-thread-500/40">٠٢ • أقمشة</span>
+            <span class="service-body">
+              <span class="block text-xl font-extrabold text-bone-50">اختيار وتوريد الأقمشة</span>
+              <span class="mt-2 block text-sm text-bone-200/80 leading-6">مئات تصاميم الصوف والهیرينغبون والمربعات من مصادر موثوقة.</span>
+              <span class="service-arrow"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg></span>
+            </span>
+          </button>
+          <button type="button" class="service-card open-modal sm:col-span-2 lg:col-span-1" data-service="bulk" data-reveal data-delay="0.24">
+            <img src="/images/buttons-macro.jpg" alt="أزرار قرنية على كمّ سترة" class="service-img" loading="lazy" />
+            <span class="service-scrim"></span>
+            <span class="absolute top-4 right-4 rounded-full bg-bone-50/10 backdrop-blur px-3 py-1 text-[10px] font-bold text-thread-300 ring-1 ring-thread-500/40">٠٣ • إنتاج</span>
+            <span class="service-body">
+              <span class="block text-xl font-extrabold text-bone-50">إنتاج مؤسسي بكميات كبيرة</span>
+              <span class="mt-2 block text-sm text-bone-200/80 leading-6">خط إنتاج صناعي مع مراقبة جودة من سبع مراحل.</span>
+              <span class="service-arrow"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- ============ PROCESS ============ -->
+    <section id="process" class="relative py-24 lg:py-32 bg-bone-50 scroll-mt-24 overflow-hidden">
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-thread-500/60 to-transparent" aria-hidden="true"></div>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-4">
+          <p class="eyebrow" data-reveal><span class="eyebrow-line"></span><span>مراحل الإنتاج</span></p>
+          <h2 class="section-title mt-4" data-reveal>مسار بدلة<br/>عالية الجودة</h2>
+          <p class="mt-6 text-stone-600 leading-8" data-reveal>مزيج من الدقة والخبرة والتقنية لصناعة قطعة تدوم؛ كل طلب يمر بأربع محطات واضحة.</p>
+          <button type="button" class="open-modal btn-primary magnetic mt-8" data-reveal>ابدأ طلبك</button>
+        </div>
+        <div class="lg:col-span-8 relative">
+          <div id="process-line" class="hidden sm:block absolute top-[46%] inset-x-6 border-t-2 border-dashed border-thread-500/50 origin-right" aria-hidden="true"></div>
+          <ol class="grid grid-cols-2 sm:grid-cols-4 gap-x-5 gap-y-10 relative">
+            <li class="process-step" data-reveal data-delay="0">
+              <div class="arch-wrap">
+                <span class="step-badge">٠١</span>
+                <img src="/images/fabric-rolls.jpg" alt="الاستشارة واختيار القماش" class="arch-img" loading="lazy" />
+              </div>
+              <h3 class="step-title">الاستشارة واختيار القماش</h3>
+            </li>
+            <li class="process-step" data-reveal data-delay="0.12">
+              <div class="arch-wrap">
+                <span class="step-badge">٠٢</span>
+                <img src="/images/pattern-cutting.jpg" alt="التصميم وإعداد الباترون" class="arch-img" loading="lazy" />
+              </div>
+              <h3 class="step-title">التصميم والباترون</h3>
+            </li>
+            <li class="process-step" data-reveal data-delay="0.24">
+              <div class="arch-wrap">
+                <span class="step-badge">٠٣</span>
+                <img src="/images/sewing-machine.jpg" alt="القص والخياطة" class="arch-img" loading="lazy" />
+              </div>
+              <h3 class="step-title">القص والخياطة</h3>
+            </li>
+            <li class="process-step" data-reveal data-delay="0.36">
+              <div class="arch-wrap">
+                <span class="step-badge">٠٤</span>
+                <img src="/images/lapel-detail.jpg" alt="مراقبة الجودة والتسليم" class="arch-img" loading="lazy" />
+              </div>
+              <h3 class="step-title">مراقبة الجودة والتسليم</h3>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+    <!-- ============ PORTFOLIO ============ -->
+    <section id="portfolio" class="py-24 lg:py-32 scroll-mt-24 overflow-hidden">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+          <div class="max-w-md">
+            <p class="eyebrow" data-reveal><span class="eyebrow-line"></span><span>أعمالنا</span></p>
+            <h2 class="section-title mt-4" data-reveal>نظرة على<br/>إنتاجاتنا</h2>
+            <p class="mt-5 text-stone-600 leading-8" data-reveal>مجموعة من المشاريع المنفذة لعلامات تجارية ومؤسسات مختلفة.</p>
+          </div>
+          <div class="flex items-center gap-3" data-reveal>
+            <span id="gallery-counter" class="text-sm font-bold text-stone-600 tabular-nums me-2">٠١ / ٠٢</span>
+            <button id="gallery-prev" type="button" disabled class="gallery-btn" aria-label="مجموعة الصور السابقة">
+              <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6l6 6-6 6"/></svg>
+            </button>
+            <button id="gallery-next" type="button" disabled class="gallery-btn gallery-btn-solid" aria-label="مجموعة الصور التالية">
+              <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="gallery-stage" class="relative" data-reveal>
+          <div id="gallery-grid" class="grid grid-cols-2 lg:grid-cols-12 lg:grid-rows-2 gap-4 lg:h-[560px]">
+            <a href="/images/lapel-detail.jpg" class="gallery-tile h-44 sm:h-56 lg:h-auto lg:col-span-4 lg:col-start-1 lg:row-start-1" aria-label="ياقة مخيطة يدويًا">
+              <img src="/images/lapel-detail.jpg" alt="ياقة مخيطة يدويًا" loading="lazy" />
+              <span class="tile-cap">
+                <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                ياقة مخيطة يدويًا
+              </span>
+            </a>
+            <a href="/images/lining-detail.jpg" class="gallery-tile h-44 sm:h-56 lg:h-auto lg:col-span-4 lg:col-start-1 lg:row-start-2" aria-label="بطانة حريرية مزخرفة">
+              <img src="/images/lining-detail.jpg" alt="بطانة حريرية مزخرفة" loading="lazy" />
+              <span class="tile-cap">
+                <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                بطانة حريرية مزخرفة
+              </span>
+            </a>
+            <a href="/images/suit-portrait.jpg" class="gallery-tile col-span-2 h-80 sm:h-96 lg:h-auto lg:col-span-4 lg:col-start-5 lg:row-span-2 lg:row-start-1" aria-label="بدلة احتفالية مزدوجة الصدر">
+              <img src="/images/suit-portrait.jpg" alt="بدلة احتفالية مزدوجة الصدر" loading="lazy" />
+              <span class="tile-cap">
+                <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                بدلة احتفالية مزدوجة الصدر
+              </span>
+            </a>
+            <a href="/images/buttons-macro.jpg" class="gallery-tile col-span-2 h-64 sm:h-72 lg:h-auto lg:col-span-4 lg:col-start-9 lg:row-span-2 lg:row-start-1" aria-label="أزرار قرن وخياطة الكم">
+              <img src="/images/buttons-macro.jpg" alt="أزرار قرن وخياطة الكم" loading="lazy" />
+              <span class="tile-cap">
+                <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                أزرار قرن وخياطة الكم
+              </span>
+            </a>
+          </div>
+          <template id="gallery-more">
+            <a href="/images/chalk.jpg" class="gallery-tile h-44 sm:h-56 lg:h-auto lg:col-span-4 lg:col-start-1 lg:row-start-1" aria-label="تخطيط الباترون الحصري">
+              <img src="/images/chalk.jpg" alt="تخطيط الباترون الحصري" loading="lazy" />
+              <span class="tile-cap">
+                <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                تخطيط الباترون الحصري
+              </span>
+            </a>
+            <a href="/images/sewing-machine.jpg" class="gallery-tile h-44 sm:h-56 lg:h-auto lg:col-span-4 lg:col-start-1 lg:row-start-2" aria-label="خياطة صناعية دقيقة">
+              <img src="/images/sewing-machine.jpg" alt="خياطة صناعية دقيقة" loading="lazy" />
+              <span class="tile-cap">
+                <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                خياطة صناعية دقيقة
+              </span>
+            </a>
+            <a href="/images/about-mannequin.jpg" class="gallery-tile col-span-2 h-80 sm:h-96 lg:h-auto lg:col-span-4 lg:col-start-5 lg:row-span-2 lg:row-start-1" aria-label="مشروع الزي المؤسسي">
+              <img src="/images/about-mannequin.jpg" alt="مشروع الزي المؤسسي" loading="lazy" />
+              <span class="tile-cap">
+                <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                مشروع الزي المؤسسي
+              </span>
+            </a>
+            <a href="/images/pattern-cutting.jpg" class="gallery-tile col-span-2 h-64 sm:h-72 lg:h-auto lg:col-span-4 lg:col-start-9 lg:row-span-2 lg:row-start-1" aria-label="قص دقيق بالمقص الذهبي">
+              <img src="/images/pattern-cutting.jpg" alt="قص دقيق بالمقص الذهبي" loading="lazy" />
+              <span class="tile-cap">
+                <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+                قص دقيق بالمقص الذهبي
+              </span>
+            </a>
+          </template>
+        </div>
+      </div>
+    </section>
+    <!-- ============ FAQ ============ -->
+    <section id="faq" class="py-24 lg:py-32 bg-bone-50 scroll-mt-24 relative overflow-hidden">
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-thread-500/60 to-transparent" aria-hidden="true"></div>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-4">
+          <p class="eyebrow" data-reveal><span class="eyebrow-line"></span><span>الأسئلة الشائعة</span></p>
+          <h2 class="section-title mt-4" data-reveal>إجابات عن أكثر أسئلة شركائنا شيوعًا</h2>
+          <p class="mt-5 text-stone-600 leading-8" data-reveal>لم تجد إجابة سؤالك؟ تواصل معنا مباشرة.</p>
+          <a href="tel:02112345678" class="btn-outline mt-7" data-reveal>
+            <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+            <span class="tabular-nums" dir="ltr">٠٢١ - ١٢٣٤ ٥٦٧٨</span>
+          </a>
+        </div>
+        <div class="lg:col-span-5" data-reveal>
+          <div id="faq-list" class="divide-y divide-bone-300">
+            <div class="faq-item">
+              <button type="button" class="faq-q" aria-expanded="false">
+                <span>ما الحد الأدنى لكمية الطلب؟</span>
+                <span class="faq-icon"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+              </button>
+              <div class="faq-a"><p>للطلبات المؤسسية الحد الأدنى ٢٠ بدلة؛ لكننا نقبل أيضًا الطلبات الشخصية والخياطة الفردية بالجودة نفسها.</p></div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-q" aria-expanded="false">
+                <span>هل يمكن تصميم موديل حصري؟</span>
+                <span class="faq-icon"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+              </button>
+              <div class="faq-a"><p>نعم؛ فريق التصميم لدينا يطور موديل علامتك الحصري من الرسم الأولي إلى الباترون الصناعي النهائي، ويُحفظ الباترون باسم علامتك.</p></div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-q" aria-expanded="false">
+                <span>كم تستغرق مدة تجهيز الطلب؟</span>
+                <span class="faq-icon"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+              </button>
+              <div class="faq-a"><p>حسب الكمية والموديل، بين ١٠ و٣٠ يوم عمل. يُعلن الجدول الزمني الدقيق كتابيًا بعد اعتماد العينة الأولية.</p></div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-q" aria-expanded="false">
+                <span>هل يمكن معاينة العينة الأولية واعتمادها؟</span>
+                <span class="faq-icon"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+              </button>
+              <div class="faq-a"><p>نعم؛ قبل الإنتاج الضخم تُخاط عينة أولية بالقماش الأصلي وتُرسل للاعتماد النهائي. يبدأ الإنتاج فقط بعد موافقتك الكتابية.</p></div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-q" aria-expanded="false">
+                <span>هل يوجد شحن إلى المحافظات؟</span>
+                <span class="faq-icon"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+              </button>
+              <div class="faq-a"><p>نعم؛ نشحن إلى جميع أنحاء البلاد بتغليف خاص للملابس مع تأمين الشحنة. وفي طهران يمكن التسليم حضوريًا في الورشة.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-3 hidden lg:block" data-reveal>
+          <figure class="relative h-full min-h-[420px] rounded-[1.8rem] overflow-hidden ring-1 ring-ink-900/10 shadow-xl">
+            <img src="/images/scissors-thread.jpg" alt="مقص ذهبي وبكرة خيط على القماش" class="absolute inset-0 h-full w-full object-cover img-zoom" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-transparent to-transparent"></div>
+            <figcaption class="absolute bottom-5 right-5 left-5 text-bone-100 text-sm font-bold">كل غرزة عهد.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+    <!-- ============ CTA ============ -->
+    <section id="cta" class="relative overflow-hidden bg-ink-950">
+      <img src="/images/scissors-thread.jpg" alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover opacity-25" loading="lazy" />
+      <div class="absolute inset-0 bg-gradient-to-l from-ink-950 via-ink-950/80 to-ink-950/40"></div>
+      <div class="absolute inset-x-0 top-0 border-t-2 border-dashed border-thread-500/40"></div>
+      <div class="absolute inset-x-0 bottom-0 border-b-2 border-dashed border-thread-500/40"></div>
+      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-24 flex flex-wrap items-center justify-between gap-8">
+        <div class="max-w-xl">
+          <h2 class="text-3xl sm:text-4xl lg:text-[2.7rem] font-black leading-snug text-bone-50" data-reveal>مشروعك القادم<br/>نخيطه <span class="text-thread-400">معًا</span></h2>
+          <p class="mt-4 text-bone-200/80 leading-8" data-reveal>للاستشارة والاستفسار عن الأسعار وتسجيل طلب التعاون، تواصل معنا.</p>
+        </div>
+        <div class="flex flex-col items-start gap-4" data-reveal>
+          <button type="button" class="open-modal btn-primary magnetic text-base px-8 py-4">
+            <span>طلب تعاون</span>
+            <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
+          </button>
+          <a href="tel:02112345678" class="text-bone-200/70 hover:text-thread-400 transition-colors text-sm tabular-nums" dir="ltr">٠٢١ - ١٢٣٤ ٥٦٧٨</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer id="contact" class="bg-ink-950 text-bone-200 scroll-mt-24 border-t border-thread-500/20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="grid size-11 place-items-center rounded-full bg-thread-500/15 text-thread-400 ring-1 ring-thread-500/40">
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 20c7-1.5 10-5 11.5-10.5L19 3"/><circle cx="18.4" cy="4.2" r="1.4"/><path d="M4 20c3.5.5 6-.5 7-2.5"/></svg>
+          </span>
+          <span class="leading-tight">
+            <span class="block text-lg font-extrabold text-bone-50">خيّاط خودموني</span>
+            <span class="block text-[10px] font-medium text-thread-400/90">أتيلييه خياطة خاصة</span>
+          </span>
+        </div>
+        <p class="mt-5 text-sm leading-7 text-bone-200/65">فن الخياطة التقليدية بقدرة إنتاج صناعية؛ شريك العلامات التجارية والمؤسسات في الملابس الرسمية منذ ١٣٩٢.</p>
+        <div class="mt-6 flex items-center gap-3">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="إنستغرام"><svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="لينكدإن"><svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V17M8 7.5v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg></a>
+          <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="تلغرام"><svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4L3 11l6 2.5L11.5 20l3-4.5L20 19l1-15z"/><path d="M9 13.5l8-7"/></svg></a>
+          <a href="https://wa.me/982112345678" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="واتساب"><svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9 8.5c0 4 2.5 6.5 6 6.5l.5-2-2-1-1 1c-1-.5-1.5-1-2-2l1-1-1-2-1.5.5z"/></svg></a>
+        </div>
+      </div>
+      <nav aria-label="روابط سريعة">
+        <h3 class="footer-head">روابط سريعة</h3>
+        <ul class="mt-5 space-y-3 text-sm">
+          <li><a href="#home" class="footer-link nav-anchor">الرئيسية</a></li>
+          <li><a href="#about" class="footer-link nav-anchor">من نحن</a></li>
+          <li><a href="#services" class="footer-link nav-anchor">خدماتنا</a></li>
+          <li><a href="#portfolio" class="footer-link nav-anchor">أعمالنا</a></li>
+          <li><a href="#faq" class="footer-link nav-anchor">الأسئلة الشائعة</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h3 class="footer-head">معلومات الاتصال</h3>
+        <ul class="mt-5 space-y-4 text-sm">
+          <li class="flex items-center gap-3">
+            <svg viewBox="0 0 24 24" class="size-4.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+            <a href="tel:02112345678" class="footer-link tabular-nums" dir="ltr">٠٢١ - ١٢٣٤ ٥٦٧٨</a>
+          </li>
+          <li class="flex items-center gap-3">
+            <svg viewBox="0 0 24 24" class="size-4.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>
+            <a href="mailto:info@khayyatkhodemooni.ir" class="footer-link">راسل الأتيلييه عبر البريد</a>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg viewBox="0 0 24 24" class="size-4.5 shrink-0 text-thread-400 mt-0.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span class="leading-7 text-bone-200/75">طهران، مدينة شاد آباد الصناعية، قطعة ١٢</span>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-head">ساعات العمل</h3>
+        <ul class="mt-5 space-y-3 text-sm text-bone-200/75">
+          <li class="flex items-center justify-between gap-4"><span>السبت إلى الأربعاء</span><span class="tabular-nums text-thread-300">٩ إلى ١٨</span></li>
+          <li class="flex items-center justify-between gap-4"><span>الخميس</span><span class="tabular-nums text-thread-300">٩ إلى ١٣</span></li>
+          <li class="flex items-center justify-between gap-4"><span>الجمعة</span><span class="text-flare-400">مغلق</span></li>
+        </ul>
+        <button type="button" class="open-modal btn-outline-light mt-7 text-sm">حجز موعد استشارة</button>
+      </div>
+    </div>
+    <div class="border-t border-bone-50/10">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-bone-200/50">
+        <span>© <span id="year">١٤٠٥</span> <span>خيّاط خودموني — جميع الحقوق محفوظة.</span></span>
+        <span class="flex items-center gap-1.5">مخيط بخيط ذهبي في طهران</span>
+      </div>
+    </div>
+  </footer>
+  <!-- back to top -->
+  <button id="to-top" type="button" class="fixed bottom-6 left-6 z-[65] grid size-12 place-items-center rounded-full bg-thread-500 text-ink-950 shadow-[0_8px_20px_-10px_rgba(28,21,16,.25)] opacity-0 translate-y-6 pointer-events-none transition-all duration-300 hover:bg-thread-400" aria-label="العودة إلى أعلى الصفحة">
+    <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m-6 6l6-6 6 6"/></svg>
+  </button>
+  <!-- ============ CONSULT MODAL ============ -->
+  <div id="modal" class="fixed inset-0 z-[85] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal-backdrop" class="absolute inset-0 bg-ink-950/75 backdrop-blur-sm"></div>
+    <div id="modal-panel" class="relative w-full max-w-lg rounded-3xl bg-bone-50 shadow-2xl ring-1 ring-thread-500/30 overflow-hidden">
+      <div class="h-1.5 bg-gradient-to-l from-thread-600 via-thread-400 to-flare-500"></div>
+      <div class="p-7 sm:p-9 max-h-[82vh] overflow-y-auto modal-scroll">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 id="modal-title" class="text-2xl font-black text-ink-900">طلب استشارة مجانية</h3>
+            <p class="mt-2 text-sm text-stone-600 leading-7">املأ النموذج؛ سيتصل بك خبراؤنا خلال ٢٤ ساعة.</p>
+          </div>
+          <button id="modal-close" type="button" class="grid size-10 shrink-0 place-items-center rounded-full text-ink-900 ring-1 ring-ink-900/15 hover:bg-ink-900/5 transition" aria-label="إغلاق">
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+
+        <form id="consult-form" class="mt-7 space-y-5" novalidate>
+          <div>
+            <label for="f-name" class="field-label">الاسم الكامل</label>
+            <input id="f-name" name="name" type="text" class="field" autocomplete="name" placeholder="مثال: أحمد علي" />
+            <p class="field-error" data-error-for="f-name"></p>
+          </div>
+          <div>
+            <label for="f-phone" class="field-label">رقم الهاتف</label>
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" class="field tabular-nums" autocomplete="tel" dir="ltr" placeholder="0912 345 6789" />
+            <p class="field-error" data-error-for="f-phone"></p>
+          </div>
+          <div>
+            <label for="f-service" class="field-label">نوع الخدمة</label>
+            <select id="f-service" name="service" class="field">
+              <option value="design">تصميم وباترون حصري</option>
+              <option value="fabric">اختيار وتوريد الأقمشة</option>
+              <option value="bulk">إنتاج مؤسسي بكميات كبيرة</option>
+              <option value="personal">طلب شخصي / خياطة فردية</option>
+            </select>
+          </div>
+          <div>
+            <label for="f-msg" class="field-label"><span>التفاصيل</span> <span class="text-stone-600/60 font-normal">(اختياري)</span></label>
+            <textarea id="f-msg" name="message" rows="3" class="field resize-none" placeholder="اكتب الكمية أو الموديل أو الوقت المطلوب…"></textarea>
+          </div>
+          <button id="form-submit" type="submit" class="btn-primary w-full justify-center py-4 text-base">
+            <span class="submit-label">إرسال الطلب</span>
+            <svg class="submit-spin hidden size-5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg>
+          </button>
+          <p class="text-center text-xs text-stone-600/70">تُستخدم بياناتك فقط للتواصل الاستشاري.</p>
+        </form>
+
+        <div id="form-success" class="hidden py-8 text-center">
+          <span class="mx-auto grid size-20 place-items-center rounded-full bg-success-500/15 text-success-600 ring-2 ring-success-500/40">
+            <svg viewBox="0 0 24 24" class="size-10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path id="success-check" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </span>
+          <h4 class="mt-6 text-xl font-black text-ink-900">تم تسجيل طلبك!</h4>
+          <p class="mt-3 text-sm leading-7 text-stone-600">سنتصل بك خلال ٢٤ ساعة. للتنسيق الفوري يمكنك الاتصال بالرقم <bdi dir="ltr">٠٢١-١٢٣٤٥٦٧٨</bdi>.</p>
+          <button id="success-close" type="button" class="btn-outline mt-7 mx-auto">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============ LIGHTBOX ============ -->
+  <div id="lightbox" class="fixed inset-0 z-[90] hidden items-center justify-center p-4 sm:p-10" role="dialog" aria-modal="true" aria-label="عرض الصورة">
+    <div id="lightbox-backdrop" class="absolute inset-0 bg-ink-950/95 backdrop-blur-sm"></div>
+    <button id="lightbox-close" type="button" class="absolute top-5 left-5 z-10 grid size-11 place-items-center rounded-full text-bone-50 ring-1 ring-bone-50/30 hover:bg-bone-50/10 transition" aria-label="إغلاق">
+      <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <button id="lightbox-prev" type="button" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 gallery-btn gallery-btn-light" aria-label="الصورة السابقة">
+      <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6l6 6-6 6"/></svg>
+    </button>
+    <button id="lightbox-next" type="button" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 gallery-btn gallery-btn-light" aria-label="الصورة التالية">
+      <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
+    </button>
+    <figure class="relative z-[5] max-w-4xl w-full text-center">
+      <img id="lightbox-img" src="" alt="" class="mx-auto max-h-[74vh] w-auto rounded-2xl ring-1 ring-thread-500/30 shadow-2xl object-contain" />
+      <figcaption class="mt-5 flex items-center justify-center gap-4">
+        <span id="lightbox-caption" class="text-bone-100 font-bold"></span>
+        <span id="lightbox-counter" class="text-xs text-thread-400 tabular-nums"></span>
+      </figcaption>
+    </figure>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

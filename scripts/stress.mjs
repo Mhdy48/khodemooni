@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer-core'
+import { URL, switchLanguage } from './helpers/browser.mjs'
 
 const browser = await puppeteer.launch({
   executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
@@ -10,7 +11,7 @@ await page.setViewport({ width: 1440, height: 900 })
 const errors = []
 page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()) })
 page.on('pageerror', (e) => errors.push(e.message))
-await page.goto('http://localhost:5173/', { waitUntil: 'networkidle0' })
+await page.goto(URL, { waitUntil: 'networkidle0' })
 await new Promise((r) => setTimeout(r, 2000))
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -56,11 +57,10 @@ const bodyOverflow = await page.evaluate(() => document.body.style.overflow)
 
 // lang flip x4
 for (const l of ['ar', 'fa', 'ar', 'fa']) {
-  await page.click(`.lang-btn[data-lang="${l}"]`)
-  await sleep(250)
+  await switchLanguage(page, l)
 }
 const lang = await page.evaluate(() => document.documentElement.lang)
-const heroText = await page.evaluate(() => document.querySelector('[data-i18n="hero_t1"]').textContent)
+const heroText = await page.evaluate(() => document.querySelector('[data-copy="hero_t1"]').textContent)
 const marqueeSpans = await page.evaluate(() => document.querySelectorAll('#marquee .marquee-chunk').length)
 const dupIds = await page.evaluate(() => {
   const ids = [...document.querySelectorAll('[id]')].map((e) => e.id)

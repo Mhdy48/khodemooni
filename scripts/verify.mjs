@@ -1,4 +1,4 @@
-import { URL, sleep, createBrowserCheck } from './helpers/browser.mjs'
+import { URL, sleep, createBrowserCheck, switchLanguage } from './helpers/browser.mjs'
 
 const { browser, errors, newPage } = await createBrowserCheck()
 
@@ -73,14 +73,13 @@ await page.screenshot({ path: 'shots/08-about-more.png' })
 // arabic
 await page.evaluate(() => window.scrollTo(0, 0))
 await sleep(900)
-await page.click('.lang-btn[data-lang="ar"]')
-await sleep(900)
+await switchLanguage(page, 'ar')
+await page.waitForFunction(() => [...document.querySelectorAll('.hero-in')].every(el => Number(getComputedStyle(el).opacity) > 0.99))
 await page.screenshot({ path: 'shots/09-arabic-hero.png' })
 await page.evaluate(() => document.getElementById('services').scrollIntoView())
 await sleep(900)
 await page.screenshot({ path: 'shots/10-arabic-services.png' })
-await page.click('.lang-btn[data-lang="fa"]')
-await sleep(600)
+await switchLanguage(page, 'fa')
 
 // navbar scrolled state + anchor offset
 await page.evaluate(() => document.querySelector('.nav-link[href="#process"]').click())

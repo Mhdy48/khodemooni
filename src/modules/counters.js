@@ -1,4 +1,4 @@
-const faDigits = (n) => Math.round(n).toLocaleString('fa-IR')
+import { integer } from './i18n.js'
 
 export function initCounters({ gsap, reduced, enter }) {
   const strip = document.querySelector('.about-stats')
@@ -9,7 +9,7 @@ export function initCounters({ gsap, reduced, enter }) {
 
   gsap.set(strip, { '--measure-fill': 0 })
   gsap.set(items, { opacity: 0, y: 12 })
-  counters.forEach((el) => { el.textContent = faDigits(0) })
+  counters.forEach((el) => { el.textContent = integer.format(0) })
 
   const timeline = gsap.timeline({ paused: true })
   timeline.to(strip, { '--measure-fill': 1, duration: 1.1, ease: 'power2.inOut' }, 0)
@@ -23,10 +23,10 @@ export function initCounters({ gsap, reduced, enter }) {
       duration: 1.55,
       ease: 'power2.out',
       onUpdate: () => {
-        const value = faDigits(state.value)
+        const value = integer.format(state.value)
         if (el.textContent !== value) el.textContent = value
       },
-      onComplete: () => { el.textContent = faDigits(target) },
+      onComplete: () => { el.textContent = integer.format(target) },
     }, 0.12 + index * 0.09)
   })
   enter(timeline, { trigger: strip })

@@ -2,7 +2,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { initScrollRestore } from './modules/scrollRestore.js'
 import { initLoader } from './modules/loader.js'
-import { initI18n } from './modules/i18n.js'
 import { initNav } from './modules/nav.js'
 import { initHero } from './modules/hero.js'
 import { initFeatures } from './modules/features.js'
@@ -31,7 +30,6 @@ const ctx = { gsap, enter, reduced: matchMedia('(prefers-reduced-motion: reduce)
 
 initScrollRestore()
 initLoader(ctx)
-initI18n()
 initNav(ctx)
 initHero(ctx)
 initFeatures(ctx)

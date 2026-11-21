@@ -1,4 +1,4 @@
-import { URL, sleep, createBrowserCheck } from './helpers/browser.mjs'
+import { URL, sleep, createBrowserCheck, switchLanguage } from './helpers/browser.mjs'
 
 const fails = []
 const ok = (cond, msg) => { if (!cond) fails.push(msg) }
@@ -24,7 +24,7 @@ const state = await page.evaluate(() => {
   const dash = [...document.querySelectorAll('.cut-dash')].map((el) => Number(getComputedStyle(el).opacity))
   const solid = [...document.querySelectorAll('.cut-solid')].map((el) => Number(getComputedStyle(el).opacity))
   return {
-    t1: txt('[data-i18n="hero_t1"]'), t2: txt('[data-i18n="hero_t2"]'),
+    t1: txt('[data-copy="hero_t1"]'), t2: txt('[data-copy="hero_t2"]'),
     accentCut: document.querySelector('.piece-accent')?.classList.contains('is-cut'),
     sizes, targets, dash, solid,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -59,11 +59,12 @@ await page.mouse.move(10, 10)
 await sleep(600)
 
 /* arabic */
-await page.click('.lang-btn[data-lang="ar"]')
-await sleep(900)
+await switchLanguage(page, 'ar')
+await page.waitForFunction(settled)
+await page.waitForSelector('.piece-accent.is-cut')
 const ar = await page.evaluate(() => ({
-  t1: document.querySelector('[data-i18n="hero_t1"]').textContent.trim(),
-  t2: document.querySelector('[data-i18n="hero_t2"]').textContent.trim(),
+  t1: document.querySelector('[data-copy="hero_t1"]').textContent.trim(),
+  t2: document.querySelector('[data-copy="hero_t2"]').textContent.trim(),
   accentCut: document.querySelector('.piece-accent')?.classList.contains('is-cut'),
   overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
 }))
@@ -73,8 +74,7 @@ ok(ar.t2.replace(/\s+/g, ' ') === 'في كل غرزة.', 'ar t2')
 ok(ar.accentCut, 'ar accent underline kept')
 ok(ar.overflow <= 0, 'no overflow ar')
 await page.screenshot({ path: 'shots/h3-arabic.png' })
-await page.click('.lang-btn[data-lang="fa"]')
-await sleep(600)
+await switchLanguage(page, 'fa')
 
 /* responsive widths */
 for (const w of [360, 390, 768, 1024, 1280, 1920]) {

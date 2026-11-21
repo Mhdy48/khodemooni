@@ -1,4 +1,6 @@
-const KEY = 'kk-scroll-y'
+import { language } from './i18n.js'
+
+const KEY = 'kk-scroll-y:' + language
 
 // Restore before entrance guards run, then correct loading-related layout shifts.
 export function initScrollRestore() {

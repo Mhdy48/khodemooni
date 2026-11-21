@@ -3,12 +3,8 @@ import { animate, hover } from 'motion'
 export function initHero({ gsap, reduced, enter }) {
   const pieces = gsap.utils.toArray('.piece')
   const swatch = document.querySelector('.hero-swatch')
-  const accent = () => document.querySelector('.piece-accent')
-  let cut = false
-
-  const markCut = () => { cut = true; accent()?.classList.add('is-cut') }
-  // language swap rebuilds the headline markup — keep the stitched underline
-  document.addEventListener('langchange', () => { if (cut) accent()?.classList.add('is-cut') })
+  const accent = document.querySelector('.piece-accent')
+  const markCut = () => accent.classList.add('is-cut')
 
   function ambient() {
     gsap.to('#hero-img', { scale: 1.07, duration: 12, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: 2.4 })
