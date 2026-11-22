@@ -7,7 +7,7 @@ const versions = [
     lang: 'fa',
     path: '/',
     file: '../index.html',
-    heading: 'امضای تو،',
+    heading: 'به تنِ تو،',
     counter: '۰۱ / ۰۲',
     close: 'بستن',
   },
@@ -15,7 +15,7 @@ const versions = [
     lang: 'ar',
     path: '/ar/',
     file: '../ar/index.html',
-    heading: 'توقيعك،',
+    heading: 'على مقاسك،',
     counter: '٠١ / ٠٢',
     close: 'إغلاق',
   },
@@ -96,7 +96,7 @@ test('The Arabic page has distinct metadata and accessible Arabic labels', () =>
   const description = (html) => html.match(/<meta name="description" content="([^"]+)"/)[1]
   assert.notEqual(description(fa), description(ar))
   assert.match(ar, /aria-label="إغلاق"/)
-  assert.match(ar, /alt="بدلة بنية مفصّلة حسب الطلب/)
+  assert.match(ar, /alt="بدلة زيتونية داكنة مفصّلة حسب الطلب/)
   assert.match(ar, /placeholder="مثال: أحمد علي"/)
   assert.doesNotMatch(ar, /[۰-۹]/)
 })

@@ -114,8 +114,7 @@ html:has(#loader[open]) {
   aspect-ratio: 1;
   border: 1px solid #ebd0a180;
   border-radius: 50%;
-  background: var(--color-ink-800) url('/images/suit-portrait-320.webp') center 10% / cover
-    no-repeat;
+  background: var(--color-ink-800) url('/images/olive-suit-320.webp') center 10% / cover no-repeat;
   box-shadow: 0 4px 12px #1c1510a8;
   content: '';
 }

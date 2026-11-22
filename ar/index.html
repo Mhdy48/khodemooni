@@ -103,55 +103,32 @@
   </div>
   <main id="home" tabindex="-1">
     <!-- ============ HERO ============ -->
-    <section id="hero" class="hero-table relative min-h-[100svh] overflow-hidden bg-ink-950 flex items-center">
-      <div class="hero-fabric" aria-hidden="true"></div>
-      <div class="hero-glow" aria-hidden="true"></div>
-      <div class="hero-scrim" aria-hidden="true"></div>
+    <section id="hero" class="hero-editorial">
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <h1 class="hero-title">
+            <span class="piece" data-copy="hero_t1">على مقاسك،</span>
+            <span class="piece hero-title-accent" data-copy="hero_t2"><em>بأسلوبك.</em></span>
+          </h1>
+          <p class="hero-in hero-sub"><strong>من اختيار القماش إلى آخر تجربة قياس</strong><br />بدلتك تُفصَّل لتناسب قوامك وذوقك.</p>
+          <div class="hero-in hero-actions">
+            <button type="button" class="open-modal btn-primary">
+              <span>اطلب خياطة بدلتك</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
+            </button>
+            <a href="#portfolio" class="hero-portfolio">شاهد أعمالنا</a>
+          </div>
+        </div>
 
-      <div class="relative z-10 page-container w-full pt-32 pb-28">
-        <div class="hero-layout">
-          <div class="hero-copy">
-            <h1 class="hero-pieces">
-              <span class="piece piece-a" data-rot="-2.2">
-                <span class="piece-lift">
-                  <svg class="piece-cut" aria-hidden="true">
-                    <rect class="cut-solid" x="1.1%" y="2.4%" width="97.8%" height="95.2%" rx="6" pathLength="1" fill="none"/>
-                    <rect class="cut-dash" x="1.1%" y="2.4%" width="97.8%" height="95.2%" rx="6" fill="none" stroke-dasharray="7 6"/>
-                  </svg>
-                  <span class="piece-text" data-copy="hero_t1">توقيعك،</span>
-                </span>
-              </span>
-              <span class="piece piece-b" data-rot="1.7">
-                <span class="piece-lift">
-                  <svg class="piece-cut" aria-hidden="true">
-                    <rect class="cut-solid" x="1.1%" y="2.4%" width="97.8%" height="95.2%" rx="6" pathLength="1" fill="none"/>
-                    <rect class="cut-dash" x="1.1%" y="2.4%" width="97.8%" height="95.2%" rx="6" fill="none" stroke-dasharray="7 6"/>
-                  </svg>
-                  <svg class="piece-grain" viewBox="0 0 24 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M12 8v104M12 8l-5 7M12 8l5 7M12 112l-5-7M12 112l5-7M4 60h16"/>
-                  </svg>
-                  <span class="piece-text" data-copy="hero_t2">في كل <span class="piece-accent">غرزة.</span></span>
-                </span>
-              </span>
-            </h1>
-            <p class="hero-in hero-sub mt-8 text-bone-200/90">باترون يُرسم لك وحدك؛ وخياطة لن تجدها في أي مكان آخر.</p>
-            <div class="hero-in hero-actions mt-9 flex flex-wrap items-center gap-4">
-              <button type="button" class="open-modal btn-primary magnetic">
-                <span>اطلب خياطتك الخاصة</span>
-                <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
-              </button>
-              <a href="#portfolio" class="btn-ghost">شاهد أعمالنا</a>
+        <figure class="hero-swatch">
+          <div class="hero-photo">
+            <div class="hero-shot">
+              <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 75rem) 480px, (min-width: 60rem) 41vw, (min-width: 33rem) 480px, calc(100vw - 48px)" alt="بدلة زيتونية داكنة مفصّلة حسب الطلب يرتديها عارض أزياء" id="hero-img" width="1024" height="1536" fetchpriority="high" />
             </div>
           </div>
-
-          <figure class="hero-swatch">
-            <img src="/images/suit-portrait.webp" srcset="/images/suit-portrait-320.webp 320w, /images/suit-portrait-480.webp 480w, /images/suit-portrait-768.webp 768w, /images/suit-portrait.webp 960w" sizes="(max-width: 1023px) 280px, 410px" alt="بدلة بنية مفصّلة حسب الطلب يرتديها عارض أزياء" id="hero-img" width="960" height="1440" fetchpriority="high" />
-            <figcaption class="sr-only">نموذج من أعمال الخياطة حسب الطلب</figcaption>
-          </figure>
-        </div>
+          <button type="button" class="hero-in hero-detail" aria-pressed="false" aria-controls="hero-img" hidden>تفاصيل الخياطة عن قرب</button>
+        </figure>
       </div>
-
-      <div class="hero-tape" aria-hidden="true"></div>
     </section>
     <!-- ============ FEATURES BAR ============ -->
     <section id="features" class="relative z-20 -mt-16 scroll-mt-28">
@@ -412,8 +389,8 @@
                 بطانة حريرية مزخرفة
               </span>
             </a>
-            <a href="/images/suit-portrait.webp" class="gallery-tile col-span-2 h-80 sm:h-96 lg:h-auto lg:col-span-4 lg:col-start-5 lg:row-span-2 lg:row-start-1" aria-label="بدلة احتفالية مزدوجة الصدر">
-              <img src="/images/suit-portrait.webp" alt="بدلة احتفالية مزدوجة الصدر" loading="lazy" decoding="async" />
+            <a href="/images/olive-suit-1024.webp" class="gallery-tile col-span-2 h-80 sm:h-96 lg:h-auto lg:col-span-4 lg:col-start-5 lg:row-span-2 lg:row-start-1" aria-label="بدلة احتفالية مزدوجة الصدر">
+              <img src="/images/olive-suit-1024.webp" alt="بدلة احتفالية مزدوجة الصدر" loading="lazy" decoding="async" />
               <span class="tile-cap">
                 <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
                 بدلة احتفالية مزدوجة الصدر
