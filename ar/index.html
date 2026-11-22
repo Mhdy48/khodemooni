@@ -105,11 +105,11 @@
     <!-- ============ HERO ============ -->
     <section id="hero" class="hero-editorial">
       <div class="hero-layout">
+        <h1 class="hero-title">
+          <span class="piece" data-copy="hero_t1">على مقاسك،</span>
+          <span class="piece hero-title-accent" data-copy="hero_t2"><em>بأسلوبك.</em></span>
+        </h1>
         <div class="hero-copy">
-          <h1 class="hero-title">
-            <span class="piece" data-copy="hero_t1">على مقاسك،</span>
-            <span class="piece hero-title-accent" data-copy="hero_t2"><em>بأسلوبك.</em></span>
-          </h1>
           <p class="hero-in hero-sub"><strong>من اختيار القماش إلى آخر تجربة قياس</strong><br />بدلتك تُفصَّل لتناسب قوامك وذوقك.</p>
           <div class="hero-in hero-actions">
             <button type="button" class="open-modal btn-primary">
@@ -121,12 +121,25 @@
         </div>
 
         <figure class="hero-swatch">
-          <div class="hero-photo">
-            <div class="hero-shot">
-              <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 75rem) 480px, (min-width: 60rem) 41vw, (min-width: 33rem) 480px, calc(100vw - 48px)" alt="بدلة زيتونية داكنة مفصّلة حسب الطلب يرتديها عارض أزياء" id="hero-img" width="1024" height="1536" fetchpriority="high" />
+          <div class="hero-object">
+            <div class="hero-photo" data-position="front">
+              <div class="hero-shot">
+                <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 56rem) min(26vw, 354px), min(51vw, 230px)" alt="بدلة زيتونية داكنة مفصّلة حسب الطلب يرتديها عارض أزياء" id="hero-img" width="1024" height="1536" fetchpriority="high" />
+              </div>
+            </div>
+            <div class="hero-photo" data-position="left" aria-hidden="true">
+              <div class="hero-shot"><img id="hero-lapel-detail" src="/images/lapel-detail.webp" alt="ياقة بدلة مخططة عن قرب" decoding="async" /></div>
+            </div>
+            <div class="hero-photo" data-position="right" aria-hidden="true">
+              <div class="hero-shot"><img id="hero-pattern-cutting" src="/images/pattern-cutting.webp" alt="قصّ القماش على طاولة العمل" decoding="async" /></div>
             </div>
           </div>
-          <button type="button" class="hero-in hero-detail" aria-pressed="false" aria-controls="hero-img" hidden>تفاصيل الخياطة عن قرب</button>
+          <button type="button" class="hero-in hero-detail" aria-pressed="false" aria-controls="hero-img" hidden>تكبير الصورة</button>
+          <div class="hero-views" role="group" aria-label="اختر الصورة" hidden>
+            <button type="button" aria-pressed="true" aria-controls="hero-img">البدلة</button>
+            <button type="button" aria-pressed="false" aria-controls="hero-lapel-detail">الياقة</button>
+            <button type="button" aria-pressed="false" aria-controls="hero-pattern-cutting">القصّ</button>
+          </div>
         </figure>
       </div>
     </section>

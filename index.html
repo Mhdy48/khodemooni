@@ -105,11 +105,11 @@
     <!-- ============ HERO ============ -->
     <section id="hero" class="hero-editorial">
       <div class="hero-layout">
+        <h1 class="hero-title">
+          <span class="piece" data-copy="hero_t1">به تنِ تو،</span>
+          <span class="piece hero-title-accent" data-copy="hero_t2"><span class="hero-title-prefix">به</span> <em>سبکِ تو.</em></span>
+        </h1>
         <div class="hero-copy">
-          <h1 class="hero-title">
-            <span class="piece" data-copy="hero_t1">به تنِ تو،</span>
-            <span class="piece hero-title-accent" data-copy="hero_t2"><span class="hero-title-prefix">به</span> <em>سبکِ تو.</em></span>
-          </h1>
           <p class="hero-in hero-sub"><strong>از انتخاب پارچه تا آخرین پرو</strong><br />کت‌وشلوارت با فرم بدن و سلیقهٔ تو شکل می‌گیرد.</p>
           <div class="hero-in hero-actions">
             <button type="button" class="open-modal btn-primary">
@@ -121,12 +121,25 @@
         </div>
 
         <figure class="hero-swatch">
-          <div class="hero-photo">
-            <div class="hero-shot">
-              <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 75rem) 480px, (min-width: 60rem) 41vw, (min-width: 33rem) 480px, calc(100vw - 48px)" alt="مدل مرد با کت‌وشلوار دوبل زیتونی تیره و دوخت سفارشی" id="hero-img" width="1024" height="1536" fetchpriority="high" />
+          <div class="hero-object">
+            <div class="hero-photo" data-position="front">
+              <div class="hero-shot">
+                <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 56rem) min(26vw, 354px), min(51vw, 230px)" alt="مدل مرد با کت‌وشلوار دوبل زیتونی تیره و دوخت سفارشی" id="hero-img" width="1024" height="1536" fetchpriority="high" />
+              </div>
+            </div>
+            <div class="hero-photo" data-position="left" aria-hidden="true">
+              <div class="hero-shot"><img id="hero-lapel-detail" src="/images/lapel-detail.webp" alt="نمای نزدیک یقهٔ کت راه‌راه" decoding="async" /></div>
+            </div>
+            <div class="hero-photo" data-position="right" aria-hidden="true">
+              <div class="hero-shot"><img id="hero-pattern-cutting" src="/images/pattern-cutting.webp" alt="برش پارچه روی میز کار" decoding="async" /></div>
             </div>
           </div>
-          <button type="button" class="hero-in hero-detail" aria-pressed="false" aria-controls="hero-img" hidden>نمای نزدیک دوخت</button>
+          <button type="button" class="hero-in hero-detail" aria-pressed="false" aria-controls="hero-img" hidden>بزرگ‌نمایی</button>
+          <div class="hero-views" role="group" aria-label="انتخاب نمای گالری" hidden>
+            <button type="button" aria-pressed="true" aria-controls="hero-img">کت کامل</button>
+            <button type="button" aria-pressed="false" aria-controls="hero-lapel-detail">یقهٔ کت</button>
+            <button type="button" aria-pressed="false" aria-controls="hero-pattern-cutting">برش الگو</button>
+          </div>
         </figure>
       </div>
     </section>

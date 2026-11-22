@@ -35,6 +35,21 @@ try {
   await desktop.goto(URL)
   assert.deepEqual(await checkHero(desktop), ['به تنِ تو،', 'به سبکِ تو.'])
   await desktop.screenshot({ path: 'shots/h1-desktop.png' })
+  const swatch = await desktop.$eval('.hero-swatch', (el) => el.getBoundingClientRect().toJSON())
+  const objectTransform = () => getComputedStyle(document.querySelector('.hero-object')).transform
+  const resting = await desktop.evaluate(objectTransform)
+  await desktop.mouse.move(swatch.x + swatch.width * 0.8, swatch.y + swatch.height * 0.3)
+  await desktop.waitForFunction(
+    (initial) => getComputedStyle(document.querySelector('.hero-object')).transform !== initial,
+    {},
+    resting
+  )
+  await desktop.mouse.move(0, 0)
+  await desktop.waitForFunction(
+    (initial) => getComputedStyle(document.querySelector('.hero-object')).transform === initial,
+    {},
+    resting
+  )
   await desktop.focus('.hero-detail')
   await desktop.keyboard.press('Enter')
   await desktop.waitForSelector('.hero-detail[aria-pressed="true"]')
@@ -53,6 +68,26 @@ try {
 
   await switchLanguage(desktop, 'ar')
   assert.deepEqual(await checkHero(desktop), ['على مقاسك،', 'بأسلوبك.'])
+  const viewButtons = await desktop.$$('.hero-views button')
+  assert.equal(viewButtons.length, 3)
+  for (const button of [viewButtons[1], viewButtons[2], viewButtons[0]]) {
+    await button.focus()
+    await desktop.keyboard.press('Enter')
+    const activeId = await button.evaluate((el) => el.getAttribute('aria-controls'))
+    await desktop.waitForFunction(
+      (id) => document.querySelector('[data-position="front"] img').id === id,
+      {},
+      activeId
+    )
+    await desktop.click('.hero-detail')
+    await desktop.waitForFunction(
+      (id) =>
+        new DOMMatrixReadOnly(getComputedStyle(document.getElementById(id)).transform).a > 1.6,
+      {},
+      activeId
+    )
+  }
+  await desktop.click('.hero-detail')
   await desktop.screenshot({ path: 'shots/h3-arabic.png' })
   await desktop.close()
 
