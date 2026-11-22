@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict'
-import { URL, createBrowserCheck, switchLanguage } from './helpers/browser.mjs'
+import { URL, createBrowserCheck, sleep, switchLanguage } from './helpers/browser.mjs'
 
 const { browser, errors, newPage } = await createBrowserCheck()
 
 const settled = () =>
   !document.querySelector('#loader') &&
-  getComputedStyle(document.querySelector('.hero-photo')).clipPath === 'none' &&
+  getComputedStyle(document.querySelector('.hero-object')).clipPath === 'none' &&
   !document.querySelector('.hero-title-accent').style.getPropertyValue('--hero-underline') &&
   [...document.querySelectorAll('#hero .piece, #hero .hero-in')].every(
     (el) => !el.style.transform && Number(getComputedStyle(el).opacity) === 1
@@ -35,18 +35,19 @@ try {
   await desktop.goto(URL)
   assert.deepEqual(await checkHero(desktop), ['به تنِ تو،', 'به سبکِ تو.'])
   await desktop.screenshot({ path: 'shots/h1-desktop.png' })
-  const swatch = await desktop.$eval('.hero-swatch', (el) => el.getBoundingClientRect().toJSON())
-  const objectTransform = () => getComputedStyle(document.querySelector('.hero-object')).transform
+  await desktop.click('.hero-autoplay[data-playing]')
+  const swatch = await desktop.$eval('.hero-stage', (el) => el.getBoundingClientRect().toJSON())
+  const objectTransform = () => getComputedStyle(document.querySelector('.hero-stage')).transform
   const resting = await desktop.evaluate(objectTransform)
   await desktop.mouse.move(swatch.x + swatch.width * 0.8, swatch.y + swatch.height * 0.3)
   await desktop.waitForFunction(
-    (initial) => getComputedStyle(document.querySelector('.hero-object')).transform !== initial,
+    (initial) => getComputedStyle(document.querySelector('.hero-stage')).transform !== initial,
     {},
     resting
   )
   await desktop.mouse.move(0, 0)
   await desktop.waitForFunction(
-    (initial) => getComputedStyle(document.querySelector('.hero-object')).transform === initial,
+    (initial) => getComputedStyle(document.querySelector('.hero-stage')).transform === initial,
     {},
     resting
   )
@@ -58,19 +59,44 @@ try {
       new DOMMatrixReadOnly(getComputedStyle(document.getElementById('hero-img')).transform).a > 1.6
   )
   await desktop.screenshot({ path: 'shots/h2-suit-detail.png' })
-  await desktop.keyboard.press('Enter')
+  await desktop.keyboard.press('Escape')
   await desktop.waitForSelector('.hero-detail[aria-pressed="false"]')
   await desktop.waitForFunction(
     () =>
       new DOMMatrixReadOnly(getComputedStyle(document.getElementById('hero-img')).transform).a <
       1.01
   )
+  await desktop.click('.hero-gallery-next')
+  await desktop.waitForSelector(
+    '.hero-view[aria-controls="hero-lapel-detail"][aria-pressed="true"]'
+  )
+  assert.equal(await desktop.$eval('.hero-frame-name', (el) => el.textContent), 'یقهٔ کت')
+  assert.equal(await desktop.$('.hero-frame-count'), null)
+  await desktop.waitForSelector('.hero-photo[data-outgoing]', { hidden: true })
+  assert.equal(
+    await desktop.$eval('.hero-detail', (el) => el.getAttribute('aria-controls')),
+    'hero-lapel-detail'
+  )
+  await desktop.focus('.hero-view[aria-pressed="true"]')
+  await desktop.keyboard.press('ArrowLeft')
+  await desktop.waitForSelector(
+    '.hero-view[aria-controls="hero-pattern-cutting"][aria-pressed="true"]:focus'
+  )
+  await desktop.click('.hero-gallery-previous')
+  await desktop.waitForSelector(
+    '.hero-view[aria-controls="hero-lapel-detail"][aria-pressed="true"]'
+  )
+  await desktop.click('.hero-view[aria-controls="hero-lining-detail"]')
+  await desktop.waitForSelector(
+    '.hero-view[aria-controls="hero-lining-detail"][aria-pressed="true"]'
+  )
 
   await switchLanguage(desktop, 'ar')
   assert.deepEqual(await checkHero(desktop), ['على مقاسك،', 'بأسلوبك.'])
-  const viewButtons = await desktop.$$('.hero-views button')
-  assert.equal(viewButtons.length, 3)
-  for (const button of [viewButtons[1], viewButtons[2], viewButtons[0]]) {
+  await desktop.click('.hero-autoplay[data-playing]')
+  const viewButtons = await desktop.$$('.hero-view')
+  assert.equal(viewButtons.length, 4)
+  for (const button of [viewButtons[1], viewButtons[2], viewButtons[3], viewButtons[0]]) {
     await button.focus()
     await desktop.keyboard.press('Enter')
     const activeId = await button.evaluate((el) => el.getAttribute('aria-controls'))
@@ -108,9 +134,37 @@ try {
   const reduced = await newPage(390, 844, true, true)
   await reduced.goto(URL)
   await checkHero(reduced)
+  assert.equal(await reduced.$('.hero-autoplay[data-playing]'), null)
   await reduced.click('.hero-detail')
   await reduced.waitForSelector('.hero-swatch.is-detail')
+  const stage = await reduced.$eval('.hero-stage', (el) => el.getBoundingClientRect().toJSON())
+  const swipeY = stage.y + stage.height * 0.5
+  await reduced.touchscreen.touchStart(stage.x + stage.width * 0.19, swipeY)
+  await reduced.touchscreen.touchMove(stage.x + stage.width * 0.8, swipeY)
+  await reduced.touchscreen.touchEnd()
+  await reduced.waitForSelector(
+    '.hero-view[aria-controls="hero-lapel-detail"][aria-pressed="true"]'
+  )
+  await reduced.waitForSelector('.hero-detail[aria-pressed="false"]')
   await reduced.close()
+
+  const automatic = await newPage(1440, 900)
+  await automatic.goto(URL)
+  await checkHero(automatic)
+  await automatic.waitForSelector(
+    '.hero-view[aria-controls="hero-lapel-detail"][aria-pressed="true"]',
+    { timeout: 12000 }
+  )
+  await automatic.click('.hero-autoplay[data-playing]')
+  await automatic.waitForSelector('.hero-autoplay:not([data-playing])')
+  await sleep(5700)
+  assert.equal(
+    await automatic.$eval('.hero-view[aria-pressed="true"]', (el) =>
+      el.getAttribute('aria-controls')
+    ),
+    'hero-lapel-detail'
+  )
+  await automatic.close()
 
   const restored = await newPage(1440, 900)
   await restored.goto(URL)
@@ -123,7 +177,7 @@ try {
   await restored.close()
   assert.deepEqual(errors, [])
   console.log(
-    'Both languages, viewport sizes, keyboard detail toggle and restored scrolling passed.'
+    'Both languages, viewport sizes, keyboard gallery controls, touch gestures and restored scrolling passed.'
   )
 } finally {
   await browser.close()

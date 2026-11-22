@@ -120,26 +120,42 @@
           </div>
         </div>
 
-        <figure class="hero-swatch">
-          <div class="hero-object">
-            <div class="hero-photo" data-position="front">
-              <div class="hero-shot">
-                <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 56rem) min(26vw, 354px), min(51vw, 230px)" alt="مدل مرد با کت‌وشلوار دوبل زیتونی تیره و دوخت سفارشی" id="hero-img" width="1024" height="1536" fetchpriority="high" />
+        <figure class="hero-swatch" aria-label="گالری سه‌بعدی نمونه‌دوخت">
+          <div class="hero-stage">
+            <div class="hero-object">
+              <div class="hero-photo" data-position="front">
+                <div class="hero-shot">
+                  <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 56rem) min(37vw, 460px), min(75vw, 350px)" alt="مدل مرد با کت‌وشلوار دوبل زیتونی تیره و دوخت سفارشی" id="hero-img" width="1024" height="1536" fetchpriority="high" />
+                </div>
+              </div>
+              <div class="hero-photo" data-position="side" aria-hidden="true">
+                <div class="hero-shot"><img id="hero-lapel-detail" src="/images/lapel-detail.webp" alt="نمای نزدیک یقهٔ کت راه‌راه" decoding="async" /></div>
+              </div>
+              <div class="hero-photo" data-position="side" aria-hidden="true">
+                <div class="hero-shot"><img id="hero-pattern-cutting" src="/images/pattern-cutting.webp" alt="برش پارچه روی میز کار" decoding="async" /></div>
+              </div>
+              <div class="hero-photo" data-position="side" aria-hidden="true">
+                <div class="hero-shot"><img id="hero-lining-detail" src="/images/lining-detail.webp" alt="آستر ابریشمی نقش‌دار" decoding="async" /></div>
               </div>
             </div>
-            <div class="hero-photo" data-position="left" aria-hidden="true">
-              <div class="hero-shot"><img id="hero-lapel-detail" src="/images/lapel-detail.webp" alt="نمای نزدیک یقهٔ کت راه‌راه" decoding="async" /></div>
-            </div>
-            <div class="hero-photo" data-position="right" aria-hidden="true">
-              <div class="hero-shot"><img id="hero-pattern-cutting" src="/images/pattern-cutting.webp" alt="برش پارچه روی میز کار" decoding="async" /></div>
-            </div>
           </div>
-          <button type="button" class="hero-in hero-detail" aria-pressed="false" aria-controls="hero-img" hidden>بزرگ‌نمایی</button>
+          <button type="button" class="hero-in hero-detail" aria-label="بزرگ‌نمایی عکس" aria-pressed="false" aria-controls="hero-img" hidden></button>
           <div class="hero-views" role="group" aria-label="انتخاب نمای گالری" hidden>
-            <button type="button" aria-pressed="true" aria-controls="hero-img">کت کامل</button>
-            <button type="button" aria-pressed="false" aria-controls="hero-lapel-detail">یقهٔ کت</button>
-            <button type="button" aria-pressed="false" aria-controls="hero-pattern-cutting">برش الگو</button>
+            <div class="hero-filmstrip">
+              <button type="button" class="hero-view" aria-pressed="true" aria-controls="hero-img"><img src="/images/olive-suit-320.webp" alt="" /><span class="sr-only">کت کامل</span></button>
+              <button type="button" class="hero-view" aria-pressed="false" aria-controls="hero-lapel-detail"><img src="/images/lapel-detail-480.webp" alt="" /><span class="sr-only">یقهٔ کت</span></button>
+              <button type="button" class="hero-view" aria-pressed="false" aria-controls="hero-pattern-cutting"><img src="/images/pattern-cutting.webp" alt="" /><span class="sr-only">برش الگو</span></button>
+              <button type="button" class="hero-view" aria-pressed="false" aria-controls="hero-lining-detail"><img src="/images/lining-detail.webp" alt="" /><span class="sr-only">آستر کت</span></button>
+            </div>
+            <div class="hero-deck">
+              <button type="button" class="hero-gallery-arrow hero-gallery-previous" aria-label="نمای قبلی"></button>
+              <button type="button" class="hero-gallery-arrow hero-gallery-next" aria-label="نمای بعدی"></button>
+              <button type="button" class="hero-autoplay" aria-label="مکث گالری" data-pause-label="مکث گالری" data-play-label="پخش گالری"></button>
+            </div>
           </div>
+          <figcaption class="hero-frame-info" hidden>
+            <span class="hero-frame-name" aria-live="polite">کت کامل</span>
+          </figcaption>
         </figure>
       </div>
     </section>
