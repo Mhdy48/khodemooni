@@ -34,6 +34,7 @@ try {
   const desktop = await newPage(1440, 900)
   await desktop.goto(URL)
   assert.deepEqual(await checkHero(desktop), ['به تنِ تو،', 'به سبکِ تو.'])
+  await desktop.waitForSelector('.hero-lining-compare[hidden]')
   await desktop.screenshot({ path: 'shots/h1-desktop.png' })
   await desktop.click('.hero-autoplay[data-playing]')
   const swatch = await desktop.$eval('.hero-stage', (el) => el.getBoundingClientRect().toJSON())
@@ -147,14 +148,33 @@ try {
   await reduced.goto(URL)
   await checkHero(reduced)
   assert.equal(await reduced.$('.hero-autoplay[data-playing]'), null)
+  const liningHandle = await reduced.$eval('.hero-lining-handle', (el) =>
+    el.getBoundingClientRect().toJSON()
+  )
+  const stage = await reduced.$eval('.hero-stage', (el) => el.getBoundingClientRect().toJSON())
+  const liningY = liningHandle.y + liningHandle.height / 2
+  await reduced.touchscreen.touchStart(liningHandle.x + liningHandle.width / 2, liningY)
+  await reduced.touchscreen.touchMove(stage.x + stage.width * 0.79, liningY)
+  await reduced.touchscreen.touchEnd()
+  await reduced.waitForFunction(
+    (startX) => {
+      const slider = document.querySelector('.hero-lining-slider')
+      const divider = document.querySelector('.hero-lining-divider')
+      return slider.valueAsNumber >= 65 && divider.getBoundingClientRect().x > startX + 70
+    },
+    {},
+    liningHandle.x + liningHandle.width / 2
+  )
+  assert(await reduced.$('.hero-view[aria-controls="hero-img"][aria-pressed="true"]'))
   await reduced.click('.hero-detail')
   await reduced.waitForSelector('.hero-lens:not([hidden])')
-  const stage = await reduced.$eval('.hero-stage', (el) => el.getBoundingClientRect().toJSON())
+  await reduced.waitForSelector('.hero-lining-compare[hidden]')
   const center = await reduced.evaluate(lensPosition)
   await reduced.touchscreen.tap(stage.x + stage.width * 0.22, stage.y + stage.height * 0.32)
   assert.notEqual(await reduced.evaluate(lensPosition), center)
   await reduced.tap('.hero-detail')
   await reduced.waitForSelector('.hero-lens[hidden]')
+  await reduced.waitForSelector('.hero-lining-compare:not([hidden])')
   const swipeY = stage.y + stage.height * 0.5
   await reduced.touchscreen.touchStart(stage.x + stage.width * 0.19, swipeY)
   await reduced.touchscreen.touchMove(stage.x + stage.width * 0.8, swipeY)
@@ -162,6 +182,7 @@ try {
   await reduced.waitForSelector(
     '.hero-view[aria-controls="hero-lapel-detail"][aria-pressed="true"]'
   )
+  await reduced.waitForSelector('.hero-lining-compare[hidden]')
   await reduced.waitForSelector('.hero-detail[aria-pressed="false"]')
   await reduced.close()
 

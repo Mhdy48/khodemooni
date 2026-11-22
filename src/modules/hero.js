@@ -96,6 +96,9 @@ export function initHero({ gsap, reduced, enter }) {
   const object = swatch.querySelector('.hero-object')
   const lens = createLens(object)
   const detail = hero.querySelector('.hero-detail')
+  const lining = object.querySelector('.hero-lining-compare')
+  const liningSlider = lining.querySelector('.hero-lining-slider')
+  const touchPreview = matchMedia('(hover: none) and (pointer: coarse)')
   const cards = [...swatch.querySelectorAll('.hero-photo')]
   const views = swatch.querySelector('.hero-views')
   const buttons = [...views.querySelectorAll('.hero-view')]
@@ -111,11 +114,18 @@ export function initHero({ gsap, reduced, enter }) {
   let visible = false
   let hovered = false
   let rotationTimer
+  let comparing = false
+
+  const syncLining = () => {
+    lining.hidden = !touchPreview.matches || current !== 0 || swatch.classList.contains('is-detail')
+    if (lining.hidden) comparing = false
+  }
 
   const setZoom = (active) => {
     swatch.classList.toggle('is-detail', active)
     detail.setAttribute('aria-pressed', String(active))
     lens.set(active ? cards[current].querySelector('img') : null)
+    syncLining()
   }
 
   const select = (index) => {
@@ -155,6 +165,7 @@ export function initHero({ gsap, reduced, enter }) {
       !document.hidden &&
       !hovered &&
       !gesture &&
+      !comparing &&
       !focused &&
       !swatch.classList.contains('is-detail')
     name.setAttribute('aria-live', playing ? 'off' : 'polite')
@@ -198,6 +209,25 @@ export function initHero({ gsap, reduced, enter }) {
     syncPlayback()
   })
   syncPlayback()
+  syncLining()
+  touchPreview.addEventListener('change', () => {
+    syncLining()
+    queueRotation()
+  })
+  liningSlider.addEventListener('input', () => {
+    lining.style.setProperty('--lining-progress', liningSlider.valueAsNumber / 100)
+  })
+  liningSlider.addEventListener('pointerdown', () => {
+    comparing = true
+    queueRotation()
+  })
+  const finishComparison = () => {
+    comparing = false
+    queueRotation()
+  }
+  liningSlider.addEventListener('pointerup', finishComparison)
+  liningSlider.addEventListener('pointercancel', finishComparison)
+  liningSlider.addEventListener('change', finishComparison)
 
   buttons.forEach((button, index) => {
     button.addEventListener('click', () => select(index))
@@ -206,6 +236,7 @@ export function initHero({ gsap, reduced, enter }) {
   views.querySelector('.hero-gallery-next').addEventListener('click', () => step(1))
 
   swatch.addEventListener('keydown', (event) => {
+    if (event.target === liningSlider) return
     if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return
     if (event.key === 'Escape' && swatch.classList.contains('is-detail')) {
       event.preventDefault()
@@ -223,7 +254,8 @@ export function initHero({ gsap, reduced, enter }) {
   })
 
   stage.addEventListener('pointerdown', (event) => {
-    if (!event.isPrimary || swatch.classList.contains('is-detail')) return
+    if (!event.isPrimary || event.target === liningSlider || swatch.classList.contains('is-detail'))
+      return
     if (event.pointerType !== 'touch') return
     gesture = { id: event.pointerId, x: event.clientX, y: event.clientY }
     queueRotation()
