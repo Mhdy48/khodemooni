@@ -125,7 +125,7 @@
             <div class="hero-object">
               <div class="hero-photo" data-position="front">
                 <div class="hero-shot">
-                  <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 56rem) min(37vw, 460px), min(75vw, 350px)" alt="مدل مرد با کت‌وشلوار دوبل زیتونی تیره و دوخت سفارشی" id="hero-img" width="1024" height="1536" fetchpriority="high" />
+                  <img src="/images/olive-suit-640.webp" srcset="/images/olive-suit-416.webp 416w, /images/olive-suit-640.webp 640w, /images/olive-suit-1024.webp 1024w" sizes="(min-width: 56rem) min(37vw, 460px), min(75vw, 350px)" alt="مدل مرد با کت‌وشلوار دوبل زیتونی تیره و دوخت سفارشی" id="hero-img" data-lens-src="/images/olive-suit-1024.webp" width="1024" height="1536" fetchpriority="high" />
                 </div>
               </div>
               <div class="hero-photo" data-position="side" aria-hidden="true">
@@ -137,9 +137,11 @@
               <div class="hero-photo" data-position="side" aria-hidden="true">
                 <div class="hero-shot"><img id="hero-lining-detail" src="/images/lining-detail.webp" alt="آستر ابریشمی نقش‌دار" decoding="async" /></div>
               </div>
+              <div class="hero-lens" aria-hidden="true" hidden><img alt="" /></div>
             </div>
           </div>
-          <button type="button" class="hero-in hero-detail" aria-label="بزرگ‌نمایی عکس" aria-pressed="false" aria-controls="hero-img" hidden></button>
+          <button type="button" class="hero-in hero-detail" aria-describedby="hero-lens-help" aria-label="بزرگ‌نمایی عکس" aria-pressed="false" aria-controls="hero-img" hidden></button>
+          <span id="hero-lens-help" class="sr-only">با کلیدهای جهت‌دار ذره‌بین را حرکت بدهید. برای بستن، Escape را بزنید.</span>
           <div class="hero-views" role="group" aria-label="انتخاب نمای گالری" hidden>
             <div class="hero-filmstrip">
               <button type="button" class="hero-view" aria-pressed="true" aria-controls="hero-img"><img src="/images/olive-suit-320.webp" alt="" /><span class="sr-only">کت کامل</span></button>

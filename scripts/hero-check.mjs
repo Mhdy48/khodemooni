@@ -54,18 +54,22 @@ try {
   await desktop.focus('.hero-detail')
   await desktop.keyboard.press('Enter')
   await desktop.waitForSelector('.hero-detail[aria-pressed="true"]')
+  await desktop.waitForSelector('.hero-lens:not([hidden])')
   await desktop.waitForFunction(
-    () =>
-      new DOMMatrixReadOnly(getComputedStyle(document.getElementById('hero-img')).transform).a > 1.6
+    () => document.querySelector('.hero-lens img').naturalWidth === 1024
   )
+  const lensPosition = () => document.querySelector('.hero-lens').style.transform
+  const start = await desktop.evaluate(lensPosition)
+  await desktop.keyboard.press('ArrowRight')
+  const afterKey = await desktop.evaluate(lensPosition)
+  assert.notEqual(afterKey, start)
+  await desktop.mouse.move(swatch.x + swatch.width * 0.56, swatch.y + swatch.height * 0.61)
+  assert.notEqual(await desktop.evaluate(lensPosition), afterKey)
+  assert.equal(await desktop.$eval('#hero-img', (el) => getComputedStyle(el).transform), 'none')
   await desktop.screenshot({ path: 'shots/h2-suit-detail.png' })
   await desktop.keyboard.press('Escape')
   await desktop.waitForSelector('.hero-detail[aria-pressed="false"]')
-  await desktop.waitForFunction(
-    () =>
-      new DOMMatrixReadOnly(getComputedStyle(document.getElementById('hero-img')).transform).a <
-      1.01
-  )
+  await desktop.waitForSelector('.hero-lens[hidden]')
   await desktop.click('.hero-gallery-next')
   await desktop.waitForSelector(
     '.hero-view[aria-controls="hero-lapel-detail"][aria-pressed="true"]'
@@ -106,9 +110,17 @@ try {
       activeId
     )
     await desktop.click('.hero-detail')
+    await desktop.waitForSelector('.hero-lens:not([hidden])')
     await desktop.waitForFunction(
-      (id) =>
-        new DOMMatrixReadOnly(getComputedStyle(document.getElementById(id)).transform).a > 1.6,
+      (id) => {
+        const base = document.getElementById(id)
+        const lens = document.querySelector('.hero-lens img')
+        return (
+          lens.complete &&
+          lens.naturalWidth > 0 &&
+          [base.dataset.lensSrc, base.currentSrc].some((src) => src && lens.src.endsWith(src))
+        )
+      },
       {},
       activeId
     )
@@ -136,8 +148,13 @@ try {
   await checkHero(reduced)
   assert.equal(await reduced.$('.hero-autoplay[data-playing]'), null)
   await reduced.click('.hero-detail')
-  await reduced.waitForSelector('.hero-swatch.is-detail')
+  await reduced.waitForSelector('.hero-lens:not([hidden])')
   const stage = await reduced.$eval('.hero-stage', (el) => el.getBoundingClientRect().toJSON())
+  const center = await reduced.evaluate(lensPosition)
+  await reduced.touchscreen.tap(stage.x + stage.width * 0.22, stage.y + stage.height * 0.32)
+  assert.notEqual(await reduced.evaluate(lensPosition), center)
+  await reduced.tap('.hero-detail')
+  await reduced.waitForSelector('.hero-lens[hidden]')
   const swipeY = stage.y + stage.height * 0.5
   await reduced.touchscreen.touchStart(stage.x + stage.width * 0.19, swipeY)
   await reduced.touchscreen.touchMove(stage.x + stage.width * 0.8, swipeY)
@@ -155,8 +172,10 @@ try {
     '.hero-view[aria-controls="hero-lapel-detail"][aria-pressed="true"]',
     { timeout: 12000 }
   )
-  await automatic.click('.hero-autoplay[data-playing]')
-  await automatic.waitForSelector('.hero-autoplay:not([data-playing])')
+  await automatic.click('.hero-detail')
+  await automatic.waitForSelector('.hero-lens:not([hidden])')
+  await automatic.evaluate(() => document.activeElement.blur())
+  await automatic.mouse.move(0, 0)
   await sleep(5700)
   assert.equal(
     await automatic.$eval('.hero-view[aria-pressed="true"]', (el) =>
@@ -177,7 +196,7 @@ try {
   await restored.close()
   assert.deepEqual(errors, [])
   console.log(
-    'Both languages, viewport sizes, keyboard gallery controls, touch gestures and restored scrolling passed.'
+    'Both languages, keyboard and touch lens movement, autoplay pause and scroll restoration passed.'
   )
 } finally {
   await browser.close()

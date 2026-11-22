@@ -1,8 +1,100 @@
+function createLens(object) {
+  const lens = object.querySelector('.hero-lens')
+  const image = lens.querySelector('img')
+  const magnification = 2.15
+  let source
+  let bounds
+  let radius
+  let x
+  let y
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value))
+  const render = () => {
+    const { width, height } = bounds
+    const sampleOffset = radius / magnification
+    const focalX = clamp(x * width, sampleOffset, width - sampleOffset)
+    const focalY = clamp(y * height, sampleOffset, height - sampleOffset)
+    const lensX = clamp(x * width, radius + 3, width - radius - 3)
+    const lensY = clamp(y * height, radius + 3, height - radius - 3)
+    lens.style.transform = `translate3d(${lensX - radius}px, ${lensY - radius}px, 0)`
+    image.style.transform = `translate3d(${radius - focalX * magnification}px, ${radius - focalY * magnification}px, 0) scale(${magnification})`
+  }
+
+  const measure = () => {
+    if (lens.hidden) return
+    const { left, top } = object.getBoundingClientRect()
+    bounds = {
+      left: left + object.clientLeft,
+      top: top + object.clientTop,
+      width: object.clientWidth,
+      height: object.clientHeight,
+    }
+    radius = lens.offsetWidth / 2
+    image.style.width = `${bounds.width}px`
+    image.style.height = `${bounds.height}px`
+    render()
+  }
+
+  const resize = new ResizeObserver(measure)
+  resize.observe(object)
+  window.addEventListener('scroll', measure, { passive: true })
+
+  const set = (nextSource) => {
+    source = nextSource
+    lens.hidden = !source
+    if (!source) return
+
+    x = 0.57
+    y = 0.59
+    image.src = source.currentSrc || source.src
+    image.style.objectPosition = getComputedStyle(source).objectPosition
+    measure()
+
+    const highResolution = source.dataset.lensSrc
+    if (highResolution && !image.src.endsWith(highResolution)) {
+      const target = source
+      const fullImage = new Image()
+      fullImage.src = highResolution
+      fullImage
+        .decode()
+        .then(() => {
+          if (source === target) image.src = fullImage.src
+        })
+        .catch(() => {})
+    }
+  }
+
+  const follow = (event) => {
+    if (lens.hidden || !event.isPrimary) return
+    x = clamp((event.clientX - bounds.left) / bounds.width, 0, 1)
+    y = clamp((event.clientY - bounds.top) / bounds.height, 0, 1)
+    render()
+  }
+  object.addEventListener('pointerdown', follow)
+  object.addEventListener('pointermove', (event) => {
+    if (event.pointerType !== 'touch') follow(event)
+  })
+
+  const nudge = (key) => {
+    const move = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[
+      key
+    ]
+    if (lens.hidden || !move) return false
+    x = clamp(x + (move[0] * 19) / bounds.width, 0, 1)
+    y = clamp(y + (move[1] * 19) / bounds.height, 0, 1)
+    render()
+    return true
+  }
+
+  return { set, nudge }
+}
+
 export function initHero({ gsap, reduced, enter }) {
   const hero = document.getElementById('hero')
   const swatch = hero.querySelector('.hero-swatch')
   const stage = swatch.querySelector('.hero-stage')
   const object = swatch.querySelector('.hero-object')
+  const lens = createLens(object)
   const detail = hero.querySelector('.hero-detail')
   const cards = [...swatch.querySelectorAll('.hero-photo')]
   const views = swatch.querySelector('.hero-views')
@@ -23,6 +115,7 @@ export function initHero({ gsap, reduced, enter }) {
   const setZoom = (active) => {
     swatch.classList.toggle('is-detail', active)
     detail.setAttribute('aria-pressed', String(active))
+    lens.set(active ? cards[current].querySelector('img') : null)
   }
 
   const select = (index) => {
@@ -119,6 +212,10 @@ export function initHero({ gsap, reduced, enter }) {
       setZoom(false)
       queueRotation()
     }
+    if (event.target === detail && lens.nudge(event.key)) {
+      event.preventDefault()
+      return
+    }
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
     event.preventDefault()
     step((event.key === 'ArrowRight' ? 1 : -1) * horizontal)
@@ -126,7 +223,7 @@ export function initHero({ gsap, reduced, enter }) {
   })
 
   stage.addEventListener('pointerdown', (event) => {
-    if (!event.isPrimary) return
+    if (!event.isPrimary || swatch.classList.contains('is-detail')) return
     if (event.pointerType !== 'touch') return
     gesture = { id: event.pointerId, x: event.clientX, y: event.clientY }
     queueRotation()
@@ -176,7 +273,12 @@ export function initHero({ gsap, reduced, enter }) {
   }
 
   stage.addEventListener('pointermove', (event) => {
-    if (!tiltEnabled.matches || event.pointerType === 'touch') return
+    if (
+      !tiltEnabled.matches ||
+      event.pointerType === 'touch' ||
+      swatch.classList.contains('is-detail')
+    )
+      return
     pointer = event
     if (frame) return
     frame = requestAnimationFrame(() => {
