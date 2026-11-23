@@ -1,4 +1,5 @@
 import { locale } from './i18n.js'
+import { initTicker } from './ticker.js'
 
 export function initUi({ gsap, reduced }) {
   const progressBar = document.getElementById('nav-progress')
@@ -25,14 +26,8 @@ export function initUi({ gsap, reduced }) {
     window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
   )
 
-  // marquee: clone chunk so the loop is seamless on wide screens
-  const marquee = document.getElementById('marquee')
-  const chunk = marquee.querySelector('.marquee-chunk')
-  for (let i = 0; i < 3; i++) {
-    const clone = chunk.cloneNode(true)
-    clone.setAttribute('aria-hidden', 'true')
-    marquee.appendChild(clone)
-  }
+  initTicker(gsap)
+
   const year = new Intl.DateTimeFormat(locale, { calendar: 'persian', year: 'numeric' })
     .formatToParts()
     .find((part) => part.type === 'year')
