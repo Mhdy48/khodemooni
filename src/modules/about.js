@@ -1,3 +1,69 @@
+function initPhotoAutoplay(photos) {
+  const viewer = photos.closest('.about-viewer')
+  const views = [...viewer.querySelectorAll('input[name="workshop-view"]')]
+  const playback = viewer.querySelector('.about-autoplay')
+  const motion = matchMedia('(prefers-reduced-motion: reduce)')
+  let playing = !motion.matches
+  let visible = false
+  let hovered = false
+  let timer
+
+  function schedule() {
+    clearTimeout(timer)
+    const focused =
+      views.includes(document.activeElement) && document.activeElement.matches(':focus-visible')
+    if (!playing || !visible || hovered || focused || document.hidden || !window.__kkReady) return
+
+    timer = setTimeout(() => {
+      views.find((view) => !view.checked).checked = true
+      schedule()
+    }, 5000)
+  }
+
+  function syncPlayback() {
+    playback.setAttribute(
+      'aria-label',
+      playing ? playback.dataset.pauseLabel : playback.dataset.playLabel
+    )
+    playback.toggleAttribute('data-playing', playing)
+    schedule()
+  }
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      visible = entry.intersectionRatio >= 0.5
+      schedule()
+    },
+    { threshold: 0.5 }
+  )
+  observer.observe(photos)
+  document.addEventListener('kk:ready', schedule, { once: true })
+  document.addEventListener('visibilitychange', schedule)
+  viewer.addEventListener('change', schedule)
+  viewer.addEventListener('focusin', schedule)
+  viewer.addEventListener('focusout', () => queueMicrotask(schedule))
+  photos.addEventListener('pointerenter', (event) => {
+    if (event.pointerType === 'touch') return
+    hovered = true
+    schedule()
+  })
+  photos.addEventListener('pointerleave', () => {
+    hovered = false
+    schedule()
+  })
+  motion.addEventListener('change', (event) => {
+    if (event.matches) playing = false
+    syncPlayback()
+  })
+  playback.addEventListener('click', () => {
+    playing = !playing
+    syncPlayback()
+  })
+
+  playback.hidden = false
+  syncPlayback()
+}
+
 export function initAbout({ gsap, reduced, enter }) {
   const toggle = document.getElementById('about-toggle')
   const more = document.getElementById('about-more')
@@ -9,6 +75,7 @@ export function initAbout({ gsap, reduced, enter }) {
   function sync() {
     label.textContent = expanded ? toggle.dataset.collapseLabel : showMore
     more.style.gridTemplateRows = expanded ? '1fr' : '0fr'
+    more.inert = !expanded
     icon.style.transform = expanded ? 'rotate(45deg)' : ''
     toggle.setAttribute('aria-expanded', String(expanded))
   }
@@ -18,49 +85,26 @@ export function initAbout({ gsap, reduced, enter }) {
     sync()
   })
 
+  const photos = document.querySelector('.about-photos')
+  initPhotoAutoplay(photos)
   if (reduced) return
   const card = document.querySelector('.about-card')
-  const media = document.querySelector('.about-media')
-  const img = document.getElementById('about-img')
-  const stamp = document.querySelector('.about-stamp')
+  const images = photos.querySelectorAll('img')
   const lines = gsap.utils.toArray('#about .line-inner')
-  const eyebrow = document.querySelector('.about-eyebrow')
 
-  const ambient = () => {
-    gsap.to(img, {
-      scale: 1.13,
-      duration: 11,
-      yoyo: true,
-      repeat: -1,
-      ease: 'sine.inOut',
-      delay: 2,
-    })
-    gsap.fromTo(
-      img,
-      { yPercent: -3.5 },
-      {
-        yPercent: 3.5,
-        ease: 'none',
-        scrollTrigger: { trigger: media, start: 'top bottom', end: 'bottom top', scrub: true },
-      }
-    )
-  }
-
-  gsap.set(card, { y: 46, opacity: 0, scale: 0.985 })
+  gsap.set(card, { y: 24, opacity: 0 })
   gsap.set(lines, { yPercent: 112 })
-  gsap.set(stamp, { rotation: -14, scale: 0.7, opacity: 0 })
-  gsap.set(media, { clipPath: 'inset(0 0 0 100%)' })
-  gsap.set(img, { scale: 1.18 })
-  gsap.set(eyebrow, { opacity: 0, y: 6 })
+  gsap.set(photos, { clipPath: 'inset(0 0 100% 0)' })
+  gsap.set(images, { scale: 1.07 })
 
   const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
-  tl.to(card, { y: 0, opacity: 1, scale: 1, duration: 1 })
-    .to(eyebrow, { opacity: 1, y: 0, duration: 0.4, clearProps: 'transform,opacity' }, 0.2)
-    .to(media, { clipPath: 'inset(0 0 0 0%)', duration: 1.15, ease: 'power3.inOut' }, 0.15)
-    .to(img, { scale: 1.08, duration: 1.7, ease: 'power2.out' }, 0.15)
-    .to(lines, { yPercent: 0, duration: 1.05, stagger: 0.14, ease: 'power4.out' }, 0.3)
-    .to(stamp, { rotation: -2.5, scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(2.2)' }, 0.65)
-    .set(media, { clearProps: 'clipPath' })
-    .add(ambient)
+  tl.to(card, { y: 0, opacity: 1, duration: 0.65, clearProps: 'transform,opacity' })
+    .to(lines, { yPercent: 0, duration: 0.8, stagger: 0.11, clearProps: 'transform' }, 0.18)
+    .to(
+      photos,
+      { clipPath: 'inset(0 0 0% 0)', duration: 0.9, ease: 'power3.inOut', clearProps: 'clipPath' },
+      0.12
+    )
+    .to(images, { scale: 1, duration: 1.15, clearProps: 'transform' }, 0.12)
   enter(tl, { trigger: card, start: 'top 78%' })
 }

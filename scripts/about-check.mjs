@@ -84,26 +84,26 @@ const typo = await page.evaluate(() => {
     stitchProgress: Number(
       getComputedStyle(document.querySelector('.about-stats')).getPropertyValue('--measure-fill')
     ),
-    eyebrow: (() => {
-      const eb = document.querySelector('.about-eyebrow')
-      const cs = getComputedStyle(eb)
+    heading: (() => {
+      const heading = document.getElementById('about-heading')
+      const style = getComputedStyle(heading)
+      const features = getComputedStyle(document.getElementById('features-title'))
       return {
-        opacity: Number(cs.opacity),
-        size: parseFloat(cs.fontSize),
-        weight: cs.fontWeight,
-        height: eb.getBoundingClientRect().height,
-        dot: getComputedStyle(eb, '::before').width,
-        children: eb.children.length,
+        text: heading.textContent,
+        matchingStyle: ['fontSize', 'fontWeight', 'borderInlineStart', 'paddingInlineStart'].every(
+          (property) => style[property] === features[property]
+        ),
+        labelsSection: document.getElementById('about').getAttribute('aria-labelledby') === heading.id,
       }
     })(),
-    mediaClip: getComputedStyle(document.querySelector('.about-media')).clipPath,
+    mediaClip: getComputedStyle(document.querySelector('.about-photos')).clipPath,
     stampOpacity: Number(getComputedStyle(document.querySelector('.about-stamp')).opacity),
     cardOpacity: Number(getComputedStyle(document.querySelector('.about-card')).opacity),
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
   }
 })
 console.log('typo:', JSON.stringify({ ...typo, countSamples: typo.countSamples.length }, null, 1))
-ok(typo.weight === '350', 'display weight 350')
+ok(typo.weight === '750', 'display weight 750')
 ok(typo.size >= 40, 'display size >= 40px at 1440')
 ok(typo.lh >= 1.4, 'persian line-height >= 1.4')
 ok(typo.lead >= 17, 'lead >= 17px')
@@ -135,14 +135,9 @@ ok(
   'number width stays fixed during counting'
 )
 ok(typo.stitchProgress === 1, 'fabric stitching finishes drawing')
-ok(typo.eyebrow.opacity > 0.99, 'eyebrow settles')
 ok(
-  typo.eyebrow.size === 14 && typo.eyebrow.weight === '500',
-  'eyebrow uses restrained readable typography'
-)
-ok(
-  typo.eyebrow.height < 40 && typo.eyebrow.dot === '5px' && typo.eyebrow.children === 1,
-  'eyebrow is compact with a single decorative dot'
+  typo.heading.text === 'درباره کارگاه' && typo.heading.matchingStyle && typo.heading.labelsSection,
+  'workshop heading matches the capabilities heading'
 )
 await page.evaluate(() => window.__statObserver.disconnect())
 const widthRangeStable = await page.evaluate(() =>
@@ -166,41 +161,71 @@ ok(typo.cardOpacity > 0.99, 'card settled')
 ok(typo.overflow <= 0, 'no overflow desktop')
 await shot(page, 'shots/a1-desktop.png')
 
+await page.click('.about-panel-coat')
+await page.waitForFunction(() => {
+  const width = (panel) => document.querySelector(panel).getBoundingClientRect().width
+  return document.getElementById('about-view-coat').checked &&
+    width('.about-panel-coat') > 1.9 * width('.about-panel-process')
+})
+await shot(page, 'shots/about-coat-selected.png')
+await page.focus('#about-view-coat')
+await page.keyboard.press('ArrowUp')
+ok(
+  await page.$eval('#about-view-process', (input) => input.checked),
+  'keyboard selects the previous workshop photo'
+)
+
 /* toggle expand / collapse */
 await page.click('#about-toggle')
 await sleep(800)
 const open = await page.evaluate(() => ({
   aria: document.getElementById('about-toggle').getAttribute('aria-expanded'),
+  inert: document.getElementById('about-more').inert,
   rows: getComputedStyle(document.getElementById('about-more')).gridTemplateRows,
   quoteH: document.querySelector('.about-quote').getBoundingClientRect().height,
   label: document.querySelector('#about-toggle [data-copy]').textContent,
   icon: getComputedStyle(document.getElementById('about-toggle-icon')).transform,
 }))
 console.log('open:', JSON.stringify(open))
-ok(open.aria === 'true' && open.rows !== '0px' && open.quoteH > 20, 'expand works')
+ok(open.aria === 'true' && !open.inert && open.rows !== '0px' && open.quoteH > 20, 'expand works')
 ok(open.label === 'بستن', 'fa collapse label')
 await shot(page, 'shots/a2-expanded.png')
 await page.click('#about-toggle')
 await sleep(800)
 const closed = await page.evaluate(() => ({
   aria: document.getElementById('about-toggle').getAttribute('aria-expanded'),
+  inert: document.getElementById('about-more').inert,
   wrapperH: document.querySelector('#about-more > div').getBoundingClientRect().height,
   label: document.querySelector('#about-toggle [data-copy]').textContent,
 }))
-ok(closed.aria === 'false' && closed.wrapperH === 0, 'collapse works')
-ok(closed.label === 'بیشتر درباره ما', 'fa expand label restored')
+ok(closed.aria === 'false' && closed.inert && closed.wrapperH === 0, 'collapse works')
+ok(closed.label === 'بیشتر دربارهٔ کارگاه', 'fa expand label restored')
+
+await page.click('.about-consult')
+await page.waitForFunction(() => !document.getElementById('modal').classList.contains('hidden'))
+await page.keyboard.press('Escape')
+await page.waitForSelector('#modal', { hidden: true })
+ok(
+  await page.evaluate(() => document.activeElement.matches('.about-consult')),
+  'consultation returns focus'
+)
 
 /* arabic */
 await switchLanguage(page, 'ar')
 await gotoAbout(page)
-await page.waitForFunction(() => document.querySelector('.counter').textContent === '١٢')
+await page.$eval('.about-stats', (el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }))
+await page.waitForFunction(() =>
+  [...document.querySelectorAll('.about-stats .counter')].every(
+    (el) => el.textContent === Number(el.dataset.count).toLocaleString('ar-EG')
+  )
+)
 const ar = await page.evaluate(() => ({
   t1: document.querySelector('[data-copy="about_t1"]').textContent.trim(),
   t2: document.querySelector('[data-copy="about_t2"]').textContent.trim(),
   quote: document.querySelector('[data-copy="about_quote"]').textContent.trim(),
   counters: [...document.querySelectorAll('.about-stats .counter')].map((el) => el.textContent),
   labels: [...document.querySelectorAll('.stat-label')].map((el) => el.textContent.trim()),
-  eyebrow: document.querySelector('.about-eyebrow [data-copy]').textContent.trim(),
+  heading: document.getElementById('about-heading').textContent,
   overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
 }))
 console.log('ar:', JSON.stringify(ar))
@@ -215,7 +240,7 @@ ok(
   ),
   'all statistic labels switch to Arabic'
 )
-ok(ar.eyebrow === 'عن خيّاط خودموني', 'eyebrow switches to Arabic')
+ok(ar.heading === 'عن الورشة', 'heading switches to Arabic')
 await shot(page, 'shots/a3-arabic.png')
 await switchLanguage(page, 'fa')
 await page.close()
@@ -239,6 +264,10 @@ for (const w of [390, 768]) {
   )
   ok(o <= 0, `overflow at ${w}`)
   await shot(p, `shots/a4-${w}.png`)
+  if (w < 500) {
+    await p.tap('.about-panel-coat')
+    ok(await p.$eval('#about-view-coat', (input) => input.checked), 'touch selects the coat photo')
+  }
   await p.close()
 }
 
@@ -250,13 +279,12 @@ const rmState = await rm.evaluate(() => ({
   lines: [...document.querySelectorAll('#about .line-inner')].map(
     (el) => getComputedStyle(el).transform
   ),
-  mediaClip: getComputedStyle(document.querySelector('.about-media')).clipPath,
+  mediaClip: getComputedStyle(document.querySelector('.about-photos')).clipPath,
   stamp: Number(getComputedStyle(document.querySelector('.about-stamp')).opacity),
   counters: [...document.querySelectorAll('.about-stats .counter')].map((el) => el.textContent),
   stitchProgress: Number(
     getComputedStyle(document.querySelector('.about-stats')).getPropertyValue('--measure-fill')
   ),
-  eyebrowOpacity: Number(getComputedStyle(document.querySelector('.about-eyebrow')).opacity),
 }))
 ok(
   rmState.lines.every((t) => t === 'none'),
@@ -266,7 +294,6 @@ ok(rmState.mediaClip === 'none', 'reduced: media visible')
 ok(rmState.stamp > 0.99, 'reduced: stamp visible')
 ok(rmState.counters.join(',') === '۱۲,۲۴۰,۱۸۰,۹۸', 'reduced: counters instant')
 ok(rmState.stitchProgress === 1, 'reduced: stitching complete without animation')
-ok(rmState.eyebrowOpacity > 0.99, 'reduced: eyebrow visible without animation')
 await rm.close()
 
 /* reload with restored scroll at about */
@@ -291,7 +318,6 @@ const rlState = await rl.evaluate(() => ({
   stitchProgress: Number(
     getComputedStyle(document.querySelector('.about-stats')).getPropertyValue('--measure-fill')
   ),
-  eyebrowOpacity: Number(getComputedStyle(document.querySelector('.about-eyebrow')).opacity),
 }))
 ok(rlState.y > 500, 'reload kept scroll at about')
 ok(
@@ -301,7 +327,6 @@ ok(
 ok(rlState.card > 0.99, 'reload: card visible')
 ok(rlState.counters.join(',') === '۱۲,۲۴۰,۱۸۰,۹۸', 'reload: counters stay complete')
 ok(rlState.stitchProgress === 1, 'reload: stitching stays complete')
-ok(rlState.eyebrowOpacity > 0.99, 'reload: eyebrow stays visible')
 await rl.close()
 
 await browser.close()

@@ -5,19 +5,18 @@
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding: 25px 23px 28px;
+  padding: clamp(12px, 2.2vw, 25px);
   color: var(--color-bone-50);
-  background:
-    repeating-linear-gradient(115deg, transparent 0 3px, rgb(255 255 255 / 0.018) 3px 4px),
-    linear-gradient(115deg, var(--color-ink-950), var(--color-ink-900) 58%, var(--color-ink-800));
-  border-top: 1px solid var(--color-ink-800);
+  background: radial-gradient(ellipse at 88% 0, #a7793d33, transparent 72%), var(--color-ink-950);
+  border: 1px solid #8f61255c;
+  border-radius: clamp(12px, 1.7vw, 21px);
 }
 .about-stats::after {
   content: '';
   position: absolute;
   inset-inline: 26px;
   pointer-events: none;
-  top: 0;
+  top: -1px;
   height: 1px;
   background: linear-gradient(to left, transparent, var(--color-thread-400), transparent);
   transform: scaleX(var(--measure-fill));
@@ -35,8 +34,8 @@
   border-inline-start: 1px solid color-mix(in srgb, var(--color-thread-300) 16%, transparent);
 }
 .about-stats .stat:nth-child(n + 3) {
-  margin-top: 15px;
-  padding-top: 20px;
+  margin-top: 10px;
+  padding-top: 13px;
 }
 .about-stats .stat:nth-child(n + 3)::after {
   content: '';
@@ -53,7 +52,7 @@
   min-height: 1.35em;
   margin: 0;
   color: var(--color-bone-50);
-  font-size: clamp(2.45rem, 3.8vw, 3rem);
+  font-size: clamp(2rem, 3.8vw, 3.15rem);
   font-weight: 500;
   line-height: 1.2;
   transition: color 250ms ease-out;
@@ -95,7 +94,7 @@
   order: 1;
   margin-top: 7px;
   color: var(--color-bone-300);
-  font-size: 15px;
+  font-size: clamp(0.83rem, 1.2vw, 0.97rem);
   font-weight: 400;
   line-height: 1.85;
   text-align: center;
@@ -109,7 +108,6 @@
 @media (min-width: 640px) {
   .about-stats {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    padding: 28px 24px 29px;
   }
   .about-stats .stat {
     padding: 6px 12px 12px;

@@ -38,7 +38,7 @@
         <nav class="nav-links" aria-label="ناوبری اصلی">
           <a href="#home" class="nav-link nav-anchor" aria-current="location">صفحهٔ اصلی</a>
           <a href="#features" class="nav-link nav-anchor">توانمندی‌ها</a>
-          <a href="#about" class="nav-link nav-anchor">درباره ما</a>
+          <a href="#about" class="nav-link nav-anchor">درباره کارگاه</a>
           <a href="#services" class="nav-link nav-anchor">خدمات</a>
           <a href="#process" class="nav-link nav-anchor">فرآیند تولید</a>
           <a href="#portfolio" class="nav-link nav-anchor">نمونه‌کارها</a>
@@ -80,7 +80,7 @@
       <nav class="mobile-menu-links" aria-label="ناوبری موبایل">
         <a href="#home" class="mobile-link nav-anchor" aria-current="location">صفحهٔ اصلی</a>
         <a href="#features" class="mobile-link nav-anchor">توانمندی‌ها</a>
-        <a href="#about" class="mobile-link nav-anchor">درباره ما</a>
+        <a href="#about" class="mobile-link nav-anchor">درباره کارگاه</a>
         <a href="#services" class="mobile-link nav-anchor">خدمات</a>
         <a href="#process" class="mobile-link nav-anchor">فرآیند تولید</a>
         <a href="#portfolio" class="mobile-link nav-anchor">نمونه‌کارها</a>
@@ -179,7 +179,7 @@
         <span></span>
       </div>
       <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <h2 id="features-title" class="features-title">توانمندی‌های کارگاه</h2>
+        <h2 id="features-title" class="section-heading">توانمندی‌های کارگاه</h2>
         <ul id="features-bar" class="feat-grid">
           <li class="feat-tile feat-tile-cover">
             <a class="feat-link" href="#services">
@@ -236,37 +236,56 @@
       </div>
     </section>
     <!-- ============ ABOUT ============ -->
-    <section id="about" class="about-section relative scroll-mt-24 overflow-hidden">
+    <section id="about" class="about-section scroll-mt-24" aria-labelledby="about-heading">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <h2 id="about-heading" class="section-heading">درباره کارگاه</h2>
         <div class="about-card">
           <div class="about-copy">
-            <div class="about-head">
-              <p class="about-eyebrow">
-                <span data-copy="about_eyebrow">درباره خیاط خودمونی</span>
-              </p>
-              <span class="about-stamp">پرونده‌ی آتلیه • ۱۳۹۲</span>
-            </div>
-            <h2 class="about-title mt-5">
+            <h3 class="about-title">
               <span class="line-mask"><span class="line-inner" data-copy="about_t1">هر سانتی‌متر،</span></span>
               <span class="line-mask"><span class="line-inner" data-copy="about_t2">یک <span class="about-em">تصمیم</span> است.</span></span>
-            </h2>
+            </h3>
             <p class="about-lead mt-5">از یک سفارش شخصی تا خط تولید یک برند؛ الگو را از صفر می‌کشیم، پارچه را با دست انتخاب می‌کنیم و هر سانتی‌متر را با وسواس اندازه می‌گیریم.</p>
-            <div id="about-more" class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out">
+            <div id="about-more" class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out" inert>
               <div class="overflow-hidden">
                 <p class="about-body pt-4">کارگاه ما به ماشین‌های راسته‌دوز و اتوی بخار صنعتی مجهز است؛ هر سفارش پیش از تحویل از هفت ایستگاه کنترل کیفیت می‌گذرد. پارچه‌ها را از معتبرترین نساجی‌های داخلی و خارجی تأمین می‌کنیم و الگوی هر مشتری را به نام خودش نگه می‌داریم؛ سفارش بعدی، دقیقاً همان خواهد بود.</p>
                 <blockquote class="about-quote mt-5" data-copy="about_quote">لباسِ خوب دیده نمی‌شود؛ احساس می‌شود.</blockquote>
               </div>
             </div>
-            <button id="about-toggle" data-collapse-label="بستن" type="button" class="about-toggle-link mt-6" aria-expanded="false" aria-controls="about-more">
-              <span data-copy="about_more">بیشتر درباره ما</span>
-              <svg id="about-toggle-icon" viewBox="0 0 24 24" class="size-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-            </button>
+            <div class="about-actions">
+              <button type="button" class="open-modal btn-primary about-consult">
+                درخواست مشاوره
+                <svg aria-hidden="true" viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6-6 6 6 6"/></svg>
+              </button>
+              <button id="about-toggle" data-collapse-label="بستن" type="button" class="about-toggle-link" aria-expanded="false" aria-controls="about-more">
+                <span data-copy="about_more">بیشتر دربارهٔ کارگاه</span>
+                <svg id="about-toggle-icon" aria-hidden="true" viewBox="0 0 24 24" class="size-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>
           </div>
 
-          <div class="about-media">
-            <img src="/images/about-mannequin.webp" alt="مانکن خیاطی با کت راه‌راه و متر خیاطی" id="about-img" class="about-photo" loading="lazy" decoding="async" width="960" height="1440" />
-            <span class="about-tag">الگوسازی دستی، دوخت صنعتی</span>
-          </div>
+          <figure class="about-media">
+            <fieldset class="about-viewer">
+              <legend class="sr-only">انتخاب نمای کارگاه</legend>
+              <input id="about-view-process" class="sr-only" type="radio" name="workshop-view" aria-labelledby="about-label-process" checked />
+              <input id="about-view-coat" class="sr-only" type="radio" name="workshop-view" aria-labelledby="about-label-coat" />
+              <div class="about-photos">
+                <label for="about-view-process" class="about-panel about-panel-process">
+                  <img src="/images/workshop-measuring.webp" alt="خیاط در حال اندازه‌گیری پارچه پشت میز کارگاه" loading="lazy" decoding="async" width="960" height="1440" />
+                  <span id="about-label-process">فضای کارگاه</span>
+                </label>
+                <label for="about-view-coat" class="about-panel about-panel-coat">
+                  <img src="/images/workshop-lapel-check.webp" alt="خیاط هنگام بررسی یقه و درز شانهٔ کت روی مانکن" loading="lazy" decoding="async" width="960" height="1440" />
+                  <span id="about-label-coat">بررسی دوخت</span>
+                </label>
+              </div>
+              <button type="button" class="about-autoplay" aria-label="پخش خودکار تصاویر کارگاه" data-play-label="پخش خودکار تصاویر کارگاه" data-pause-label="مکث تعویض خودکار تصاویر کارگاه" hidden></button>
+            </fieldset>
+            <figcaption class="about-caption">
+              <span>الگوسازی دستی، دوخت صنعتی</span>
+              <span class="about-stamp">خیاط خودمونی • ۱۳۹۲</span>
+            </figcaption>
+          </figure>
 
           <dl class="about-stats">
             <div class="stat">
@@ -597,7 +616,7 @@
         <h3 class="footer-head">دسترسی سریع</h3>
         <ul class="mt-5 space-y-3 text-sm">
           <li><a href="#home" class="footer-link nav-anchor">خانه</a></li>
-          <li><a href="#about" class="footer-link nav-anchor">درباره ما</a></li>
+          <li><a href="#about" class="footer-link nav-anchor">درباره کارگاه</a></li>
           <li><a href="#services" class="footer-link nav-anchor">خدمات</a></li>
           <li><a href="#portfolio" class="footer-link nav-anchor">نمونه‌کارها</a></li>
           <li><a href="#faq" class="footer-link nav-anchor">سوالات متداول</a></li>
