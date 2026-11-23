@@ -206,7 +206,7 @@
   isolation: isolate;
   overflow: clip;
   padding-block: clamp(40px, 6.3vw, 88px) clamp(48px, 7.6vw, 106px);
-  border-block: 1px solid #8f61253a;
+  border-block-end: 1px solid #8f61253a;
   background: var(--color-bone-100);
 }
 
@@ -232,6 +232,70 @@
     repeating-linear-gradient(to right, #815b332c 0 1px, transparent 1px var(--features-grid)),
     repeating-linear-gradient(to bottom, #815b332c 0 1px, transparent 1px var(--features-grid));
   mask-image: linear-gradient(111deg, #000 8%, #0008 53%, transparent 89%);
+}
+
+.features-seam {
+  --seam-inset: clamp(16px, 9vw, 132px);
+  --seam-bevel: clamp(12px, 2vw, 28px);
+  position: absolute;
+  inset: 0 0 auto;
+  height: clamp(13px, 1.7vw, 24px);
+  filter: drop-shadow(0 1px 0 #b6894c6e);
+  pointer-events: none;
+}
+
+.features-seam::before {
+  position: absolute;
+  inset: 0;
+  background: var(--color-ink-950);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    calc(100% - var(--seam-inset)) 100%,
+    calc(100% - var(--seam-inset) - var(--seam-bevel)) 0,
+    calc(var(--seam-inset) + var(--seam-bevel)) 0,
+    var(--seam-inset) 100%,
+    0 100%
+  );
+  content: '';
+}
+
+.features-seam span {
+  position: absolute;
+  inset-block: 0;
+  width: var(--seam-bevel);
+  background: linear-gradient(30deg, transparent 6%, #f4d292 54%, #f4d29220 96%);
+  clip-path: polygon(0 100%, 100% 0, 100% 8%, 8% 100%);
+  opacity: 0.28;
+}
+
+.features-seam span:first-child {
+  right: var(--seam-inset);
+  transform: scaleX(-1);
+}
+
+.features-seam span:last-child {
+  --seam-delay: 1.35s;
+  left: var(--seam-inset);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .features-seam span {
+    animation: features-seam-glint 8.4s ease-in-out var(--seam-delay, 0s) infinite;
+  }
+}
+
+@keyframes features-seam-glint {
+  0%,
+  32%,
+  100% {
+    opacity: 0.28;
+  }
+
+  14% {
+    opacity: 1;
+  }
 }
 
 .features-title {

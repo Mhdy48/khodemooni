@@ -70,6 +70,36 @@ async function checkBackground(page, { fixed, animated }) {
   assert.deepEqual(background, { hasPhoto: true, fixed, animated, followedByAbout: true })
 }
 
+async function checkSeam(page, animated) {
+  const seam = await page.$eval('.features-seam', (element) => {
+    const glints = element
+      .getAnimations({ subtree: true })
+      .filter((animation) => animation.animationName === 'features-seam-glint')
+      .map((animation) => animation.effect.getTiming())
+
+    return {
+      decorative: element.getAttribute('aria-hidden') === 'true',
+      atBoundary:
+        Math.abs(
+          element.getBoundingClientRect().top -
+            document.getElementById('hero').getBoundingClientRect().bottom
+        ) < 1,
+      clipped: getComputedStyle(element, '::before').clipPath.startsWith('polygon('),
+      corners: element.children.length,
+      glintDelays: glints
+        .filter(({ iterations }) => iterations === Infinity)
+        .map(({ delay }) => delay),
+    }
+  })
+  assert.deepEqual(seam, {
+    decorative: true,
+    atBoundary: true,
+    clipped: true,
+    corners: 2,
+    glintDelays: animated ? [0, 1350] : [],
+  })
+}
+
 try {
   const desktop = await newPage(1440, 900)
   await desktop.goto(URL)
@@ -78,6 +108,7 @@ try {
   assert(cover.height >= design.height + fabric.height)
   assert.equal(Math.round(design.y), Math.round(equipment.y))
   await checkBackground(desktop, { fixed: true, animated: true })
+  await checkSeam(desktop, true)
   await desktop.screenshot({ path: 'shots/f1-desktop.png' })
   await desktop.focus('.feat-link[href="#service-design"]')
   await desktop.keyboard.press('Enter')
@@ -98,6 +129,7 @@ try {
     await mobile.goto(new globalThis.URL(language, URL).href)
     const [first, second, third] = await checkFeatures(mobile)
     await checkBackground(mobile, { fixed: false, animated: !reduced })
+    await checkSeam(mobile, !reduced)
     assert(first.y < second.y)
     if (width > 336) {
       assert.equal(Math.round(second.y), Math.round(third.y))
