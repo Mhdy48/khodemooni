@@ -1,8 +1,46 @@
 .about-section {
   --about-line: #8f61253b;
+  --about-edge-height: min(calc(2.4 * var(--features-grid)), clamp(35px, 6.6vw, 95px));
+  position: relative;
   padding-block: clamp(62px, 9vw, 124px);
   background:
+    linear-gradient(to bottom, var(--color-bone-100), transparent clamp(38px, 6vw, 82px)),
     radial-gradient(ellipse at 15% 38%, #e0cfb568, transparent 64%), var(--color-bone-100);
+}
+
+.about-section::before,
+.about-section::after {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(100% - 1px);
+  height: var(--about-edge-height);
+  pointer-events: none;
+  content: '';
+}
+
+.about-section::before {
+  background: linear-gradient(
+    to top,
+    var(--color-bone-100) 6%,
+    #f5f0e7b8 31%,
+    #f5f0e749 65%,
+    transparent
+  );
+}
+
+.about-section::after {
+  background: linear-gradient(
+    to top,
+    transparent 8%,
+    #f5f0e779 32%,
+    #f5f0e760 61%,
+    transparent 96%
+  );
+  mask-image: repeating-linear-gradient(
+    to right,
+    #000 0 var(--features-grid),
+    transparent var(--features-grid) calc(2 * var(--features-grid))
+  );
 }
 
 .about-card {

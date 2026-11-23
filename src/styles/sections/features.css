@@ -201,12 +201,15 @@
   }
 }
 
+#home {
+  --features-grid: clamp(21px, 2.4vw, 36px);
+}
+
 .features-section {
   position: relative;
   isolation: isolate;
   overflow: clip;
   padding-block: clamp(40px, 6.3vw, 88px) clamp(48px, 7.6vw, 106px);
-  border-block-end: 1px solid #8f61253a;
   background: var(--color-bone-100);
 }
 
@@ -226,7 +229,6 @@
 }
 
 .features-section::after {
-  --features-grid: clamp(21px, 2.4vw, 36px);
   inset: -32px 0;
   background-image:
     repeating-linear-gradient(to right, #815b332c 0 1px, transparent 1px var(--features-grid)),
