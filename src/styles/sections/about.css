@@ -1,46 +1,13 @@
 .about-section {
-  --about-line: #8f61253b;
-  --about-edge-height: min(calc(2.4 * var(--features-grid)), clamp(35px, 6.6vw, 95px));
-  position: relative;
+  --about-line: #ebd0a13d;
   padding-block: clamp(62px, 9vw, 124px);
   background:
-    linear-gradient(to bottom, var(--color-bone-100), transparent clamp(38px, 6vw, 82px)),
-    radial-gradient(ellipse at 15% 38%, #e0cfb568, transparent 64%), var(--color-bone-100);
+    linear-gradient(to bottom, var(--color-ink-950), transparent 21% 80%, var(--color-ink-950)),
+    radial-gradient(ellipse at 12% 48%, #442e21, #2b1f17 47%, var(--color-ink-950) 83%);
 }
 
-.about-section::before,
-.about-section::after {
-  position: absolute;
-  inset-inline: 0;
-  inset-block-end: calc(100% - 1px);
-  height: var(--about-edge-height);
-  pointer-events: none;
-  content: '';
-}
-
-.about-section::before {
-  background: linear-gradient(
-    to top,
-    var(--color-bone-100) 6%,
-    #f5f0e7b8 31%,
-    #f5f0e749 65%,
-    transparent
-  );
-}
-
-.about-section::after {
-  background: linear-gradient(
-    to top,
-    transparent 8%,
-    #f5f0e779 32%,
-    #f5f0e760 61%,
-    transparent 96%
-  );
-  mask-image: repeating-linear-gradient(
-    to right,
-    #000 0 var(--features-grid),
-    transparent var(--features-grid) calc(2 * var(--features-grid))
-  );
+.about-section .section-heading {
+  color: var(--color-bone-50);
 }
 
 .about-card {
@@ -55,20 +22,20 @@
 }
 
 .about-title {
-  color: var(--color-ink-950);
+  color: var(--color-bone-50);
   font-size: clamp(2.14rem, 1.45rem + 2.85vw, 4.25rem);
   font-weight: 750;
   line-height: 1.42;
 }
 
 .about-em {
-  color: var(--color-thread-600);
+  color: var(--color-thread-300);
 }
 
 .about-lead,
 .about-body {
   max-width: 50ch;
-  color: var(--color-ink-700);
+  color: var(--color-bone-200);
   line-height: 2;
   text-wrap: pretty;
 }
@@ -84,7 +51,7 @@
 .about-quote {
   padding-inline-start: 17px;
   border-inline-start: 2px solid var(--color-thread-500);
-  color: var(--color-ink-900);
+  color: var(--color-bone-100);
   font-size: clamp(1rem, 1.45vw, 1.2rem);
   font-weight: 590;
   line-height: 1.8;
@@ -100,16 +67,12 @@
 
 .about-actions .about-consult {
   min-height: 48px;
-  background: var(--color-ink-900);
-  color: var(--color-bone-50);
+  background: var(--color-thread-300);
+  color: var(--color-ink-950);
 }
 
 .about-actions .about-consult:hover {
-  background: var(--color-ink-700);
-}
-
-.about-consult svg {
-  color: var(--color-thread-300);
+  background: var(--color-bone-50);
 }
 
 .about-toggle-link {
@@ -118,7 +81,7 @@
   gap: 6px;
   min-height: 44px;
   border-radius: 4px;
-  color: var(--color-ink-800);
+  color: var(--color-bone-100);
   font-size: 0.94rem;
   font-weight: 610;
   transition: color 180ms ease;
@@ -126,7 +89,7 @@
 
 .about-toggle-link:hover,
 .about-toggle-link svg {
-  color: var(--color-thread-600);
+  color: var(--color-thread-300);
 }
 
 .about-media {
@@ -147,10 +110,10 @@
   gap: clamp(4px, 0.6vw, 8px);
   height: clamp(275px, 32vw, 453px);
   padding: clamp(5px, 0.7vw, 9px);
-  border: 1px solid #8f612559;
+  border: 1px solid var(--about-line);
   border-radius: clamp(12px, 1.5vw, 20px);
   background: var(--color-ink-950);
-  box-shadow: 0 23px 38px -28px #342013ba;
+  box-shadow: 0 23px 38px -28px #100905c4;
 }
 
 #about-view-coat:checked ~ .about-photos {
@@ -311,13 +274,13 @@
   margin-block-start: 13px;
   padding-block-start: 9px;
   border-block-start: 1px solid var(--about-line);
-  color: var(--color-ink-700);
+  color: var(--color-bone-300);
   font-size: clamp(0.73rem, 0.68rem + 0.22vw, 0.9rem);
   line-height: 1.5;
 }
 
 .about-stamp {
-  color: var(--color-thread-600);
+  color: var(--color-thread-300);
   font-weight: 600;
 }
 

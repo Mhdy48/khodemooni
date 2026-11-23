@@ -60,43 +60,65 @@ async function checkFeatures(page) {
   return cards.map(({ rect }) => rect)
 }
 
-async function checkBackground(page, { fixed, animated }) {
+async function checkBackground(page) {
   const background = await page.$eval('#features', (section) => ({
-    hasPhoto: getComputedStyle(section, '::before').backgroundImage.includes('lapel-detail.webp'),
-    fixed: getComputedStyle(section, '::before').backgroundAttachment.includes('fixed'),
-    animated: getComputedStyle(section, '::after').animationName === 'features-grid-drift',
+    transparent: getComputedStyle(section).backgroundColor === 'rgba(0, 0, 0, 0)',
+    hasCustomBackdrop: [null, '::before', '::after'].some(
+      (pseudo) => getComputedStyle(section, pseudo).backgroundImage !== 'none'
+    ),
     followedByAbout: section.nextElementSibling?.id === 'about',
   }))
-  assert.deepEqual(background, { hasPhoto: true, fixed, animated, followedByAbout: true })
+  assert.deepEqual(background, {
+    transparent: true,
+    hasCustomBackdrop: false,
+    followedByAbout: true,
+  })
 }
 
-async function checkSeam(page, animated) {
-  const seam = await page.$eval('.features-seam', (element) => {
-    const glints = element
-      .getAnimations({ subtree: true })
-      .filter((animation) => animation.animationName === 'features-seam-glint')
-      .map((animation) => animation.effect.getTiming())
-
+async function checkSeams(page) {
+  const seams = await page.$$eval('#features > .features-seam', ([top, bottom]) => {
+    const topRect = top.getBoundingClientRect()
+    const bottomRect = bottom.getBoundingClientRect()
+    const topBevel = getComputedStyle(top, '::before').clipPath
+    const bottomBevel = getComputedStyle(bottom, '::before').clipPath
+    const rails = [top, bottom].flatMap((seam) => [
+      getComputedStyle(seam, '::after'),
+      getComputedStyle(seam.querySelector('.features-seam-rail')),
+    ])
+    const scrollMotion =
+      CSS.supports('animation-timeline: view()') &&
+      matchMedia('(prefers-reduced-motion: no-preference)').matches
     return {
-      decorative: element.getAttribute('aria-hidden') === 'true',
-      atBoundary:
-        Math.abs(
-          element.getBoundingClientRect().top -
-            document.getElementById('hero').getBoundingClientRect().bottom
-        ) < 1,
-      clipped: getComputedStyle(element, '::before').clipPath.startsWith('polygon('),
-      corners: element.children.length,
-      glintDelays: glints
-        .filter(({ iterations }) => iterations === Infinity)
-        .map(({ delay }) => delay),
+      decorative: [top, bottom].every((seam) => seam.getAttribute('aria-hidden') === 'true'),
+      atBoundaries:
+        Math.abs(topRect.top - document.getElementById('hero').getBoundingClientRect().bottom) <
+          1 &&
+        Math.abs(bottomRect.bottom - document.getElementById('about').getBoundingClientRect().top) <
+          1,
+      mirrored: topRect.height === bottomRect.height && getComputedStyle(bottom).scale === '1 -1',
+      bevelled: topBevel.startsWith('polygon(') && topBevel === bottomBevel,
+      layered: rails.every((rail) => rail.clipPath.startsWith('polygon(')),
+      scrollMotion: rails.every((rail) =>
+        scrollMotion
+          ? rail.animationName === 'features-seam-depth' &&
+            rail.animationTimeline === '--features-seam-view'
+          : rail.animationName === 'none'
+      ),
+      clearance:
+        document.getElementById('features-title').getBoundingClientRect().top - topRect.bottom >=
+          64 &&
+        bottomRect.top - document.getElementById('features-bar').getBoundingClientRect().bottom >=
+          80,
     }
   })
-  assert.deepEqual(seam, {
+  assert.deepEqual(seams, {
     decorative: true,
-    atBoundary: true,
-    clipped: true,
-    corners: 2,
-    glintDelays: animated ? [0, 1350] : [],
+    atBoundaries: true,
+    mirrored: true,
+    bevelled: true,
+    layered: true,
+    scrollMotion: true,
+    clearance: true,
   })
 }
 
@@ -107,8 +129,8 @@ try {
   assert(cover.width > design.width)
   assert(cover.height >= design.height + fabric.height)
   assert.equal(Math.round(design.y), Math.round(equipment.y))
-  await checkBackground(desktop, { fixed: true, animated: true })
-  await checkSeam(desktop, true)
+  await checkBackground(desktop)
+  await checkSeams(desktop)
   await desktop.screenshot({ path: 'shots/f1-desktop.png' })
   await desktop.focus('.feat-link[href="#service-design"]')
   await desktop.keyboard.press('Enter')
@@ -128,8 +150,8 @@ try {
     const mobile = await newPage(width, 844, true, reduced)
     await mobile.goto(new globalThis.URL(language, URL).href)
     const [first, second, third] = await checkFeatures(mobile)
-    await checkBackground(mobile, { fixed: false, animated: !reduced })
-    await checkSeam(mobile, !reduced)
+    await checkBackground(mobile)
+    await checkSeams(mobile)
     assert(first.y < second.y)
     if (width > 336) {
       assert.equal(Math.round(second.y), Math.round(third.y))
