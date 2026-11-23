@@ -60,6 +60,16 @@ async function checkFeatures(page) {
   return cards.map(({ rect }) => rect)
 }
 
+async function checkBackground(page, { fixed, animated }) {
+  const background = await page.$eval('#features', (section) => ({
+    hasPhoto: getComputedStyle(section, '::before').backgroundImage.includes('lapel-detail.webp'),
+    fixed: getComputedStyle(section, '::before').backgroundAttachment.includes('fixed'),
+    animated: getComputedStyle(section, '::after').animationName === 'features-grid-drift',
+    followedByAbout: section.nextElementSibling?.id === 'about',
+  }))
+  assert.deepEqual(background, { hasPhoto: true, fixed, animated, followedByAbout: true })
+}
+
 try {
   const desktop = await newPage(1440, 900)
   await desktop.goto(URL)
@@ -67,6 +77,7 @@ try {
   assert(cover.width > design.width)
   assert(cover.height >= design.height + fabric.height)
   assert.equal(Math.round(design.y), Math.round(equipment.y))
+  await checkBackground(desktop, { fixed: true, animated: true })
   await desktop.screenshot({ path: 'shots/f1-desktop.png' })
   await desktop.focus('.feat-link[href="#service-design"]')
   await desktop.keyboard.press('Enter')
@@ -86,6 +97,7 @@ try {
     const mobile = await newPage(width, 844, true, reduced)
     await mobile.goto(new globalThis.URL(language, URL).href)
     const [first, second, third] = await checkFeatures(mobile)
+    await checkBackground(mobile, { fixed: false, animated: !reduced })
     assert(first.y < second.y)
     if (width > 336) {
       assert.equal(Math.round(second.y), Math.round(third.y))

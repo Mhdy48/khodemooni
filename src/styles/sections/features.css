@@ -202,7 +202,36 @@
 }
 
 .features-section {
-  padding-block-start: clamp(42px, 7vw, 94px);
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  padding-block: clamp(40px, 6.3vw, 88px) clamp(48px, 7.6vw, 106px);
+  border-block: 1px solid #8f61253a;
+  background: var(--color-bone-100);
+}
+
+.features-section::before,
+.features-section::after {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  content: '';
+}
+
+.features-section::before {
+  inset: 0;
+  background:
+    linear-gradient(112deg, #d6c0a1a8, #f5f0e7d9 54%, #f5f0e7f5 90%),
+    url('/images/lapel-detail.webp') center 48% / cover no-repeat var(--color-bone-300);
+}
+
+.features-section::after {
+  --features-grid: clamp(21px, 2.4vw, 36px);
+  inset: -32px 0;
+  background-image:
+    repeating-linear-gradient(to right, #815b332c 0 1px, transparent 1px var(--features-grid)),
+    repeating-linear-gradient(to bottom, #815b332c 0 1px, transparent 1px var(--features-grid));
+  mask-image: linear-gradient(111deg, #000 8%, #0008 53%, transparent 89%);
 }
 
 .features-title {
@@ -213,6 +242,36 @@
   font-size: clamp(1.45rem, 1.15rem + 1.2vw, 2.2rem);
   font-weight: 790;
   line-height: 1.3;
+}
+
+@media (min-width: 56rem) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .features-section::before {
+    background-attachment: scroll, fixed;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .features-section {
+      view-timeline-name: --features-background;
+    }
+
+    .features-section::after {
+      animation: features-grid-drift linear both;
+      animation-timeline: --features-background;
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes features-grid-drift {
+  from {
+    transform: translateY(-32px);
+  }
+
+  to {
+    transform: translateY(32px);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
