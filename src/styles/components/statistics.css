@@ -1,14 +1,12 @@
 .about-stats {
   --measure-fill: 1;
   --stats-divider: #ebd0a12b;
+  --stats-radius: clamp(12px, 1.25vw, 17px);
   position: relative;
   grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
   padding: clamp(4px, 0.55vw, 6px);
   border: 1px solid #ab7b466e;
-  border-radius: clamp(12px, 1.25vw, 17px);
+  border-radius: var(--stats-radius);
   background:
     radial-gradient(ellipse at 88% 0, #b6813b45, transparent 66%),
     linear-gradient(110deg, #2b1d14c4, #1c1510e8 52%, #241810d8),
@@ -18,45 +16,62 @@
     0 19px 34px -23px #29190c9e;
 }
 
+.about-stats-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  margin: 0;
+}
+
+.about-stats-border {
+  position: absolute;
+  inset: -1px;
+  display: none;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  overflow: visible;
+  fill: none;
+  opacity: var(--measure-fill);
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .about-stats::before {
-    position: absolute;
-    inset: -1px;
-    border: 1px solid var(--color-thread-400);
-    border-radius: inherit;
+  .about-stats-border {
+    display: block;
+  }
+
+  .about-stats-border rect {
+    x: 0.5px;
+    y: 0.5px;
+    width: calc(100% - 1px);
+    height: calc(100% - 1px);
+    rx: calc(var(--stats-radius) - 0.5px);
+    stroke: var(--color-thread-400);
+    stroke-linecap: round;
+    stroke-dasharray: 100 100;
+    filter: drop-shadow(0 0 2px #dfa85b85);
     animation: stats-border-draw 8.8s linear infinite;
-    pointer-events: none;
-    content: '';
   }
 }
 
 @keyframes stats-border-draw {
-  0% {
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0, 0 0, 50% 50%);
-    opacity: var(--measure-fill);
+  from {
+    stroke-dashoffset: 100;
+    opacity: 0;
   }
 
-  33% {
-    clip-path: polygon(0 0, 100% 0, 100% 0, 100% 0, 100% 0, 50% 50%);
-  }
-
-  41% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%, 50% 50%);
-  }
-
-  74% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 50% 50%);
+  5%,
+  87% {
+    opacity: 1;
   }
 
   82%,
-  87% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 50%);
-    opacity: var(--measure-fill);
+  to {
+    stroke-dashoffset: 0;
   }
 
   97%,
-  100% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 50%);
+  to {
     opacity: 0;
   }
 }
@@ -185,7 +200,7 @@
 }
 
 @media (min-width: 40rem) {
-  .about-stats {
+  .about-stats-list {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 

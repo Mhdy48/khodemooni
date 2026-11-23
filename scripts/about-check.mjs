@@ -135,6 +135,33 @@ ok(
   'number width stays fixed during counting'
 )
 ok(typo.stitchProgress === 1, 'fabric stitching finishes drawing')
+const frameDraw = await page.$eval('.about-stats-border rect', (border) => {
+  const animation = border.getAnimations().find((entry) => entry.animationName === 'stats-border-draw')
+  if (!animation) return false
+
+  const elapsed = animation.currentTime
+  const { duration } = animation.effect.getTiming()
+  animation.pause()
+  const samples = [0, 0.2, 0.4, 0.85, 0.999, 1.001].map((progress) => {
+    animation.currentTime = progress * duration
+    const style = getComputedStyle(border)
+    return { remaining: parseFloat(style.strokeDashoffset), opacity: Number(style.opacity) }
+  })
+  animation.currentTime = elapsed
+  animation.play()
+  const [start, first, second, drawn, beforeLoop, afterLoop] = samples
+  return (
+    border.getAttribute('pathLength') === '100' &&
+    border.getTotalLength() > 0 &&
+    start.remaining === 100 &&
+    Math.abs(start.remaining - 2 * first.remaining + second.remaining) < 0.1 &&
+    drawn.remaining === 0 &&
+    drawn.opacity === 1 &&
+    beforeLoop.opacity === 0 &&
+    afterLoop.opacity < 0.03
+  )
+})
+ok(frameDraw, 'frame draws at constant speed and restarts after fading out')
 ok(
   typo.heading.text === 'درباره کارگاه' && typo.heading.matchingStyle && typo.heading.labelsSection,
   'workshop heading matches the capabilities heading'
@@ -281,6 +308,7 @@ const rmState = await rm.evaluate(() => ({
   ),
   mediaClip: getComputedStyle(document.querySelector('.about-photos')).clipPath,
   stamp: Number(getComputedStyle(document.querySelector('.about-stamp')).opacity),
+  frameDisplay: getComputedStyle(document.querySelector('.about-stats-border')).display,
   counters: [...document.querySelectorAll('.about-stats .counter')].map((el) => el.textContent),
   stitchProgress: Number(
     getComputedStyle(document.querySelector('.about-stats')).getPropertyValue('--measure-fill')
@@ -292,6 +320,7 @@ ok(
 )
 ok(rmState.mediaClip === 'none', 'reduced: media visible')
 ok(rmState.stamp > 0.99, 'reduced: stamp visible')
+ok(rmState.frameDisplay === 'none', 'reduced: static statistics frame')
 ok(rmState.counters.join(',') === '۱۲,۲۴۰,۱۸۰,۹۸', 'reduced: counters instant')
 ok(rmState.stitchProgress === 1, 'reduced: stitching complete without animation')
 await rm.close()
