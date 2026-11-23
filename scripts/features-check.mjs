@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { URL, createBrowserCheck } from './helpers/browser.mjs'
 
 const { browser, errors, newPage } = await createBrowserCheck()
-const targets = ['#services', '#service-design', '#step-sewing', '#service-fabric', '#step-quality']
+const targets = ['#process', '#step-design', '#step-sewing', '#step-fabric', '#step-quality']
 
 async function checkFeatures(page) {
   await page.waitForFunction(() => !document.querySelector('#loader'))
@@ -132,13 +132,13 @@ try {
   await checkBackground(desktop)
   await checkSeams(desktop)
   await desktop.screenshot({ path: 'shots/f1-desktop.png' })
-  await desktop.focus('.feat-link[href="#service-design"]')
+  await desktop.focus('.feat-link[href="#step-design"]')
   await desktop.keyboard.press('Enter')
-  await desktop.waitForFunction(() => location.hash === '#service-design')
+  await desktop.waitForFunction(() => location.hash === '#step-design')
   await desktop.waitForFunction(
     () =>
-      document.getElementById('service-design').getBoundingClientRect().top > 65 &&
-      document.getElementById('service-design').getBoundingClientRect().top < innerHeight
+      document.getElementById('step-design').getBoundingClientRect().top > 65 &&
+      document.getElementById('step-design').getBoundingClientRect().top < innerHeight
   )
   await desktop.close()
 

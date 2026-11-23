@@ -6,7 +6,6 @@ const sections = [
   'hero',
   'features',
   'about',
-  'services',
   'process',
   'portfolio',
   'faq',
@@ -70,7 +69,7 @@ try {
       await p.evaluate(() => scrollTo({ top: scrollY + 1, behavior: 'instant' }))
       await sleep(100)
       assert(await p.evaluate(loaderVisible), `${width}/${id}: scrolling does not dismiss loader`)
-      if (id === 'services') await p.screenshot({ path: `shots/reload-loader-${width}.png` })
+      if (id === 'process') await p.screenshot({ path: `shots/reload-loader-${width}.png` })
       await p.waitForFunction(() => !document.querySelector('#loader'))
       await sleep(2600)
       const r = await p.evaluate(settled, id)
@@ -86,7 +85,7 @@ try {
         assert(r.extra.counters === '۱۲,۲۴۰,۱۸۰,۹۸', 'about counters settled')
       }
       if (id === 'hero') assert(r.extra.piece === 1, 'hero pieces settled')
-      if (id === 'services') await p.screenshot({ path: `shots/reload-settled-${width}.png` })
+      if (id === 'process') await p.screenshot({ path: `shots/reload-settled-${width}.png` })
       console.log(`${width}/${id}: loader shown, kept ${r.y}`)
       await p.close()
     }
@@ -95,7 +94,7 @@ try {
   const h = await newPage(1440, 900)
   await h.goto(URL, { waitUntil: 'networkidle0' })
   await h.waitForFunction(() => !document.querySelector('#loader'))
-  await h.click('a[href="#services"]')
+  await h.click('.nav-link[href="#process"]')
   await sleep(1300)
   const anchorY = await h.evaluate(() => Math.round(scrollY))
   for (let i = 0; i < 3; i++) {
@@ -106,10 +105,10 @@ try {
     await sleep(1400)
     const hr = await h.evaluate(() => ({
       y: Math.round(scrollY),
-      top: Math.round(document.getElementById('services').getBoundingClientRect().top),
+      top: Math.round(document.getElementById('process').getBoundingClientRect().top),
       nav: Math.round(document.getElementById('navbar').getBoundingClientRect().bottom),
       min: Math.min(
-        ...[...document.querySelectorAll('#services [data-reveal]')].map((el) =>
+        ...[...document.querySelectorAll('#process [data-reveal]')].map((el) =>
           Number(getComputedStyle(el).opacity)
         )
       ),

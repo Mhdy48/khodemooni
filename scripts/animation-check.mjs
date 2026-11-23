@@ -7,7 +7,6 @@ const targets = {
   features: '#features-bar',
   about: '.about-card',
   counters: '.about-stats .stat',
-  services: '#services [data-reveal]',
   process: '#process [data-reveal]',
 }
 

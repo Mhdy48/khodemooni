@@ -39,7 +39,6 @@
           <a href="#home" class="nav-link nav-anchor" aria-current="location">صفحهٔ اصلی</a>
           <a href="#features" class="nav-link nav-anchor">توانمندی‌ها</a>
           <a href="#about" class="nav-link nav-anchor">درباره کارگاه</a>
-          <a href="#services" class="nav-link nav-anchor">خدمات</a>
           <a href="#process" class="nav-link nav-anchor">فرآیند تولید</a>
           <a href="#portfolio" class="nav-link nav-anchor">نمونه‌کارها</a>
           <a href="#faq" class="nav-link nav-anchor">سوالات متداول</a>
@@ -81,7 +80,6 @@
         <a href="#home" class="mobile-link nav-anchor" aria-current="location">صفحهٔ اصلی</a>
         <a href="#features" class="mobile-link nav-anchor">توانمندی‌ها</a>
         <a href="#about" class="mobile-link nav-anchor">درباره کارگاه</a>
-        <a href="#services" class="mobile-link nav-anchor">خدمات</a>
         <a href="#process" class="mobile-link nav-anchor">فرآیند تولید</a>
         <a href="#portfolio" class="mobile-link nav-anchor">نمونه‌کارها</a>
         <a href="#faq" class="mobile-link nav-anchor">سوالات متداول</a>
@@ -181,7 +179,7 @@
         <h2 id="features-title" class="section-heading">توانمندی‌های کارگاه</h2>
         <ul id="features-bar" class="feat-grid">
           <li class="feat-tile feat-tile-cover">
-            <a class="feat-link" href="#services">
+            <a class="feat-link" href="#process">
               <img class="feat-cover" src="/images/sewing-machine.webp" alt="" loading="lazy" decoding="async" />
               <span class="feat-icon-box"><svg class="feat-icon fi-factory" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l6 4V9l6 4V4h6v17H3z"/><path class="fi-win w1" d="M17 8h1"/><path class="fi-win w2" d="M17 12h1"/><path class="fi-win w3" d="M7 17h2"/><path class="fi-win w4" d="M12 17h2"/></svg></span>
               <span class="feat-copy">
@@ -192,7 +190,7 @@
             </a>
           </li>
           <li class="feat-tile">
-            <a class="feat-link" href="#service-design">
+            <a class="feat-link" href="#step-design">
               <span class="feat-icon-box"><svg class="feat-icon fi-shirt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3l3 2 3-2 4 4-2.5 3V21h-9V10L5 7l4-4z"/><path d="M12 5v6"/></svg></span>
               <span class="feat-copy">
                 <strong class="feat-label">طراحی اختصاصی</strong>
@@ -212,7 +210,7 @@
             </a>
           </li>
           <li class="feat-tile">
-            <a class="feat-link" href="#service-fabric">
+            <a class="feat-link" href="#step-fabric">
               <span class="feat-icon-box"><svg class="feat-icon fi-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="fi-l1" d="M12 3l9 5-9 5-9-5 9-5z"/><path class="fi-l2" d="M3 13l9 5 9-5"/><path class="fi-l3" d="M3 17l9 5 9-5"/></svg></span>
               <span class="feat-copy">
                 <strong class="feat-label">انتخاب پارچه متنوع</strong>
@@ -342,51 +340,6 @@
         </ul>
       </div>
     </div>
-    <!-- ============ SERVICES ============ -->
-    <section id="services" class="py-24 lg:py-32 scroll-mt-24">
-      <div class="page-container">
-        <div class="grid lg:grid-cols-12 gap-8 items-end mb-14">
-          <div class="lg:col-span-7">
-            <p class="eyebrow" data-reveal><span class="eyebrow-line"></span><span>خدمات ما</span></p>
-            <h2 class="section-title mt-4" data-reveal>راهکارهای حرفه‌ای<br/>برای برندها و سازمان‌ها</h2>
-          </div>
-          <p class="lg:col-span-5 text-stone-600 leading-8 lg:text-left" data-reveal>از طراحی و الگوسازی تا تولید انبوه؛ با بالاترین استاندارد کیفی و تحویل به‌موقع، کنار برند شما هستیم.</p>
-        </div>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <button id="service-design" type="button" class="service-card open-modal scroll-mt-28" data-service="design" data-reveal data-delay="0">
-            <img src="/images/chalk.webp" alt="گچ خیاطی روی پارچه چهارخانه" class="service-img" loading="lazy" decoding="async" />
-            <span class="service-scrim"></span>
-            <span class="absolute top-4 right-4 rounded-full bg-bone-50/10 backdrop-blur px-3 py-1 text-[10px] font-bold text-thread-300 ring-1 ring-thread-500/40">۰۱ • طراحی</span>
-            <span class="service-body">
-              <span class="block text-xl font-extrabold text-bone-50">طراحی و الگوسازی اختصاصی</span>
-              <span class="mt-2 block text-sm text-bone-200/80 leading-6">مدل اختصاصی برند شما، از ایده تا الگوی صنعتی دقیق.</span>
-              <span class="service-arrow"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg></span>
-            </span>
-          </button>
-          <button id="service-fabric" type="button" class="service-card open-modal scroll-mt-28" data-service="fabric" data-reveal data-delay="0.12">
-            <img src="/images/fabric-rolls.webp" alt="رول‌های پارچه کت و شلواری" class="service-img" loading="lazy" decoding="async" />
-            <span class="service-scrim"></span>
-            <span class="absolute top-4 right-4 rounded-full bg-bone-50/10 backdrop-blur px-3 py-1 text-[10px] font-bold text-thread-300 ring-1 ring-thread-500/40">۰۲ • پارچه</span>
-            <span class="service-body">
-              <span class="block text-xl font-extrabold text-bone-50">انتخاب و تامین انواع پارچه</span>
-              <span class="mt-2 block text-sm text-bone-200/80 leading-6">صدها طرح فاستونی، هرینگبون و چهارخانه از منابع معتبر.</span>
-              <span class="service-arrow"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg></span>
-            </span>
-          </button>
-          <button type="button" class="service-card open-modal sm:col-span-2 lg:col-span-1" data-service="bulk" data-reveal data-delay="0.24">
-            <img src="/images/buttons-macro.webp" alt="دکمه‌های شاخی روی آستین کت" class="service-img" loading="lazy" decoding="async" />
-            <span class="service-scrim"></span>
-            <span class="absolute top-4 right-4 rounded-full bg-bone-50/10 backdrop-blur px-3 py-1 text-[10px] font-bold text-thread-300 ring-1 ring-thread-500/40">۰۳ • تولید</span>
-            <span class="service-body">
-              <span class="block text-xl font-extrabold text-bone-50">تولید سازمانی و تیراژ بالا</span>
-              <span class="mt-2 block text-sm text-bone-200/80 leading-6">خط تولید صنعتی با کنترل کیفیت هفت‌مرحله‌ای.</span>
-              <span class="service-arrow"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg></span>
-            </span>
-          </button>
-        </div>
-      </div>
-    </section>
     <!-- ============ PROCESS ============ -->
     <section id="process" class="relative py-24 lg:py-32 bg-bone-50 scroll-mt-24 overflow-hidden">
       <div class="absolute inset-x-0 top-0 h-px bg-linear-to-l from-transparent via-thread-500/60 to-transparent" aria-hidden="true"></div>
@@ -400,14 +353,14 @@
         <div class="lg:col-span-8 relative">
           <div id="process-line" class="hidden sm:block absolute top-[46%] inset-x-6 border-t-2 border-dashed border-thread-500/50 origin-right" aria-hidden="true"></div>
           <ol class="grid grid-cols-2 sm:grid-cols-4 gap-x-5 gap-y-10 relative">
-            <li class="process-step" data-reveal data-delay="0">
+            <li id="step-fabric" class="process-step scroll-mt-28" data-reveal data-delay="0">
               <div class="arch-wrap">
                 <span class="step-badge">۰۱</span>
                 <img src="/images/fabric-rolls.webp" alt="مشاوره و انتخاب پارچه" class="arch-img" loading="lazy" decoding="async" />
               </div>
               <h3 class="step-title">مشاوره و انتخاب پارچه</h3>
             </li>
-            <li class="process-step" data-reveal data-delay="0.12">
+            <li id="step-design" class="process-step scroll-mt-28" data-reveal data-delay="0.12">
               <div class="arch-wrap">
                 <span class="step-badge">۰۲</span>
                 <img src="/images/pattern-cutting.webp" alt="طراحی و الگوسازی" class="arch-img" loading="lazy" decoding="async" />
@@ -625,7 +578,6 @@
         <ul class="mt-5 space-y-3 text-sm">
           <li><a href="#home" class="footer-link nav-anchor">خانه</a></li>
           <li><a href="#about" class="footer-link nav-anchor">درباره کارگاه</a></li>
-          <li><a href="#services" class="footer-link nav-anchor">خدمات</a></li>
           <li><a href="#portfolio" class="footer-link nav-anchor">نمونه‌کارها</a></li>
           <li><a href="#faq" class="footer-link nav-anchor">سوالات متداول</a></li>
         </ul>

@@ -103,7 +103,6 @@ try {
         'hero',
         'features-bar',
         'about',
-        'services',
         'process',
         'portfolio',
         'faq',

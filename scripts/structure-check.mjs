@@ -38,6 +38,11 @@ for (const [{ lang, path, heading, counter, close }, html] of versions.map((vers
     assert(html.includes('fetchpriority="high"'))
     assert.match(html, /id="loader" hidden/)
 
+    const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map(([, id]) => id))
+    for (const [, id] of html.matchAll(/\shref="#([^"]+)"/g)) {
+      assert(ids.has(id), 'Missing link target: #' + id)
+    }
+
     const anchors = [
       ...html.matchAll(/<a href="([^"]+)" lang="(fa|ar)" hreflang="\2" data-lang="\2"([^>]*)>/g),
     ]
@@ -62,7 +67,6 @@ test('Both pages expose the same unique section IDs and gallery assets', () => {
     'hero',
     'features',
     'about',
-    'services',
     'process',
     'portfolio',
     'faq',

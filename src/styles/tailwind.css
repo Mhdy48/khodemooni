@@ -9,7 +9,6 @@
 @import './sections/features.css' layer(components);
 @import './components/statistics.css' layer(components);
 @import './components/workshop-ticker.css' layer(components);
-@import './sections/services.css' layer(components);
 @import './sections/process.css' layer(components);
 @import './sections/portfolio.css' layer(components);
 @import './sections/faq.css' layer(components);
