@@ -15,9 +15,13 @@ export function initGallery({ gsap, reduced }) {
   let animating = false
   let autoTimer = null
 
+  function updateCounter() {
+    counter.textContent = `${twoDigits.format(index + 1)} / ${twoDigits.format(slides.length)}`
+  }
+
   function render(slideIdx) {
     grid.replaceChildren(...slides[slideIdx])
-    counter.textContent = `${twoDigits.format(slideIdx + 1)} / ${twoDigits.format(slides.length)}`
+    updateCounter()
   }
 
   function go(next, dir = 1) {

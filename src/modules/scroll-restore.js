@@ -1,6 +1,6 @@
 import { language } from './i18n.js'
 
-const KEY = 'kk-scroll-y:' + language
+const storageKey = () => 'kk-scroll-y:' + language
 
 // Restore before entrance guards run, then correct loading-related layout shifts.
 export function initScrollRestore() {
@@ -8,7 +8,7 @@ export function initScrollRestore() {
   let saved = 0
   try {
     storage = window.sessionStorage
-    saved = Number(storage.getItem(KEY))
+    saved = Number(storage.getItem(storageKey()))
     history.scrollRestoration = 'manual'
   } catch {
     // Use native restoration when the browser restricts session storage.
@@ -35,7 +35,7 @@ export function initScrollRestore() {
   const save = () => {
     queued = false
     try {
-      storage?.setItem(KEY, String(Math.round(window.scrollY)))
+      storage?.setItem(storageKey(), String(Math.round(window.scrollY)))
     } catch {
       storage = null
     }

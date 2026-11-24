@@ -22,6 +22,19 @@ test('Localized pages recover from restricted storage and interrupted dialogs', 
     await page.goto(origin + path + '#bad%')
     await page.waitForSelector('#loader', { hidden: true })
     await page.click('#menu-open')
+    const otherLanguage = path === '/' ? 'ar' : 'fa'
+    await page.click('#mobile-menu .lang-trigger')
+    const [destination] = await Promise.all([
+      page.waitForNavigation(),
+      page.click(`#mobile-menu [data-lang="${otherLanguage}"]`),
+    ])
+    assert(
+      destination?.ok() || destination?.status() === 304,
+      `Document response: ${destination?.status()} at ${page.url()}`
+    )
+    await page.waitForSelector('#loader', { hidden: true })
+    assert.equal(await page.$eval('html', (el) => el.lang), otherLanguage)
+    await page.click('#menu-open')
     await page.focus('#menu-close')
     await page.keyboard.down('Shift')
     await page.keyboard.press('Tab')
@@ -55,6 +68,58 @@ test('Localized pages recover from restricted storage and interrupted dialogs', 
     )
     await page.close()
   }
+  await t.test(
+    'Language selection opens a new localized document at the reading section',
+    async () => {
+      const page = await newPage(1440, 900)
+      await page.evaluateOnNewDocument(() => {
+        new MutationObserver(() => {
+          if (document.querySelector('#loader[open]')) window.sawLoader = true
+        }).observe(document, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['open'],
+        })
+      })
+      await page.goto(origin + '/?ref=atelier')
+      await page.waitForSelector('#loader', { hidden: true })
+      await page.$eval('#portfolio', (el) => el.scrollIntoView({ behavior: 'instant' }))
+      const start = await page.evaluate(() => performance.timeOrigin)
+      await page.click('#navbar .lang-trigger')
+      await page.click('#navbar [data-lang="fa"]')
+      assert.equal(await page.evaluate(() => performance.timeOrigin), start)
+      await page.click('#navbar .lang-trigger')
+      const [response] = await Promise.all([
+        page.waitForNavigation(),
+        page.click('#navbar [data-lang="ar"]'),
+      ])
+      assert(
+        response?.ok() || response?.status() === 304,
+        `Document response: ${response?.status()} at ${page.url()}`
+      )
+      await page.waitForSelector('#loader', { hidden: true })
+      assert(await page.evaluate(() => window.sawLoader))
+      assert.equal(page.url(), origin + '/ar/?ref=atelier#portfolio')
+      assert.notEqual(await page.evaluate(() => performance.timeOrigin), start)
+      assert.equal(await page.$eval('html', (el) => el.lang), 'ar')
+      assert.equal(await page.$eval('#navbar [aria-current="page"]', (el) => el.lang), 'ar')
+      assert(
+        await page.$eval('#portfolio', (el) => {
+          const rect = el.getBoundingClientRect()
+          return rect.top < innerHeight && rect.bottom > 0
+        })
+      )
+      await page.goBack()
+      await page.waitForFunction(() => document.documentElement.lang === 'fa')
+      assert.equal(page.url(), origin + '/?ref=atelier')
+      await page.goForward()
+      await page.waitForFunction(() => document.documentElement.lang === 'ar')
+      await page.reload()
+      assert.equal(await page.$eval('html', (el) => el.lang), 'ar')
+      await page.close()
+    }
+  )
   assert.deepEqual(errors, [])
   await t.test('Static content stays accessible if the JavaScript bundle fails', async () => {
     const page = await browser.newPage()

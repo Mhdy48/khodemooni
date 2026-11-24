@@ -3,9 +3,43 @@ import { containTab } from './dialog-focus.js'
 function initLanguagePickers() {
   const pickers = [...document.querySelectorAll('.lang-picker')]
 
+  const sections = [...document.querySelectorAll('main > section, #marquee, footer[id]')]
+  function updateDestinations(picker) {
+    const readingLine = innerHeight * 0.4
+    const section =
+      sections.find((el) => el.getBoundingClientRect().bottom > readingLine) ?? sections.at(-1)
+    const target = document.querySelector(':target')
+    const sectionId = section.id === 'hero' ? 'home' : section.id
+    const hash = section.contains(target) ? location.hash : '#' + sectionId
+    for (const link of picker.querySelectorAll('a[data-lang]')) {
+      const url = new URL(link.href)
+      url.search = location.search
+      url.hash = hash
+      link.href = url.href
+    }
+  }
+
   for (const picker of pickers) {
     const trigger = picker.querySelector('summary')
-    const current = picker.querySelector('[aria-current="page"]')
+    picker.addEventListener('toggle', () => {
+      if (picker.open) updateDestinations(picker)
+    })
+    picker.addEventListener('click', (event) => {
+      const link = event.target.closest('a[data-lang]')
+      if (!link) return
+      updateDestinations(picker)
+      if (
+        !link.hasAttribute('aria-current') ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey
+      )
+        return
+      event.preventDefault()
+      picker.open = false
+      trigger.focus({ preventScroll: true })
+    })
 
     picker.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape' || !picker.open) return
@@ -16,12 +50,6 @@ function initLanguagePickers() {
     })
     picker.addEventListener('focusout', (event) => {
       if (!picker.contains(event.relatedTarget)) picker.open = false
-    })
-    current.addEventListener('click', (event) => {
-      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return
-      event.preventDefault()
-      picker.open = false
-      trigger.focus({ preventScroll: true })
     })
   }
 

@@ -1,5 +1,8 @@
+import { readFileSync } from 'node:fs'
+import { preparePage, memoryFile as arabicFile } from './scripts/render-page.mjs'
+import { syncTranslations } from './scripts/sync-translations.mjs'
 import { fileURLToPath } from 'node:url'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, normalizePath } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 
 const routes = { fa: '/', ar: '/ar/' }
@@ -12,6 +15,74 @@ function redirectArabicDirectory(server) {
     response.writeHead(308, { Location: arabicPath + url.search })
     response.end()
   })
+}
+
+function translatedTemplate() {
+  const templateFile = normalizePath(fileURLToPath(new URL('./index.html', import.meta.url)))
+  const memoryFile = normalizePath(fileURLToPath(arabicFile))
+  let page
+  function site() {
+    if (!page) {
+      page = preparePage(readFileSync(templateFile, 'utf8'))
+      if (page.pending.length)
+        console.warn(`Arabic translations pending: ${page.pending.join(', ')}`)
+    }
+    return page
+  }
+  return {
+    name: 'workshop-translations',
+    configureServer(server) {
+      // The development server prepares drafts even when no browser tab is open.
+      let running = false
+      let queued = false
+      let closed = false
+      async function sync() {
+        queued = true
+        if (running || closed) return
+        running = true
+        try {
+          while (queued && !closed) {
+            queued = false
+            try {
+              await syncTranslations(readFileSync(templateFile, 'utf8'))
+            } catch (error) {
+              server.config.logger.warn(error.message + ' — retry with npm run translate.')
+            }
+          }
+        } finally {
+          running = false
+        }
+      }
+      const onEdit = (file) => {
+        if (normalizePath(file) === templateFile) void sync()
+      }
+      server.watcher.on('change', onEdit)
+      server.watcher.once('close', () => {
+        closed = true
+        server.watcher.off('change', onEdit)
+      })
+      void sync()
+    },
+    buildStart() {
+      this.addWatchFile(templateFile)
+      this.addWatchFile(memoryFile)
+    },
+    watchChange(file) {
+      if (file === templateFile || file === memoryFile) page = undefined
+    },
+    handleHotUpdate({ file, server }) {
+      if (file !== templateFile && file !== memoryFile) return
+      page = undefined
+      server.ws.send({ type: 'full-reload' })
+      return []
+    },
+    transformIndexHtml: {
+      order: 'pre',
+      handler(_, { path }) {
+        return site().render(path.replace(/index\.html$/, '') === routes.ar ? 'ar' : 'fa')
+      },
+    },
+  }
 }
 
 function localizedPages(origin) {
@@ -54,7 +125,11 @@ export default defineConfig(({ command, mode }) => {
   return {
     appType: 'mpa',
     base: SITE_BASE,
-    plugins: [tailwindcss(), localizedPages(command === 'build' ? SITE_ORIGIN : undefined)],
+    plugins: [
+      tailwindcss(),
+      translatedTemplate(),
+      localizedPages(command === 'build' ? SITE_ORIGIN : undefined),
+    ],
     server: { port: 5173, host: true },
     build: {
       rollupOptions: {

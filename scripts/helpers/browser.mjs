@@ -7,10 +7,11 @@ export const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 export async function switchLanguage(page, language) {
   await page.click('#navbar .lang-trigger')
   await Promise.all([
-    page.waitForNavigation({ waitUntil: 'load' }),
+    page.waitForNavigation(),
     page.click(`#navbar .lang-btn[data-lang="${language}"]`),
   ])
-  await page.waitForFunction(() => !document.querySelector('#loader'))
+  await page.waitForSelector('#loader', { hidden: true })
+  await page.waitForFunction((code) => document.documentElement.lang === code, {}, language)
 }
 
 export async function createBrowserCheck() {

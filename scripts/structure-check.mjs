@@ -1,12 +1,17 @@
 import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
+import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+import { tmpdir } from 'node:os'
+import { translateText } from './translate-page.mjs'
+import { syncTranslations } from './sync-translations.mjs'
 import test from 'node:test'
+import { preparePage, readMemory } from './render-page.mjs'
 
 const versions = [
   {
     lang: 'fa',
     path: '/',
-    file: '../index.html',
     heading: 'به تنِ تو،',
     counter: '۰۱ / ۰۲',
     close: 'بستن',
@@ -14,14 +19,69 @@ const versions = [
   {
     lang: 'ar',
     path: '/ar/',
-    file: '../ar/index.html',
     heading: 'على مقاسك،',
     counter: '٠١ / ٠٢',
     close: 'إغلاق',
   },
 ]
+test('New Persian text and attributes get Arabic translations, including nested inline text', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'workshop-translation-'))
+  t.after(() => rm(directory, { recursive: true, force: true }))
+  const file = join(directory, 'ar.json')
+  const memory = readMemory()
+  await writeFile(file, JSON.stringify(memory))
+  const requested = []
+  const options = {
+    file,
+    directory,
+    request: async (text) => {
+      requested.push(text)
+      return 'عربي ' + text
+    },
+  }
+  const template =
+    '<html lang="fa"><body><p>پارچه <b>تازه</b></p><img alt="پارچه"><span translate="no">اسم</span></body></html>'
+  const before = preparePage(template, memory)
+  assert(before.pending.length > 0)
+  assert.match(before.render('ar'), /alt="پارچه"/)
+  await syncTranslations(template, options)
+  const saved = readMemory(file)
+  for (const key of before.pending) assert.equal(saved[key][2], 'draft')
+  const first = preparePage(template, saved)
+  assert.deepEqual(first.pending, [])
+  assert.deepEqual(requested, ['پارچه', 'تازه'])
+  assert.match(first.render('ar'), /alt="عربي پارچه"/)
+  assert.match(first.render('ar'), /<b>عربي تازه<\/b>/)
+  assert.match(first.render('fa'), /alt="پارچه"/)
+  assert.equal(await syncTranslations(template, { ...options, request: assert.fail }), 0)
+  const previous = ['نسخه قدیمی', 'النسخة السابقة']
+  await writeFile(file, JSON.stringify({ ...saved, brand: previous }))
+  await assert.rejects(
+    syncTranslations(template, {
+      ...options,
+      request: () => {
+        throw new Error('offline')
+      },
+    }),
+    /offline/
+  )
+  const offline = preparePage(template, readMemory(file))
+  assert.deepEqual(offline.pending, ['brand'])
+  assert.equal(offline.catalogs.ar.brand, previous[1])
+  const long = 'سفارش '.repeat(150)
+  const translated = await translateText(long, {
+    directory,
+    request: async (text) => {
+      assert(Buffer.byteLength(text) <= 500)
+      return text
+    },
+  })
+  assert.equal(translated, long)
+})
+
 const read = (file) => readFileSync(new URL(file, import.meta.url), 'utf8')
-const pages = versions.map(({ file }) => read(file))
+const site = preparePage(read('../index.html'))
+const pages = versions.map(({ lang }) => site.render(lang))
 
 for (const [{ lang, path, heading, counter, close }, html] of versions.map((version, index) => [
   version,
@@ -30,11 +90,12 @@ for (const [{ lang, path, heading, counter, close }, html] of versions.map((vers
   test(path + ' is a complete right-to-left page with local copy and navigation', () => {
     assert(html.includes('<html lang="' + lang + '" dir="rtl">'))
     assert.match(html, /<meta name="description" content="[^"]+"/)
-    assert.match(html, /<title>[^<]+<\/title>/)
+    assert.match(html, /<title\b[^>]*>[^<]+<\/title>/)
     assert(html.includes(heading))
     assert(html.includes(counter))
     assert(html.includes('data-collapse-label="' + close + '"'))
     assert(!html.includes('<!-- include:'))
+    assert(!html.includes('{{'), 'Unresolved translation key')
     assert(html.includes('fetchpriority="high"'))
     assert.match(html, /id="loader" hidden/)
 

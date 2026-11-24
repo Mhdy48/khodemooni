@@ -16,6 +16,9 @@ vibe_images/
 .env.*
 !.env.example
 
+/translations/*.json.lock/
+/translations/*.json.*.tmp
+
 # logs
 *.log
 npm-debug.log*

@@ -21,5 +21,4 @@
 @import './accessibility.css';
 
 @source "../../index.html";
-@source "../../ar/index.html";
 @source "../modules";

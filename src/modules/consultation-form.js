@@ -1,5 +1,4 @@
 import { containTab } from './dialog-focus.js'
-import { messages } from './i18n.js'
 
 const normalizeDigits = (s) =>
   s
@@ -105,8 +104,8 @@ export function initModal({ gsap, reduced }) {
     if (!isOpen || submitBtn.disabled) return
     const name = nameInput.value.trim()
     const phone = normalizeDigits(phoneInput.value).replace(/[\s-]/g, '')
-    const nameError = name.length < 3 ? messages.err_name : ''
-    const phoneError = /^0[1-9]\d{9}$/.test(phone) ? '' : messages.err_phone
+    const nameError = name.length < 3 ? nameInput.dataset.errorMessage : ''
+    const phoneError = /^0[1-9]\d{9}$/.test(phone) ? '' : phoneInput.dataset.errorMessage
     setError(nameInput, nameError)
     setError(phoneInput, phoneError)
     if (nameError || phoneError) {
