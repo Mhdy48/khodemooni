@@ -3,6 +3,15 @@ import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { fa } from '../src/locales/fa.js'
 
+const workshopPhone = '05138409820'
+const workshopContact = (language) => ({
+  phoneLink: 'tel:+98' + workshopPhone.slice(1),
+  officialNumber: workshopPhone
+    .replace(/^(...)/, '$1-')
+    .replace(/\d/g, (d) => (language === 'ar' ? '٠١٢٣٤٥٦٧٨٩' : '۰۱۲۳۴۵۶۷۸۹')[Number(d)]),
+  instagramLink: 'https://www.instagram.com/safari.khodemoni/',
+})
+
 const token = /^\{\{(\w+)\}\}$/
 
 // Discover ordinary Persian HTML alongside the named messages used by interactive components.
@@ -83,7 +92,8 @@ export function preparePage(template, memory = readMemory()) {
   return {
     catalogs,
     pending,
-    render: (language) => renderPage(marked, language, catalogs[language]),
+    render: (language) =>
+      renderPage(marked, language, { ...catalogs[language], ...workshopContact(language) }),
   }
 }
 

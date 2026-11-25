@@ -93,7 +93,8 @@ const typo = await page.evaluate(() => {
         matchingStyle: ['fontSize', 'fontWeight', 'borderInlineStart', 'paddingInlineStart'].every(
           (property) => style[property] === features[property]
         ),
-        labelsSection: document.getElementById('about').getAttribute('aria-labelledby') === heading.id,
+        labelsSection:
+          document.getElementById('about').getAttribute('aria-labelledby') === heading.id,
       }
     })(),
     mediaClip: getComputedStyle(document.querySelector('.about-photos')).clipPath,
@@ -136,7 +137,9 @@ ok(
 )
 ok(typo.stitchProgress === 1, 'fabric stitching finishes drawing')
 const frameDraw = await page.$eval('.about-stats-border rect', (border) => {
-  const animation = border.getAnimations().find((entry) => entry.animationName === 'stats-border-draw')
+  const animation = border
+    .getAnimations()
+    .find((entry) => entry.animationName === 'stats-border-draw')
   if (!animation) return false
 
   const elapsed = animation.currentTime
@@ -191,8 +194,10 @@ await shot(page, 'shots/a1-desktop.png')
 await page.click('.about-panel-coat')
 await page.waitForFunction(() => {
   const width = (panel) => document.querySelector(panel).getBoundingClientRect().width
-  return document.getElementById('about-view-coat').checked &&
+  return (
+    document.getElementById('about-view-coat').checked &&
     width('.about-panel-coat') > 1.9 * width('.about-panel-process')
+  )
 })
 await shot(page, 'shots/about-coat-selected.png')
 await page.focus('#about-view-coat')
@@ -240,7 +245,9 @@ ok(
 /* arabic */
 await switchLanguage(page, 'ar')
 await gotoAbout(page)
-await page.$eval('.about-stats', (el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }))
+await page.$eval('.about-stats', (el) =>
+  el.scrollIntoView({ block: 'center', behavior: 'instant' })
+)
 await page.waitForFunction(() =>
   [...document.querySelectorAll('.about-stats .counter')].every(
     (el) => el.textContent === Number(el.dataset.count).toLocaleString('ar-EG')

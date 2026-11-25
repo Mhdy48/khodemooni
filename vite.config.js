@@ -1,3 +1,4 @@
+import { openInbox, receiver } from './scripts/consultations.mjs'
 import { readFileSync } from 'node:fs'
 import { preparePage, memoryFile as arabicFile } from './scripts/render-page.mjs'
 import { syncTranslations } from './scripts/sync-translations.mjs'
@@ -14,6 +15,28 @@ function redirectArabicDirectory(server) {
     if (url.pathname !== arabicPath.slice(0, -1)) return next()
     response.writeHead(308, { Location: arabicPath + url.search })
     response.end()
+  })
+}
+
+function localInbox(server) {
+  let db
+  let receive
+  server.httpServer?.once('close', () => db?.close())
+  server.middlewares.use((req, res, next) => {
+    if (req.url !== '/api/consultations') return next()
+    const host = req.headers.host || ''
+    if (
+      !/^(localhost|127\.0\.0\.1)(:\d+)?$/i.test(host) ||
+      !['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(req.socket.remoteAddress)
+    ) {
+      res.writeHead(403).end()
+      return
+    }
+    if (!db) {
+      db = openInbox()
+      receive = receiver(db, (request) => 'http://' + request.headers.host)
+    }
+    return receive(req, res)
   })
 }
 
@@ -126,11 +149,16 @@ export default defineConfig(({ command, mode }) => {
     appType: 'mpa',
     base: SITE_BASE,
     plugins: [
+      {
+        name: 'local-consultations',
+        configureServer: localInbox,
+        configurePreviewServer: localInbox,
+      },
       tailwindcss(),
       translatedTemplate(),
       localizedPages(command === 'build' ? SITE_ORIGIN : undefined),
     ],
-    server: { port: 5173, host: true },
+    server: { port: 5173, host: '127.0.0.1' },
     build: {
       rollupOptions: {
         input: Object.fromEntries(

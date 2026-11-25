@@ -14,7 +14,9 @@
     "format:check": "prettier --check src scripts *.config.js",
     "pretest:browser": "npm run build",
     "test:browser": "node --test scripts/dialog-check.mjs",
-    "check": "npm run lint && npm run format:check && npm test && npm run test:browser"
+    "check": "npm run lint && npm run format:check && npm test && npm run test:browser",
+    "consult:serve": "node scripts/consultations.mjs",
+    "consult:list": "node scripts/consultations.mjs --list"
   },
   "dependencies": {
     "gsap": "^3.13.0"

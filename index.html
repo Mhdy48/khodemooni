@@ -112,7 +112,7 @@
         <div class="hero-copy">
           <p class="hero-in hero-sub"><strong>{{heroLead}}</strong><br /><span>{{heroDescription}}</span></p>
           <div class="hero-in hero-actions">
-            <button type="button" class="open-modal btn-primary">
+            <button type="button" class="open-modal btn-primary" data-service="personal">
               <span>{{bespokeOrder}}</span>
               <svg aria-hidden="true" viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
             </button>
@@ -459,10 +459,7 @@
           <p class="eyebrow" data-reveal><span class="eyebrow-line"></span><span>{{faq}}</span></p>
           <h2 class="section-title mt-4" data-reveal>{{faqHeading}}</h2>
           <p class="mt-5 text-stone-600 leading-8" data-reveal>{{faqContact}}</p>
-          <a href="tel:02112345678" class="btn-outline mt-7" data-reveal>
-            <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
-            <span class="tabular-nums" dir="ltr">{{phoneNumber}}</span>
-          </a>
+          <a href="{{phoneLink}}" class="btn-outline mt-7" data-reveal><bdi dir="ltr">{{officialNumber}}</bdi></a>
         </div>
         <div class="lg:col-span-5" data-reveal>
           <div id="faq-list" class="divide-y divide-bone-300">
@@ -524,11 +521,10 @@
           <p class="mt-4 text-bone-200/80 leading-8" data-reveal>{{ctaDescription}}</p>
         </div>
         <div class="flex flex-col items-start gap-4" data-reveal>
-          <button type="button" class="open-modal btn-primary magnetic text-base px-8 py-4">
-            <span>{{collaborate}}</span>
+          <button type="button" data-service="bulk" class="open-modal btn-primary magnetic text-base px-8 py-4">
+            <span>{{bulkInquiry}}</span>
             <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-6l-6 6 6 6"/></svg>
           </button>
-          <a href="tel:02112345678" class="text-bone-200/70 hover:text-thread-400 transition-colors text-sm tabular-nums" dir="ltr">{{phoneNumber}}</a>
         </div>
       </div>
     </section>
@@ -548,12 +544,7 @@
           </span>
         </div>
         <p class="mt-5 text-sm leading-7 text-bone-200/65">{{footerIntro}}</p>
-        <div class="mt-6 flex items-center gap-3">
-          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="{{instagram}}"><svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></a>
-          <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="{{linkedin}}"><svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5V17M8 7.5v.01M12 17v-4a2 2 0 0 1 4 0v4"/></svg></a>
-          <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="{{telegram}}"><svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4L3 11l6 2.5L11.5 20l3-4.5L20 19l1-15z"/><path d="M9 13.5l8-7"/></svg></a>
-          <a href="https://wa.me/982112345678" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="{{whatsapp}}"><svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5z"/><path d="M9 8.5c0 4 2.5 6.5 6 6.5l.5-2-2-1-1 1c-1-.5-1.5-1-2-2l1-1-1-2-1.5.5z"/></svg></a>
-        </div>
+        <a href="{{instagramLink}}" class="footer-link mt-5 inline-flex gap-2" rel="noopener noreferrer" target="_blank"><span>{{instagram}}</span> <bdi dir="ltr">@safari.khodemoni</bdi></a>
       </div>
       <nav aria-label="{{quickLinks}}">
         <h3 class="footer-head">{{quickLinks}}</h3>
@@ -567,14 +558,7 @@
       <div>
         <h3 class="footer-head">{{contactInfo}}</h3>
         <ul class="mt-5 space-y-4 text-sm">
-          <li class="flex items-center gap-3">
-            <svg viewBox="0 0 24 24" class="size-4.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
-            <a href="tel:02112345678" class="footer-link tabular-nums" dir="ltr">{{phoneNumber}}</a>
-          </li>
-          <li class="flex items-center gap-3">
-            <svg viewBox="0 0 24 24" class="size-4.5 shrink-0 text-thread-400" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>
-            <a href="mailto:info@khayyatkhodemooni.ir" class="footer-link">{{emailAtelier}}</a>
-          </li>
+          <li><a href="{{phoneLink}}" class="footer-link"><bdi dir="ltr">{{officialNumber}}</bdi></a></li>
           <li class="flex items-start gap-3">
             <svg viewBox="0 0 24 24" class="size-4.5 shrink-0 text-thread-400 mt-0.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
             <span class="leading-7 text-bone-200/75">{{address}}</span>
@@ -594,7 +578,7 @@
     <div class="border-t border-bone-50/10">
       <div class="page-container py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-bone-200/50">
         <span>© <span id="year">{{fallbackYear}}</span> <span>{{copyright}}</span></span>
-        <span class="flex items-center gap-1.5">{{madeInTehran}}</span>
+        <span class="flex items-center gap-1.5">{{madeInMashhad}}</span>
       </div>
     </div>
   </footer>
@@ -618,10 +602,13 @@
           </button>
         </div>
 
-        <form id="consult-form" class="mt-7 space-y-5" novalidate>
+        <form id="consult-form" class="mt-7" novalidate>
+          <p id="form-status" role="status" class="text-sm font-bold text-ink-900" data-unavailable="{{unavailable}}" data-failed="{{sendFailed}}"></p>
+          <a href="{{phoneLink}}" class="mb-4 inline-flex gap-2 font-bold text-ink-900 underline"><span>{{phone}}</span><bdi dir="ltr">{{officialNumber}}</bdi></a>
+          <fieldset class="space-y-5 min-w-0">
           <div>
             <label for="f-name" class="field-label">{{fullName}}</label>
-            <input id="f-name" data-error-message="{{err_name}}" required aria-describedby="f-name-error" name="name" type="text" class="field" autocomplete="name" placeholder="{{nameHint}}" />
+            <input id="f-name" data-error-message="{{err_name}}" required aria-describedby="f-name-error" maxlength="100" name="name" type="text" class="field" autocomplete="name" placeholder="{{nameHint}}" />
             <p class="field-error" id="f-name-error" aria-live="polite" data-error-for="f-name"></p>
           </div>
           <div>
@@ -640,13 +627,14 @@
           </div>
           <div>
             <label for="f-msg" class="field-label"><span>{{details}}</span> <span class="text-stone-600/60 font-normal">{{optional}}</span></label>
-            <textarea id="f-msg" name="message" rows="3" class="field resize-none" placeholder="{{messageHint}}"></textarea>
+            <textarea id="f-msg" maxlength="1500" name="message" rows="3" class="field resize-none" placeholder="{{messageHint}}"></textarea>
           </div>
           <button id="form-submit" type="submit" class="btn-primary w-full justify-center py-4 text-base">
             <span class="submit-label">{{submitRequest}}</span>
             <svg class="submit-spin hidden size-5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg>
           </button>
-          <p class="text-center text-xs text-stone-600/70">{{privacy}}</p>
+          </fieldset>
+          <p class="mt-4 text-center text-xs text-stone-600/70">{{privacy}}</p>
         </form>
 
         <div id="form-success" class="hidden py-8 text-center">
@@ -654,7 +642,7 @@
             <svg viewBox="0 0 24 24" class="size-10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path id="success-check" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
           </span>
           <h4 class="mt-6 text-xl font-black text-ink-900">{{successTitle}}</h4>
-          <p class="mt-3 text-sm leading-7 text-stone-600"><span>{{successIntro}}</span><bdi dir="ltr">{{successPhone}}</bdi><span>{{successEnding}}</span></p>
+          <p class="mt-3 text-sm leading-7 text-stone-600">{{receivedMessage}}</p>
           <button id="success-close" type="button" class="btn-outline mt-7 mx-auto">{{close}}</button>
         </div>
       </div>

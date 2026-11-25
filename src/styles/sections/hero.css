@@ -569,6 +569,17 @@
     0 0;
 }
 
+@media (max-width: 55.999rem) {
+  .hero-copy {
+    grid-row: 2;
+    margin-block-start: 0;
+    padding-block-start: 0;
+  }
+  .hero-swatch {
+    grid-row: 3;
+  }
+}
+
 @media (min-width: 56rem) {
   .hero-layout {
     grid-template-columns: 0.9fr 1.1fr;

@@ -16,7 +16,13 @@ export function initModal({ gsap, reduced }) {
   const phoneInput = document.getElementById('f-phone')
   const serviceSelect = document.getElementById('f-service')
   let isOpen = false
-  let submissionTimer
+  const status = document.getElementById('form-status')
+  const local = ['127.0.0.1', 'localhost'].includes(location.hostname)
+  const endpoint = local ? '/api/consultations' : import.meta.env.VITE_CONSULT_ENDPOINT
+  const fields = form.querySelector('fieldset')
+  let activeRequest
+  let previousPayload
+  let requestId
   let lastFocus = null
 
   function open(service) {
@@ -25,6 +31,9 @@ export function initModal({ gsap, reduced }) {
     gsap.killTweensOf([backdrop, panel])
     modal.inert = false
     if (service) serviceSelect.value = service
+    status.textContent = endpoint ? '' : status.dataset.unavailable
+    fields.hidden = !endpoint
+    fields.disabled = !endpoint
     form.classList.remove('hidden')
     success.classList.add('hidden')
     modal.classList.remove('hidden')
@@ -38,13 +47,15 @@ export function initModal({ gsap, reduced }) {
         { y: 0, scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out' }
       )
     }
-    nameInput.focus({ preventScroll: true })
+    const initialFocus = endpoint ? nameInput : form.querySelector('a')
+    initialFocus.focus({ preventScroll: true })
   }
 
   function close() {
     if (!isOpen) return
     isOpen = false
-    clearTimeout(submissionTimer)
+    activeRequest?.abort()
+    activeRequest = null
     setSubmitting(false)
     modal.inert = true
     document.body.style.overflow = ''
@@ -99,9 +110,9 @@ export function initModal({ gsap, reduced }) {
     submitBtn.querySelector('.submit-spin').classList.toggle('hidden', !active)
   }
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault()
-    if (!isOpen || submitBtn.disabled) return
+    if (!endpoint || !isOpen || submitBtn.disabled) return
     const name = nameInput.value.trim()
     const phone = normalizeDigits(phoneInput.value).replace(/[\s-]/g, '')
     const nameError = name.length < 3 ? nameInput.dataset.errorMessage : ''
@@ -114,9 +125,35 @@ export function initModal({ gsap, reduced }) {
       return
     }
 
+    const payload = {
+      name,
+      phone,
+      service: serviceSelect.value,
+      message: document.getElementById('f-msg').value.trim(),
+    }
+    const signature = JSON.stringify(payload)
+    if (signature !== previousPayload) {
+      requestId = crypto.randomUUID()
+      previousPayload = signature
+    }
+    const controller = new AbortController()
+    activeRequest = controller
+    const timer = setTimeout(() => controller.abort(), 12000)
+    status.textContent = ''
     setSubmitting(true)
-    submissionTimer = setTimeout(() => {
-      setSubmitting(false)
+    fields.disabled = true
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: requestId, ...payload }),
+        signal: controller.signal,
+        credentials: 'omit',
+        redirect: 'error',
+      })
+      if (!response.ok || (await response.json()).id !== requestId) throw new Error('Unconfirmed')
+      if (activeRequest !== controller) return
+      previousPayload = undefined
       form.classList.add('hidden')
       success.classList.remove('hidden')
       if (!reduced) {
@@ -135,6 +172,15 @@ export function initModal({ gsap, reduced }) {
       }
       form.reset()
       document.getElementById('success-close').focus()
-    }, 900)
+    } catch {
+      if (activeRequest === controller) status.textContent = status.dataset.failed
+    } finally {
+      clearTimeout(timer)
+      if (activeRequest === controller) {
+        activeRequest = null
+        fields.disabled = false
+        setSubmitting(false)
+      }
+    }
   })
 }

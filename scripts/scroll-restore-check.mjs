@@ -2,16 +2,7 @@ import assert from 'node:assert/strict'
 import { createBrowserCheck, URL, sleep } from './helpers/browser.mjs'
 
 const { browser, newPage, errors } = await createBrowserCheck()
-const sections = [
-  'hero',
-  'features',
-  'about',
-  'process',
-  'portfolio',
-  'faq',
-  'cta',
-  'contact',
-]
+const sections = ['hero', 'features', 'about', 'process', 'portfolio', 'faq', 'cta', 'contact']
 
 const settled = (id) => {
   const sec = document.getElementById(id)

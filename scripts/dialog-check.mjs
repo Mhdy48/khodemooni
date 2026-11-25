@@ -1,11 +1,25 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { mkdtemp, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { DatabaseSync } from 'node:sqlite'
 import { preview } from 'vite'
 import { createBrowserCheck } from './helpers/browser.mjs'
 
 test('Localized pages recover from restricted storage and interrupted dialogs', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'atelier-inbox-'))
+  const former = process.env.CONSULT_DB
+  process.env.CONSULT_DB = join(directory, 'test.sqlite')
+  t.after(async () => {
+    if (former === undefined) delete process.env.CONSULT_DB
+    else process.env.CONSULT_DB = former
+  })
   const server = await preview({ preview: { host: '127.0.0.1', port: 0 } })
-  t.after(() => new Promise((resolve) => server.httpServer.close(resolve)))
+  t.after(async () => {
+    await new Promise((resolve) => server.httpServer.close(resolve))
+    await rm(directory, { recursive: true, force: true, maxRetries: 8, retryDelay: 100 })
+  })
   const { browser, newPage, errors } = await createBrowserCheck()
   t.after(() => browser.close())
   const origin = 'http://127.0.0.1:' + server.httpServer.address().port
@@ -53,6 +67,19 @@ test('Localized pages recover from restricted storage and interrupted dialogs', 
     )
     await page.type('#f-name', 'آزمایش')
     await page.type('#f-phone', '۰۹۱۲۳۴۵۶۷۸۹')
+    // Hold the first response until the dialog closes, then simulate an unconfirmed retry.
+    await page.evaluate(() => {
+      const original = window.fetch.bind(window)
+      let attempts = 0
+      window.fetch = (...args) => {
+        if (++attempts === 1)
+          return new Promise((_, reject) =>
+            args[1].signal.addEventListener('abort', () => reject(new Error('cancelled')))
+          )
+        if (attempts === 2) return Promise.resolve(new Response('{}', { status: 503 }))
+        return original(...args)
+      }
+    })
     await page.click('#form-submit')
     await page.keyboard.press('Escape')
     await page.click('#menu-open')
@@ -60,6 +87,20 @@ test('Localized pages recover from restricted storage and interrupted dialogs', 
     // An old submission must never reset the reopened form or steal its focus.
     await new Promise((resolve) => setTimeout(resolve, 1050))
     assert(await page.$eval('#form-success', (element) => element.classList.contains('hidden')))
+    await page.click('#form-submit')
+    await page.waitForFunction(() => document.querySelector('#form-status').textContent.length > 0)
+    assert.equal(await page.$eval('#f-phone', (el) => el.value), '۰۹۱۲۳۴۵۶۷۸۹')
+    await page.click('#form-submit')
+    await page.waitForSelector('#form-success:not(.hidden)')
+    const db = new DatabaseSync(process.env.CONSULT_DB, { readOnly: true })
+    try {
+      assert.equal(
+        db.prepare('SELECT phone FROM consultations ORDER BY rowid DESC LIMIT 1').get().phone,
+        '09123456789'
+      )
+    } finally {
+      db.close()
+    }
     await page.keyboard.press('Escape')
     await page.click('#gallery-grid .gallery-tile')
     await page.keyboard.press('Escape')
